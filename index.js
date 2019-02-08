@@ -1,7 +1,8 @@
 const express = require('express'),
       cors = require('cors'),
       morgan = require('morgan'),
-      bodyParser = require('body-parser');
+      bodyParser = require('body-parser'),
+      convertor = require('./convertor');
 
 const app = express();
 
@@ -20,17 +21,19 @@ app.get('/', (req, res) => {
     });
 });
 
+//TODO rename both routes
 app.get('/getTeams', (req, res) => {
+    console.log('here');
     const teams = require('./models/teams.js');
     res.json(teams);
 });
 
-app.post('/loadTeam', (req, res) => {
+app.post('/loadTeam', async (req, res) => {
     console.log('this happening??');
     console.log(req.body);
-    let teamInfo = {};
-    teamInfo.teamId = req.body.teamId;
-    console.log(teamInfo);
+    //req.params
+    let teamInfo = await convertor.initTeam(req.body.teamId);
+    //teamInfo.mascot = req.body.teamId;
     res.json(teamInfo)
 });
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <keep-alive>
-            hiya{{teamInfo.teamId}}
+            hiya{{team}}
         </keep-alive>
         
     
@@ -11,32 +11,41 @@
 <script>
 import axios from 'axios';
 
-const API_URL = "http://localhost:4000/showTeam";
+const paths = require('../assets/scripts/paths');
+
 
 export default {
     name: 'team',
-    data () {
+    
+    data: function () {
         return {
-            teamInfo: {}
+            team: {}
         }
     },
-    props: ['team'],
-
+    
     beforeRouteUpdate(to, from, next) {
         console.log(to);
         console.log(from);
-        axios.post('http://localhost:4000/loadTeam', {
-          teamId: to.params.team
-          //TODO write catches
-        })
-        .then(response => {
-            console.log(response);
-            this.teamInfo = response.data;
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        this.loadTeamData(to.params.team)
         next();
-      }
+    },
+    created: function() {
+        this.loadTeamData(this.$route.params.team)
+        console.log('route object: ', this.$route);
+    },
+    methods: {
+        loadTeamData: async function(teamMascot) {
+            let self = this;
+            let response = await axios.post(paths.loadSingleTeamUrl, {
+                teamId: teamMascot
+            });
+            try {
+                console.log(response);
+                self.team = response.data;
+            } catch(error) {
+                console.log(error);
+            }
+        }
+    }
 }
 </script>

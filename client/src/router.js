@@ -26,7 +26,6 @@ export default new Router({
       path: '/team/:team',
       name: 'team',
       component: Team
-
     }
   ],
 });

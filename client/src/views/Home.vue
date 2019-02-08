@@ -7,10 +7,11 @@
 </template>
 
 <script>
-const API_URL = "http://localhost:4000/";
-
+//TODO 
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
+
+const paths = require('../assets/scripts/paths');
 
 export default {
   name: 'home',
@@ -21,7 +22,7 @@ export default {
     messages: {}
   }),
   mounted() {
-    fetch(API_URL)
+    fetch(paths.loadAllTeamsUrl)
       .then(response => response.json())
       .then(result => {
         this.messages = result;
