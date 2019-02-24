@@ -31,9 +31,9 @@ app.get('/getTeams', (req, res) => {
 app.post('/loadTeam', async (req, res) => {
     console.log('this happening??');
     console.log(req.body);
-    //req.params
+
     let teamInfo = await convertor.initTeam(req.body.teamId);
-    //teamInfo.mascot = req.body.teamId;
+
     res.json(teamInfo)
 });
 

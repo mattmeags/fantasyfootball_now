@@ -1,7 +1,10 @@
 <template>
     <header>
-        <eva-icon name="menu" v-on:click.native="menuClick"></eva-icon>
-        <Menu v-bind:teams='headerData.conferences' v-if='showMenu'></Menu>
+        <div class="menu-icon">
+            <eva-icon name="menu" v-on:click.native="menuClick"></eva-icon> 
+        </div>
+        
+        <Menu v-bind:teams='headerData.conferences' v-bind:showNav='showMenu'></Menu>
         <h1 v-on:click='menuClick'>This is the header</h1>
         <!--<Search v-bind:teams='headerData.conferences'></Search>-->
     </header>
@@ -27,6 +30,7 @@ export default {
      methods: {
         //open close menu
         menuClick() {
+            console.log('clicking??');
             if (this.showMenu == false) {
                 this.showMenu = true;
             } else {
@@ -50,3 +54,9 @@ export default {
     }
 }
 </script>
+
+<style>
+    .menu-icon {
+        float: left;
+    }
+</style>

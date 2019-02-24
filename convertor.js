@@ -7,6 +7,7 @@ const playerHeader = [
     'number',
     'playerName',
     'age',
+    'position',
     'gamesPlayed',
     'gamesStarted',
     'rushingAttempts',

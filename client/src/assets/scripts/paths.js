@@ -1,5 +1,4 @@
-//Common JS module for api url paths
-'use strict';
+// Common JS module for api url paths
 
 const baseUrl = 'http://localhost:4000/';
 

@@ -1,5 +1,5 @@
 <template>
-    <nav>
+    <nav v-bind:class="{active : showNav}">
         <ul>
             <li v-for="conference in teams" v-bind:key="conference.name">
                 {{ conference.name }}
@@ -19,9 +19,10 @@
 </template>
 
 <script>
+//TODO try Vue animation
     export default {
         name: 'Menu',
-        props: ['teams'],
+        props: ['teams', 'showNav'],
         methods: {
             sendTeam: function(team) {
                 alert('click');
@@ -32,3 +33,19 @@
         }
     }
 </script>
+
+<style>
+    nav {
+        text-align: left;
+        width: 200px;
+        position: absolute;
+        left: -200px;
+        top: 40px;
+    }
+    nav.active {
+        left: 0;
+    }
+    nav li {
+        list-style: none;
+    }
+</style>
