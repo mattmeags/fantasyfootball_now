@@ -3,6 +3,6 @@
 const baseUrl = 'http://localhost:4000/';
 
 module.exports = {
-    loadAllTeamsUrl : baseUrl + 'getTeams',
-    loadSingleTeamUrl : baseUrl + "loadTeam",
+  loadAllTeamsUrl: `${baseUrl}getTeams`,
+  loadSingleTeamUrl: `${baseUrl}loadTeam`,
 };

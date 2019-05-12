@@ -10,13 +10,16 @@
 </template>
 
 <script>
-  import Header from '@/components/header/Header.vue';
-  export default {
-    name: 'app',
-    components: {
-      Header
-    }
-  }
+import Header from '@/components/header/Header.vue';
+import Menu from '@/components/header/Menu.vue';
+
+export default {
+  name: 'app',
+  components: {
+    Header,
+    Menu
+  },
+};
 </script>
 
 <style>

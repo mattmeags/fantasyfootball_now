@@ -10,21 +10,22 @@
 
 <script>
 export default {
-    name: 'Search',
-    props: ['teams'],
-    // data: () => ({
-    //     searchPhrase: ''
-    // }),
-    data : {
-        searchPhrase: ''
+  name: 'Search',
+  props: ['teams'],
+  // data: () => ({
+  //     searchPhrase: ''
+  // }),
+  data() {
+    return {
+      searchPhrase: '',
+    };
+  },
+  // TODO look into computed keyword to figure this out
+  methods: {
+    routerFromPhrase: () => {
+      // alert('this:', this.$emit.searchPhrase);
     },
-    //TODO look into computed keyword to figure this out
-    methods: {
-        routerFromPhrase: () => {
-            alert('yoyo');
-            alert("this:", this.$emit.searchPhrase);
-        }
-    }
+  },
 
-}
+};
 </script>

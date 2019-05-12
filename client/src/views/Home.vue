@@ -7,7 +7,7 @@
 </template>
 
 <script>
-//TODO 
+// TODO
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
 
@@ -16,18 +16,18 @@ const paths = require('../assets/scripts/paths');
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    HelloWorld,
   },
   data: () => ({
-    messages: {}
+    messages: {},
   }),
   mounted() {
     fetch(paths.loadAllTeamsUrl)
       .then(response => response.json())
-      .then(result => {
+      .then((result) => {
         this.messages = result;
       });
-  }
+  },
 };
 
 

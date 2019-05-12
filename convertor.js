@@ -33,13 +33,21 @@ const playerHeader = [
     'fumbles'
 ];
 
+/**
+ * @function onError
+ * @description - handles a clean error if csv convert fails
+ */
 function onError() {
     console.log('Error for Convert to csv ');
     return;
 }
 
-//TODO rename this file
-var initTeam = async (team) => {
+/**
+ * @function initTeam
+ * @param {string} team - team name so gets right data
+ * @description creates playerData object used on teams page
+ */
+const initTeam = async (team) => {
 
     let playerData = {};
     let playerFile = './models/' + team + '/players.csv',
@@ -55,7 +63,12 @@ var initTeam = async (team) => {
     
 };
 
-var convertCSV = async (csvFile) => {
+/**
+ * @function convertCSV
+ * @param {string} csvFile - path to csv file to convert
+ * @description converts csv files into json objects, returns object
+ */
+const convertCSV = async (csvFile) => {
 
     return await csvtojson({
         noheader: false,

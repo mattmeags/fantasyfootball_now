@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Team from './views/Team.vue';
+import Player from './views/Player.vue';
 
 Vue.use(Router);
 
@@ -20,12 +21,17 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component() {
         return import(/* webpackChunkName: "about" */ './views/About.vue');
-      }
+      },
     },
     {
       path: '/team/:team',
       name: 'team',
-      component: Team
-    }
+      component: Team,
+    },
+    {
+      path: '/player/',
+      name: 'player',
+      component: Player,
+    },
   ],
 });

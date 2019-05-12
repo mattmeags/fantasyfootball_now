@@ -1,14 +1,24 @@
-'use strict';
 
-var utilities = {
-    convertIntToString: (strings) => {
-        let integers = strings.map(string => parseInt(string, 10));
-        return integers;
-    },
-    trimNames: (names) => {
-        let namesFix = names.map(name => name.substring(0, name.indexOf("\\")));
-        return namesFix;
-    }
-}
+
+const utilities = {
+  /**
+     * @function convertStringToInt
+     * @param {array} strings
+     * @description converts array of strings into array of integers
+    */
+  convertStringToInt: (strings) => {
+    const integers = strings.map(string => parseInt(string, 10));
+    return integers;
+  },
+  /**
+     * @function trimNames
+     * @param {array} strings
+     * @description trims the PFR notations off names
+    */
+  trimNames: (names) => {
+    const namesFix = names.map(name => name.substring(0, name.indexOf('\\')));
+    return namesFix;
+  },
+};
 
 module.exports = utilities;
