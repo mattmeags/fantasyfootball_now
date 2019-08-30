@@ -1,4 +1,4 @@
-# Project Title
+# Fantasy Football Now
 
 Fantasy Football Now
 
@@ -8,61 +8,35 @@ Node.JS is required for this project
 
 ## Getting Started
 
-Pull this repo on to your machine.
-In your terminal/command line change directory to the root folder of this proeject: cd ../path/to/folder/fantasyfootball_now
-Run: npm install
-Run the command: node index.js
+Welcome to Fantasy Football Now (working title). This is my attempt to build an entire web app from the ground up utilizing the latest web technologies while also addressing what I believe is a lack of fantasy football data visualizations that I beleive would help me succeed. 
 
-Open a new tab in the terminal/command line and cd into the client folder.
-In client folder run: npm install
-Then run: npm run serve
+## Jobs
 
-In your browser navigate to localhost:8080
-
-
-
+npm run scrape - scrapes the web for the data needed
 
 ```
 Give examples
 ```
 
 ### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Pull this repo on to your machine.
+In your terminal/command line change directory to the root folder of this proeject: 
 
 ```
-Give the example
+cd ../path/to/folder/fantasyfootball_now
+npm install
+npm run startServer
 ```
 
-And repeat
-
+Open a new tab in the terminal/command line and cd into the client folder.
 ```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+cd client
+npm install
+npm run serve
 ```
 
-### And coding style tests
+In your browser navigate to localhost:8080
 
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 
@@ -70,21 +44,21 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Vue.js](https://github.com/vuejs) - The Front End Framework
+* [Express](https://github.com/expressjs/express) - The Web Framework
+* [Puppeteer](https://github.com/GoogleChrome/puppeteer) - Headless Browser API for data collection
 
-## Contributing
+<!-- ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us. -->
 
-## Versioning
+<!-- ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).  -->
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Matt Meagher**
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 

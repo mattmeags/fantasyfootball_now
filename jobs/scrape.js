@@ -8,6 +8,10 @@ let browser, page;
 
 let pageSelectors = pageselectors.init(TEAMS);
 
+/**
+ * @function initData
+ * @description launches headless browser and calls scrape of each data set 
+ */
 async function initData() {
     if (pageSelectors.length === 0) {
         console.log('JOB COMPLETE');
@@ -24,6 +28,12 @@ async function initData() {
     await parseCheck();
 }
 
+/**
+ * @function scrape
+ * @description scrapes the webpage on the headless browsers and gets the needed csv data
+ * @param {Object} table - data object whos properties are used to scrape the page
+ * @param {Object} browser - the puppeteer headless browser object
+ */
 async function scrape(table, browser) {
     try {
 
@@ -48,7 +58,7 @@ async function scrape(table, browser) {
 
         //console.log(tableMenu.html());
 
-        await page.hover(hoverSelector)
+        await page.hover(hoverSelector);
 
         await page.waitFor('.drophover');
 
@@ -87,6 +97,12 @@ async function scrape(table, browser) {
 
 }
 
+/**
+ * @function writeCSVFiles
+ * @description - takes raw data and writes it to a csv file
+ * @param {string} data - raw data in comma seperated value format
+ * @param {string} fileName - file name of the csv file to write too
+ */
 async function writeCSVFiles(data, fileName) {
     try {
         const fullPath = '../data_files/csv/' + fileName + '.csv';
@@ -96,6 +112,10 @@ async function writeCSVFiles(data, fileName) {
     }
 }
 
+/**
+ * @function parseCheck
+ * @description checks that the scrape was successful and all csv files were created, and if not creates a new pageselector object of everything missing and reruns the scrape
+ */
 function parseCheck () {
     const filesPerTeamFolder = 2;
     const teamFiles = ['passing', 'rushrec'];
