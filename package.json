@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startServer": "node index",
-    "scrape": "node jobs/scrape"
+    "scrape": "node jobs/scrape",
+    "convert": "node jobs/convertor"
   },
   "keywords": [],
   "author": "",

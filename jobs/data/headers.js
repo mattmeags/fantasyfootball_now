@@ -1,4 +1,7 @@
-modules.exports = {
+'use strict';
+
+module.exports = {
+     // [team]/rushRec
     playerHeader: [
         'number',
         'playerName',
@@ -28,7 +31,83 @@ modules.exports = {
         'totalTD',
         'fumbles'
     ],
-    allTeamsHeader: [
+    // [team]/passing
+    playerPassing: [
+        'number',
+        'playerName',
+        'age',
+        'position',
+        'gamesPlayed',
+        'gamesStarted',
+        'qbRecord',
+        'completions',
+        'attempts',
+        'completionPercentage',
+        'yards',
+        'tds',
+        'tdPercentage',
+        'interceptions',
+        'interceptionPercentage',
+        'longest',
+        'yardsPerAttempt',
+        'adjustedYardsPerAttempt',
+        'yardsPerCompletion',
+        'yardsPerGame',
+        'rate',
+        'qbr',
+        'timesSacked',
+        'yardsLostToSack',
+        'netYardsPerAttempt',
+        'adjustedYardsPerAttempt',
+        'sackPercentage',
+        'fourthQuarterComebacks',
+        'gameWinningDrives'
+    ],
+    // all/passingOffense
+    allPassingHeader:  [
+        'rank',
+        'name',
+        'games',
+        'completions',
+        'attempts',
+        'completionPercentage',
+        'yards',
+        'tds',
+        'tdPercentagePassAttempt',
+        'int',
+        'intPercentage',
+        'longestPass',
+        'yardsPerAttempt',
+        'adjustedYardsPerAttempt',
+        'yardsPerCompletion',
+        'yardsPerGame',
+        'qbr',
+        'sacks',
+        'yardsLostToSacks',
+        'netYardsPerAttempt',
+        'adjustedNetYardsPerAttempt',
+        'sackPercentage',
+        'comebacksLedByQB',
+        'gameWinningDrives',
+        'expectedPoints'
+    ],
+    // all/rushingOffense
+    allTeamRushingHeader: [
+        'rank',
+        'name',
+        'games',
+        'attempts',
+        'yards',
+        'tds',
+        'longestRushAttempt',
+        'yardsPerGame',
+        'fumbles',
+        'expectedPoints'
+    ],
+    // all/allTeamOffense
+    allTeamOffenseHeader: [
+        'rank',
+        'name',
         'games',
         'pointsScored',
         'totalYards',
@@ -56,39 +135,72 @@ modules.exports = {
         'driveTurnOverPercentage',
         'expectedPoints'
     ],
-    allPassingHeader:  [
+    // all/allTeamDefense
+    allTeamDefenseHeader: [
+        'rank',
+        'name',
         'games',
-        'completions',
-        'attempts',
-        'completionPercentage',
-        'yards',
-        'tds',
-        'tdPercentagePassAttempt',
-        'int',
-        'intPercentage',
-        'longestPass',
+        'pointsScoredAgainst',
+        'yardsAgainst',
+        'playsAgainst',
+        'yardsPerPlayAgainst',
+        'takeAways',
+        'fumblesLostByTeam',
+        'firstDownsAllowed',
+        'passesCompletedAgainst',
+        'passesAttemptedAgainst',
+        'passingYardsAgainst',
+        'passingTDsAgainst',
+        'interceptions',
+        'netYardsAgainstPerPassAttempt',
+        'passingFirstDownsAgainst',
+        'rushingAttemptsAgainst',
+        'rushingTDsAgainst',
+        'rushingYardsPerAttemptAgainst',
+        'rushingFirstDownsAgainst',
+        'defensePenalties',
+        'defensivePenatlyYardsAgainst',
+        'defensivePenatlyFirstDownsAgainst',
+        'percentageDrivesEndingInScoreAgainst',
+        'percentageDrivesEndingInTurnOver',
+        'expectedPointsContributed'
+    ],
+    // all/rushingDefense
+    allTeamRushingDefense: [
+        'rank',
+        'name',
+        'games',
+        'attemptsAgainst',
+        'yardsAgainst',
+        'tdsAgainst',
+        'yardsPerAttemptAgainst',
+        'yardsPerGame',
+        'expectedPointsContributedByRushingDefense'
+    ],
+    // all/passingDefense
+    allTeamPassingDefense: [
+        'rank',
+        'name',
+        'games',
+        'completionPercentageAgainst',
+        'yardsAgainst',
+        'tdsAgainst',
+        'tdPercentageRateAgainst',
+        'interceptions',
+        'passesDefended',
+        'interceptionPercentage',
         'yardsPerAttempt',
         'adjustedYardsPerAttempt',
         'yardsPerCompletion',
         'yardsPerGame',
-        'qbr',
+        'rate',
         'sacks',
-        'yardsLostToSacks',
+        'yardsLostToSack',
+        'qbHits',
+        'tacklesForLoss',
         'netYardsPerAttempt',
         'adjustedNetYardsPerAttempt',
         'sackPercentage',
-        'comebacksLedByQB',
-        'gameWinningDrives',
-        'expectedPoints'
-    ],
-    allRushingHeader: [
-        'games',
-        'attempts',
-        'yards',
-        'tds',
-        'longestRushAttempt',
-        'yardsPerGame',
-        'fumbles',
-        'expectedPoints'
+        'expectedPointsContributedByPassingDefense'
     ]
 }

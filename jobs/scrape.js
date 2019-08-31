@@ -105,7 +105,8 @@ async function scrape(table, browser) {
  */
 async function writeCSVFiles(data, fileName) {
     try {
-        const fullPath = '../data_files/csv/' + fileName + '.csv';
+        const fullPath = 'data_files/csv/' + fileName + '.csv';
+        console.log(fullPath);
         fs.outputFile(fullPath, data);
     } catch (error) {
         console.log(error);
@@ -123,12 +124,8 @@ function parseCheck () {
     //console.log(TEAMS);
     const expectedFolders = new Array('all').concat(TEAMS);
     const filesInAllFolder = 6;
-    const missingObj = {
-        teams: [],
-        all: []
-    };
-    // let missingItems = [];
-    fs.readdir('../data_files/csv/', (err, createdFolders) => {
+
+    fs.readdir('data_files/csv/', (err, createdFolders) => {
         // console.log(expectedFolders);
         // console.log(createdFolders);
         let newPageSelectors = [];
@@ -152,7 +149,7 @@ function parseCheck () {
         }
 
         for (let i = 0; i < createdFolders.length; i++) {
-            fs.readdir('../data_files/csv/' + createdFolders[i], (err, createdFiles) => {
+            fs.readdir('data_files/csv/' + createdFolders[i], (err, createdFiles) => {
                 if (createdFolders[i] === 'all') {
                     if (createdFiles.length != filesInAllFolder) {
                         let missingAllFiles = allFolderFiles.filter(fileName => !createdFiles.includes(fileName));

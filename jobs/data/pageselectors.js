@@ -5,7 +5,7 @@ const teamCodes = ['crd', 'atl', 'rav', 'buf', 'car', 'chi', 'cin', 'cle', 'dal'
 let exportedPageSelectors = []
 
 /**
- * @Class
+ * @class
  * @desc - Team name and PFF code pairing
  */
 class TeamCode {
@@ -32,8 +32,8 @@ class PageSelector {
 /**
  * @private
  * @function getTeamCodes
- * @param {Array} - asrray of team names that will be used in scrape job
- * @returns {Array} = array of TeamCode Objects
+ * @param {Array} - array of team names that will be used in scrape job
+ * @returns {Array} - array of TeamCode Objects
  */
 function getTeamCodes(teams) {
     const teamCodesArr = [];
@@ -73,8 +73,8 @@ function getRushRec(teams) {
         exportedPageSelectors.push(
             new PageSelector(
                 baseURL + '/teams/' + teams[i].code + '/2018.htm',
-                '#all_passing',
-                '#csv_passing', 
+                '#all_rushing_and_receiving',
+                '#csv_rushing_and_receiving', 
                 teams[i].name + '/rushRec'
             )
         );
