@@ -1,0 +1,37 @@
+@mixin respondUp($viewport) {
+    @if unitless($viewport) {
+        @debug 'unitless!!';
+        @media (min-width: $viewport + px) {
+            @content;
+        }
+    } @else {
+        @media (min-width: $viewport) {
+            @content;
+        }
+    }
+    
+    
+}
+
+@mixin fontSize($mobile, $desktop) {
+    font-size: calcRem($mobile);
+
+    @include respondUp($desktopViewport) {
+        font-size: calcRem($desktop);
+    }
+}
+
+@function calcRem($fontSize) {
+    @return stripUnit($fontSize) / 16 + rem;
+}
+
+/// Remove the unit of a length
+/// @param {Number} $number - Number to remove unit from
+/// @return {Number} - Unitless number
+@function stripUnit($number) {
+    @if type-of($number) == 'number' and not unitless($number) {
+      @return $number / ($number * 0 + 1);
+    }
+  
+    @return $number;
+  }

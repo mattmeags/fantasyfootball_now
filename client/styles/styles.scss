@@ -1,0 +1,15 @@
+@import './variables';
+@import './color';
+@import './buttons';
+@import './tiles';
+@import './grid';
+@import './typography';
+@import './tables';
+
+body {
+    background: $primary;
+    color: $tietary;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+}

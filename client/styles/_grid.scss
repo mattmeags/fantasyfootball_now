@@ -1,0 +1,75 @@
+$gutter: 35px;
+.container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 0 25px;
+
+    .row {
+        flex-basis: 100%;
+        margin-bottom: $gutter;
+        display: flex;
+        justify-content: space-between;
+
+        .tile {
+            margin-right: $gutter;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .w- {
+        &12 {
+            flex-basis: 100%;
+        }
+        &11 {
+           width: 91%;
+        }
+        &10 {
+           flex-basis: 83%; 
+        }
+        &9 {
+            flex-basis: 75%;
+        }
+        &8 {
+            flex-basis: 66%;
+        }
+        &7{
+            flex-basis: 58%;
+        }
+        &6 {
+            flex-basis: 50%;
+        }
+        &5 {
+            flex-basis: 42%;
+        }
+        &4 {
+            flex-basis: 33%; 
+        }
+        &3 {
+            flex-basis: 25%;
+        }
+        &2 {
+            flex-basis: 16% 
+        }
+        &1 {
+            flex-basis: 8%;
+        }
+        &*:last-of-type {
+            background: red;
+        }
+    }
+
+    .h- {
+        &2 {
+            height: 250px;
+        }
+        &1 {
+            height: 125px;
+        }
+    }
+}

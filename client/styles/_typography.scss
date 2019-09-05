@@ -1,0 +1,30 @@
+@import './mixins';
+
+/* Headings */
+h1 {
+    @include fontSize($h1-mobile-size, $h1-desktop-size);
+}
+
+h2 {
+    @include fontSize($h2-mobile-size, $h2-desktop-size);
+}
+
+h3 {
+    @include fontSize($h3-mobile-size, $h3-desktop-size);
+}
+
+h4,
+h5,
+h6 {
+    @include fontSize($h4-mobile-size, $h4-desktop-size);
+}
+
+p,
+span,
+a {
+    @include fontSize($font-size-mobile, $font-size-desktop);
+}
+
+a {
+    text-decoration: none;
+}

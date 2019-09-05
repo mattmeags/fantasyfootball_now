@@ -1,0 +1,11 @@
+table {
+    td {
+        border-right: $border;
+        border-left: $border;
+    }
+    th {
+        td {
+            border: none;
+        }
+    }
+}
