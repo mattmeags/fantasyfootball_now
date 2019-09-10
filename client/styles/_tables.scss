@@ -1,11 +1,24 @@
 table {
+    border-collapse: collapse;
+
     td {
-        border-right: $border;
-        border-left: $border;
+        border-top: $border;
+        border-bottom: $border;
     }
     th {
+        border-bottom: $border2;
+    }
+    td,
+    th {
+        padding: 10px 5px;
+        text-align: left;
+    }
+    th + tr {
         td {
-            border: none;
+            border-top: none;
         }
+    }
+    tr:hover {
+        background: $tietary;
     }
 }

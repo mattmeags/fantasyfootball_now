@@ -133,8 +133,12 @@ $font-size-desktop: 24px;
 
 
 /* VIEWPORTS */
+$mobileViewport: 320px;
+$tabletViewport: 768px;
 $desktopViewport: 1024px;
+$largeViewport: 1280px;
 
 /* COMPONENTS */
 $border-radius: 4px;
 $border: 1px solid $tietary;
+$border2: 2px solid $accent2;

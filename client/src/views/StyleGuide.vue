@@ -45,7 +45,17 @@
             <button disabled>Disabled Buttons</button>
         </section>
         <section class="icons"></section>
-        <section class="forms"></section>
+        <section class="forms">
+            <form>
+                <input type="text"/>
+                <input type="text"/>
+                <select>
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                </select>
+                <textarea></textarea>
+            </form>
+        </section>
         <section class="widgets">
             <h2>Widgets</h2>
             <h3>Tabs</h3>
