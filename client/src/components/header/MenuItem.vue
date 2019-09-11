@@ -1,6 +1,6 @@
 <template>
     <li class="nav-item">
-        <font-awesome-icon v-bind:icon="menuItem.icon" />
+        <!-- <font-awesome-icon v-bind:icon="menuItem.icon" /> -->
     </li>
 </template>
 

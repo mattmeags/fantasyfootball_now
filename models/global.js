@@ -4,7 +4,10 @@ const teams = ['cardinals','falcons' ,'ravens' ,'bills' ,'panthers' ,'bears' ,'b
 
 const amountOfTeams = teams.length;
 
+const positions = ['Quarterback', 'Running Back', 'Wide Receiver', 'Tight End', 'Defense'];
+
 module.exports ={
     teams: teams,
-    amountOfTeams: amountOfTeams
+    amountOfTeams: amountOfTeams,
+    positions: positions
 }

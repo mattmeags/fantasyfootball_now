@@ -1,12 +1,12 @@
 <template>
     <div class="sidebar-nav" v-bind:class="{'collapsed' : isCollpased}">
-        {{isCollapsed}}
-        <div class="menu-icon">
+        <!-- {{isCollapsed}} -->
+        <!-- <div class="menu-icon">
             <font-awesome-icon icon="bars"/>        
-        </div>
+        </div> -->
         <nav>
             <ul>
-                <li class="nav-item"><font-awesome-icon icon="search"/></li>
+                <!-- <li class="nav-item"><font-awesome-icon icon="search"/></li> -->
                 <MenuItem v-for="item in menu" v-bind:key="item.title" v-bind:menuItem="item"></MenuItem>
             </ul>
             <!-- <ul>
