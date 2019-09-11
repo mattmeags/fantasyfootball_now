@@ -1,23 +1,28 @@
 <template>
   <div id="app">
+    <Navigation></Navigation>
     <Header></Header>
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <main>
+      <router-view/>
+    </main>
   </div>
 </template>
 
 <script>
 import Header from '@/components/header/Header.vue';
 import Menu from '@/components/header/Menu.vue';
+import Navigation from '@/components/global/Navigation.vue';
 
 export default {
   name: 'app',
   components: {
     Header,
-    Menu
+    Menu,
+    Navigation
   },
 };
 </script>
