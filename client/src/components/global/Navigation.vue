@@ -2,10 +2,10 @@
     <nav>
         <div class="nav-wrapper">
             <ul class="icon-nav">
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}"><a href="/" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false"><eva-icon name="home" fill="white"></eva-icon></a></li>
-                <li class="nav-item" v-bind:class="[{deepSelected: deepTeamHighlight}, {'selected' : selected === 'team'}]"><a href="#" v-on:click="toggleDeepNav('team')" v-on:mouseover="showTeamText = true" v-on:mouseout="showTeamText = false"><eva-icon name="people" fill="white"></eva-icon></a></li>
-                <li class="nav-item" v-bind:class="[{deepSelected: deepPositionHighlight}, {'selected' : selected === 'position'}]"><a href="#" v-on:click="toggleDeepNav('position')" v-on:mouseover="showPositionText = true" v-on:mouseout="showPositionText = false"><eva-icon name="award" fill="white"></eva-icon></a></li>
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"><a href="" v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><eva-icon name="pie-chart-2" fill="white"></eva-icon></a></li>
+                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}"><router-link to="/" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false"><eva-icon name="home" fill="white"></eva-icon></router-link></li>
+                <li class="nav-item" v-bind:class="[{deepSelected: deepTeamHighlight}, {'selected' : selected === 'team'}]" v-on:click="toggleDeepNav('team')" v-on:mouseover="showTeamText = true" v-on:mouseout="showTeamText = false"><eva-icon name="people" fill="white"></eva-icon></li>
+                <li class="nav-item" v-bind:class="[{deepSelected: deepPositionHighlight}, {'selected' : selected === 'position'}]" v-on:click="toggleDeepNav('position')" v-on:mouseover="showPositionText = true" v-on:mouseout="showPositionText = false"><eva-icon name="award" fill="white"></eva-icon></li>
+                <li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"><router-link to="" v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>
             </ul>
             <ul class="hidden-nav">
                 <li class="nav-text" v-bind:class="{active: showHomeText}">Landing</li>
@@ -15,11 +15,11 @@
             </ul>
             <ul class="hidden-teams-nav" v-bind:class="{active: showTeamNav}">
                 <li class="title">Teams</li>
-                <li v-for="team in teams" v-bind:key="team"><a v-bind:href="'/team/' + team">{{team}}</a></li>
+                <li v-for="team in teams" v-bind:key="team"><router-link v-bind:to="'/team/' + team">{{team}}</router-link></li>
             </ul>
             <ul class="hidden-position-nav" v-bind:class="{active: showPositionNav}">
                 <li class="title">Position</li>
-                <li v-for="position in positions" v-bind:key="position"><a v-bind:href="'/' + position">{{position}}</a></li>
+                <li v-for="position in positions" v-bind:key="position"><router-link v-bind:to="'/' + position">{{position}}</router-link></li>
             </ul>
         </div>
     </nav>
@@ -113,16 +113,21 @@ export default {
         }
 
         .nav-item {
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
             z-index: 3;
             background: $secondary;
+            height: 38px;
 
             a {
-                display: block;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 height: 100%;
                 width: 100%;
-                padding: 7px 0;
+                //padding: 7px 0;
             }
 
             i {
@@ -133,6 +138,7 @@ export default {
             &:hover {
                 background: $accent;
                 transition: 0.3s all linear;
+                cursor: pointer;
             }
 
             &.deepSelected {
