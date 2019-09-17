@@ -2,10 +2,10 @@
     <nav>
         <div class="nav-wrapper">
             <ul class="icon-nav">
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}"><router-link to="/" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false"><eva-icon name="home" fill="white"></eva-icon></router-link></li>
+                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false"><router-link to="/" ><eva-icon name="home" fill="white"></eva-icon></router-link></li>
                 <li class="nav-item" v-bind:class="[{deepSelected: deepTeamHighlight}, {'selected' : selected === 'team'}]" v-on:click="toggleDeepNav('team')" v-on:mouseover="showTeamText = true" v-on:mouseout="showTeamText = false"><eva-icon name="people" fill="white"></eva-icon></li>
                 <li class="nav-item" v-bind:class="[{deepSelected: deepPositionHighlight}, {'selected' : selected === 'position'}]" v-on:click="toggleDeepNav('position')" v-on:mouseover="showPositionText = true" v-on:mouseout="showPositionText = false"><eva-icon name="award" fill="white"></eva-icon></li>
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"><router-link to="" v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>
+                <li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"  v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><router-link to=""><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>
             </ul>
             <ul class="hidden-nav">
                 <li class="nav-text" v-bind:class="{active: showHomeText}">Landing</li>
@@ -22,7 +22,9 @@
                 <li v-for="position in positions" v-bind:key="position"><router-link v-bind:to="'/' + position">{{position}}</router-link></li>
             </ul>
         </div>
+        {{showHomeText}}
     </nav>
+    
 </template>
 
 <script>
@@ -203,6 +205,7 @@ export default {
                 left: 40px;
                 z-index: 6;
                 height: 100%;
+                transition: 0.3s left ease-out;
             }
         }
     }

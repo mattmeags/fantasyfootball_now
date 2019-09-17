@@ -10,7 +10,7 @@ table {
     }
     td,
     th {
-        padding: 10px 5px;
+        padding: 10px 20px 10px 0;
         text-align: left;
     }
     th + tr {
@@ -19,6 +19,6 @@ table {
         }
     }
     tr:hover {
-        background: $tietary;
+        background: rgba($tietary, 0.2);
     }
 }

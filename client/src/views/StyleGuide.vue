@@ -219,6 +219,5 @@
 
     .tile {
         height: 400px;
-        width: 300px;
     }
 </style>
