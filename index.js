@@ -27,8 +27,17 @@ app.get('/', (req, res) => {
  * @description - express route returns list of teams and their divisions
  */
 app.get('/getTeams', (req, res) => {
-    const teams = require('./models/teams.js');
+    const teams = require('./models/global.js').teams;
     res.json(teams);
+});
+
+/**
+ * @function get/getPositions
+ * @description - route returns list of positions
+ */
+app.get('/getPositions', (req, res) => {
+    const positions = require('./models/global.js').positions;
+    res.json(positions);
 });
 
 /**
@@ -56,5 +65,5 @@ app.post('/loadPlayer', (req, res) => {
 
 const port = process.env.PORT || 4000;
 app.listen(port, ()=> {
-    console.log('listening on ${port}');
+    console.log('listening on ' + port);
 });

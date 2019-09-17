@@ -1,0 +1,145 @@
+/* MAIN COLORS */
+$white: #fff;
+$black: #000;
+$athens-gray: #F1F2F6;
+$scarpa-flow: #565658;
+$oslo-gray: #838587;
+$dodger-blue: #4D85FF;
+$shamrock: #29CB97;
+$wild-watermelon: #FF4E82;
+$pickled-blue: #2C3C4D;
+
+$primary: $athens-gray;
+$secondary: $scarpa-flow;
+$tietary: $oslo-gray;
+$accent: $dodger-blue;
+$accent2: $shamrock;
+$accent3: $wild-watermelon;
+$accent4: $pickled-blue;
+
+/* TEAM COLORS */
+$cardinals-primary: #97233F;
+$cardinals-secondary: $black;
+$cardinals-tietary: #FFB612;
+$falcons-primary: #A71930;
+$falcons-secondary: $black;
+$falcons-tietary: #A5ACAF;
+$ravens-primary: #241773;
+$ravens-secondary: $black;
+$ravens-tietary: #9E7C0C;
+$bills-primary: #00338D;
+$bills-secondary: #C60C30;
+$bills-tietary: $white;
+$panthers-primary: #0085CA;
+$panthers-secondary: $black;
+$panthers-tietary: #BFC0BF;
+$bears-primary: #0B162A;
+$bears-secondary: #C83803;
+$bears-tietary: $white;
+$bengals-primary: #FB4F14;
+$bengals-secondary: $black;
+$bengals-tietary: $white;
+$browns-primary: #311D00;
+$browns-secondary: #FF3C00;
+$browns-tietary: $white;
+$cowboys-primary: #041E42;
+$cowboys-secondary: #003594;
+$cowboys-tietary: #869397;
+$broncos-primary: #FB4F14;
+$broncos-secondary: #002244;
+$broncos-tietary: $white;
+$lions-primary: #0076B6;
+$lions-secondary: #B0B7BC;
+$lions-tietary: $black;
+$packers-primary: #203731;
+$packers-secondary: #FFB612;
+$packers-tietary: $white;
+$texans-primary: #03202F;
+$texans-secondary: #A71930;
+$texans-tietary: $white;
+$colts-primary: #002C5F;
+$colts-secondary: #A2AAAD;
+$colts-tietary: $white;
+$jaguars-primary: #D7A22A;
+$jaguars-secondary: #9F792C;
+$jaguars-tietary: #006778;
+$chiefs-primary: #E31837;
+$chiefs-secondary: #FFB81C;
+$chiefs-tietary: $white;
+$chargers-primary: #002A5E;
+$chargers-secondary: #FFC20E;
+$chargers-tietary: #0080C6;
+$rams-primary: #002244;
+$rams-secondary: #866D4B;
+$rams-tietary: $white;
+$dolphins-primary: #008E97;
+$dolphins-secondary: #FC4C02;
+$dolphins-tietary: #005778;
+$vikings-primary: #4F2683;
+$vikings-secondary: #FFC62F;
+$vikings-tietary: $white;
+$patriots-primary: #002244;
+$patriots-secondary: #C60C30;
+$patriots-tietary: #B0B7BC;
+$saints-primary: #D3BC8D;
+$saints-secondary: #101820;
+$saints-tietary: $white;
+$giants-primary: #0B2265;
+$giants-secondary: #A71930;
+$giants-tietary: #A5ACAF;
+$jets-primary: #125740;
+$jets-secondary: $black;
+$jets-tietary: $white;
+$raiders-primary: $black;
+$raiders-secondary: #A5ACAF;
+$raiders-tietary: $white;
+$eagles-primary: #004C54;
+$eagles-secondary: #A5ACAF;
+$eagles-tietary: #ACC0C6;
+$steelers-primary: #FFB612;
+$steelers-secondary: #101820;
+$steelers-tietary: #003087;
+$niners-primary: #AA0000;
+$niners-secondary: #B3995D;
+$niners-tietary: $white;
+$seahawks-primary: #002244;
+$seahawks-secondary: #69BE28;
+$seahawks-tietary: #A5ACAF;
+$buccaneers-primary: #D50A0A;
+$buccaneers-secondary: #FF7900;
+$buccaneers-tietary: #0A0A08;
+$titans-primary: #0C2340;
+$titans-secondary: #418FDE;
+$titans-tietary: #C8102E;
+$redskins-primary: #773141;
+$redskins-secondary: #FFB612;
+$redskins-tietary: $white;
+
+/* FONT SIZES */
+$h1-mobile-size: 32px;
+$h1-desktop-size: 48px;
+
+$h2-mobile-size: 24px;
+$h2-desktop-size: 40px;
+
+$h3-mobile-size: 18px;
+$h3-desktop-size: 32px;
+
+$h4-mobile-size: 16px;
+$h4-desktop-size: 24px;
+
+$font-size-mobile: 16px;
+$font-size-desktop: 24px;
+
+
+/* VIEWPORTS */
+$mobileViewport: 320px;
+$tabletViewport: 768px;
+$desktopViewport: 1024px;
+$largeViewport: 1280px;
+
+/* COMPONENTS */
+$border-radius: 4px;
+$border: 1px solid $tietary;
+$border2: 2px solid $accent2;
+$border3: 3px solid $accent;

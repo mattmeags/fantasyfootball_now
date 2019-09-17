@@ -1,0 +1,12 @@
+.tile {
+    background: $white;
+    border-radius: $border-radius;
+    box-shadow: 2px 4px 10px -6px $tietary;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.01);
+        box-shadow: 4px 6px 10px -6px $tietary;
+        transition: all .03s linear;
+    }
+}

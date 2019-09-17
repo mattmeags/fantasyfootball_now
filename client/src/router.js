@@ -3,10 +3,12 @@ import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Team from './views/Team.vue';
 import Player from './views/Player.vue';
+import StyleGuide from './views/StyleGuide.vue';
 
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -32,6 +34,11 @@ export default new Router({
       path: '/player/',
       name: 'player',
       component: Player,
+    },
+    {
+      path: '/styleguide',
+      name: 'styleguide',
+      component: StyleGuide,
     },
   ],
 });
