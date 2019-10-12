@@ -2,6 +2,17 @@
     background: $white;
     border-radius: $border-radius;
     box-shadow: 2px 4px 10px -6px $tietary;
+    position: relative;
+
+    select {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    }
+
+    .chart {
+        padding-top: 25px;
+    }
 
     &:hover {
         cursor: pointer;

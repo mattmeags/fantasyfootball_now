@@ -17,6 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
+    console.log('here?');
     res.json({
         message: 'Hello World'
     });
@@ -45,18 +46,22 @@ app.get('/getPositions', (req, res) => {
  * @description - express route that loads team data for team page
  */
 app.post('/loadTeam', async (req, res) => {
-    const teams = require('./models/teams');
-    console.log(req.body);
+    // const teams = require('./models/teams');
+    // console.log(req.body);
 
-    let teamNameLocationData = jsonQuery('conferences[**][divisions][**][teams][name=' + req.body.teamId + ']', {data: teams}).value;
+    // let teamNameLocationData = jsonQuery('conferences[**][divisions][**][teams][name=' + req.body.teamId + ']', {data: teams}).value;
     
-    console.log('finalData: ', teamNameLocationData);
+    // console.log('finalData: ', teamNameLocationData);
 
-    let teamInfo = await convertor.initTeam(req.body.teamId);
+    // let teamInfo = await convertor.initTeam(req.body.teamId);
 
-    teamInfo.mascot = teamNameLocationData.name;
-    teamInfo.location = teamNameLocationData.location;
-    res.json(teamInfo)
+    // teamInfo.mascot = teamNameLocationData.name;
+    // teamInfo.location = teamNameLocationData.location;
+    // TODO this is only a quick fix
+    const teamModel = require('./models/teamModel');
+    let team = teamModel.init(req.body.teamId);
+    console.log(team);
+    res.json(team)
 });
 
 app.post('/loadPlayer', (req, res) => {

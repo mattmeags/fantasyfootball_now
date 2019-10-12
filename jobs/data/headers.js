@@ -64,7 +64,7 @@ module.exports = {
         'gameWinningDrives'
     ],
     // all/passingOffense
-    allPassingHeader:  [
+    allTeamPassingOffense:  [
         'rank',
         'name',
         'games',
@@ -92,7 +92,7 @@ module.exports = {
         'expectedPoints'
     ],
     // all/rushingOffense
-    allTeamRushingHeader: [
+    allTeamRushingOffense: [
         'rank',
         'name',
         'games',
