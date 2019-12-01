@@ -60,6 +60,7 @@ function getPassing(teams) {
             )
         );  
     }
+    return exportedPageSelectors;
 };
 
 /**
@@ -79,6 +80,7 @@ function getRushRec(teams) {
             )
         );
     }
+    return exportedPageSelectors;
 };
 
 /**
@@ -192,6 +194,7 @@ function getTeamRelatedData() {
         getAllPassingDefense(), 
         getAllRushingDefense()
     ];
+    return exportedPageSelectors;
     //console.log('after all');
 }
 
@@ -205,16 +208,28 @@ module.exports = {
         return exportedPageSelectors;
     },
     fixTeams: (missingTeams) => {
+        exportedPageSelectors = [];
         const scanMissingTeams = getTeamCodes(missingTeams);
-        getTeamRelatedData();
+        console.log('scanMissingTeams: ', scanMissingTeams);
         getPassing(scanMissingTeams);
         getRushRec(scanMissingTeams);
-
+        console.log('exportedPageSelectors', exportedPageSelectors);
+        return exportedPageSelectors;
+    },
+    fixTeamsPass: (missingTeams) => {
+        exportedPageSelectors = [];
+        console.log('fixpass: ', missingTeams);
+        const scanMissingTeams = getTeamCodes(missingTeams);
+        getPassing(scanMissingTeams);
+        return exportedPageSelectors;
+    },
+    fixTeamsRushRec: (missingTeams) => {
+        exportedPageSelectors = [];
+        const scanMissingTeams = getTeamCodes(missingTeams);
+        getRushRec(scanMissingTeams);
         return exportedPageSelectors;
     },
     getTeamRelatedData: getTeamRelatedData,
-    getRushRec: getRushRec,
-    getPassing: getPassing,
     getAllTeamOffense: getAllTeamOffense,
     getAllPassing: getAllPassing,
     getAllRushingOffense: getAllRushingOffense,
