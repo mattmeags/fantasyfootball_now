@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "startServer": "node index",
     "scrape": "node jobs/scrape",
-    "convert": "node jobs/convertor"
+    "convert": "node jobs/convertor",
+    "saveToMongodb": "node jobs/writeCollections"
   },
   "keywords": [],
   "author": "",
