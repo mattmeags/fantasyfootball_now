@@ -1,7 +1,5 @@
 <template>
-    <div id="chart">
-        {{chartOptions.xaxis.categories}}
-        asfsadf
+    <div class="chart">
       <apexchart type=bar height=350 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
@@ -37,8 +35,6 @@ export default {
             },
           },
         },
-
-
       };
     },
   },

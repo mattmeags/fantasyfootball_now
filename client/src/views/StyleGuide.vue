@@ -50,10 +50,7 @@
                 <form>
                     <input type="text"/>
                     <input type="text"/>
-                    <select>
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                    </select>
+                    <ChartFilter></ChartFilter>
                     <textarea></textarea>
                 </form>
             </section>
@@ -145,11 +142,13 @@
 
 <script>
     import ColorTile from '@/components/styleguide/ColorTile.vue';
+    import ChartFilter from '@/components/data/ChartFilter.vue';
 
     export default {
         name: 'StyleGuide',
         components: {
-            ColorTile
+            ColorTile,
+            ChartFilter
         }, 
         data: () => ({
             teams: ['cardinals','falcons' ,'ravens' ,'bills' ,'panthers' ,'bears' ,'bengals' ,'browns' ,'cowboys' ,'broncos' ,'lions' ,'packers' ,'texans' ,'colts','chiefs' ,'chargers' ,'rams' ,'dolphins' ,'vikings' ,'patriots' ,'saints' ,'giants' ,'giants' ,'raiders' ,'eagles', 'steelers', 'niners', 'seahawks', 'buccaneers', 'titans', 'redskins']
@@ -159,7 +158,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../styles/styles';
+    @import '../assets/styles/styles.scss';
 
     main {
         margin-bottom: 300px;

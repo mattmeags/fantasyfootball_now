@@ -15,14 +15,13 @@
             </ul>
             <ul class="hidden-teams-nav" v-bind:class="{active: showTeamNav}">
                 <li class="title">Teams</li>
-                <li v-for="team in teams" v-bind:key="team"><router-link v-bind:to="'/team/' + team">{{team}}</router-link></li>
+                <li v-for="team in teams" v-bind:key="team" v-on:click="toggleDeepNav('team')"><router-link v-bind:to="'/team/' + team">{{team}}</router-link></li>
             </ul>
             <ul class="hidden-position-nav" v-bind:class="{active: showPositionNav}">
                 <li class="title">Position</li>
                 <li v-for="position in positions" v-bind:key="position"><router-link v-bind:to="'/' + position">{{position}}</router-link></li>
             </ul>
         </div>
-        {{showHomeText}}
     </nav>
     
 </template>
@@ -83,7 +82,7 @@ export default {
 </script>
 
 <style lang="scss">
-    @import "../../../styles/variables";
+    @import "../../assets/styles/_variables.scss";
 
     nav {
         position: fixed;

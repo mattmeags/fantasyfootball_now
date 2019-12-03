@@ -29,6 +29,7 @@ async function allTeam() {
     const allPassOffenseData = await convertCSV(allPath + 'passingOffense.csv', headers.allTeamPassingOffense);
     const allPassDefenseData = await convertCSV(allPath + 'passingDefense.csv', headers.allTeamPassingDefense);
     const allRushOffenseData = await convertCSV(allPath + 'rushingOffense.csv', headers.allTeamRushingOffense);
+    console.log(allRushOffenseData);
     const allRushDefenseData = await convertCSV(allPath + 'rushingDefense.csv', headers.allTeamRushingDefense);
 
     const allData = {
