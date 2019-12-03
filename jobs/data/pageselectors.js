@@ -124,7 +124,7 @@ function getAllPassing() {
 function getAllRushingOffense() {
     //rushingOffense: 
     return new PageSelector(
-        baseURL + '/years/2018/',
+        baseURL + '/years/2018/#all_rushing',
         '#all_rushing',
         '#csv_rushing',
         'all/rushingOffense'
