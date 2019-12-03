@@ -6,7 +6,6 @@ const extension = '.js';
 class TeamModel {
     constructor(team) {
         const teamName  = team.replace(team.charAt(0), team.charAt(0).toUpperCase());
-        console.log(teamName);
         const teamIndex = globals.teams.indexOf(teamName);
         const fullTeam = globals.fullTeams[teamIndex];
         const offense = require(rootPath + 'all/offense' + extension);
@@ -25,9 +24,4 @@ class TeamModel {
     };
 }
 
-
-module.exports = {
-    init: function(team) {
-        return new TeamModel(team);
-    }
-}
+module.exports = TeamModel;

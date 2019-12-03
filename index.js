@@ -58,8 +58,8 @@ app.post('/loadTeam', async (req, res) => {
     // teamInfo.mascot = teamNameLocationData.name;
     // teamInfo.location = teamNameLocationData.location;
     // TODO this is only a quick fix
-    const teamModel = require('./models/teamModel');
-    let team = teamModel.init(req.body.teamId);
+    const TeamModel = require('./models/teamModel');
+    let team = new TeamModel(req.body.teamId);
     console.log(team);
     res.json(team)
 });
