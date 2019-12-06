@@ -4,8 +4,15 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       jsonQuery = require('json-query'),
       convertor = require('./convertor');
+const mongodbClient = require('./mongoClient');
+const globals = require('./models/global');
+
+let db;
 
 const app = express();
+mongodbClient.createConnection(() => {
+    db = mongodbClient.getDb();
+});
 
 
 //Require static data
@@ -28,6 +35,7 @@ app.get('/', (req, res) => {
  * @description - express route returns list of teams and their divisions
  */
 app.get('/getTeams', (req, res) => {
+    
     const teams = require('./models/global.js').teams;
     res.json(teams);
 });
@@ -46,29 +54,34 @@ app.get('/getPositions', (req, res) => {
  * @description - express route that loads team data for team page
  */
 app.post('/loadTeam', async (req, res) => {
-    // const teams = require('./models/teams');
-    // console.log(req.body);
-
-    // let teamNameLocationData = jsonQuery('conferences[**][divisions][**][teams][name=' + req.body.teamId + ']', {data: teams}).value;
-    
-    // console.log('finalData: ', teamNameLocationData);
-
-    // let teamInfo = await convertor.initTeam(req.body.teamId);
-
-    // teamInfo.mascot = teamNameLocationData.name;
-    // teamInfo.location = teamNameLocationData.location;
-    // TODO this is only a quick fix
-    const TeamModel = require('./models/teamModel');
-    let team = new TeamModel(req.body.teamId);
-    console.log(team);
-    res.json(team)
+    const teamModel = require('./models/teamModel');
+    const team = await teamModel(req.body.teamId, db);
+    await res.json(team);
 });
 
-app.post('/loadPlayer', (req, res) => {
+app.get('/loadPlayer', (req, res) => {
     console.log(req);
 });
 
+app.post('/loadPosition', async (req, res) => {
+    let getPostionDataPromises = globals.teams.map(team => {
+        new Promise(function (resolve, reject) {
+            db.collection(team).find({}).toArray((err, res) => {
+                if (err) {
+                    throw (err);
+                }
+                resolve(res);
+            });
+        });
+        Promise.all(getPostionDataPromises).then((responses) => {
+            console.log(responses);
+        });
+    });
+ req.body.position
+})
+
 const port = process.env.PORT || 4000;
+
 app.listen(port, ()=> {
     console.log('listening on ' + port);
 });

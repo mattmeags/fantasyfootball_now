@@ -16,9 +16,10 @@ module.exports = {
       //const collection = client.db("ffNow").collection("test");
       _client = db;
       _db = db.db("ffNow");
-      console.log(callback);
       if (callback) {
         return callback();
+      } else {
+        return;
       }
     });  
   },
