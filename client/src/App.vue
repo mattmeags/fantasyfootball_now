@@ -14,14 +14,14 @@
 
 <script>
 import Header from '@/components/header/Header.vue';
-import Menu from '@/components/header/Menu.vue';
+// import Menu from '@/components/header/Menu.vue';
 import Navigation from '@/components/global/Navigation.vue';
 
 export default {
   name: 'app',
   components: {
     Header,
-    Menu,
+    // Menu,
     Navigation
   },
 };

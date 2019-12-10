@@ -2,7 +2,7 @@
 
 const baseUrl = 'http://localhost:4000/';
 
-module.exports = {
+export default {
   loadAllTeamsUrl: `${baseUrl}getTeams`,
   loadSingleTeamUrl: `${baseUrl}loadTeam`,
   loadPositinsUrl: `${baseUrl}getPositions`,

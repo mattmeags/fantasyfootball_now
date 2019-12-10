@@ -22,12 +22,14 @@
                 <li v-for="position in positions" v-bind:key="position"><router-link v-bind:to="'/' + position">{{position}}</router-link></li>
             </ul>
         </div>
+        <span v-for="team in teams" v-bind:key="team">{{team}}</span>
     </nav>
     
 </template>
 
 <script>
-const paths = require('../../assets/scripts/paths.js');
+
+import {mapState, mapActions} from 'vuex';
 
 export default {
     name: 'Navigation',
@@ -40,44 +42,45 @@ export default {
         deepTeamHighlight: false,
         showPositionNav: false,
         deepPositionHighlight: false,
-        teams: [],
-        positions: [],
         selected: ''
-  }),
-  methods: {
-      toggleDeepNav: function(cat) {
-          if (cat === 'team') {
-              this.showTeamNav = !this.showTeamNav;
-              this.showTeamText = false;
-              this.deepTeamHighlight = !this.deepTeamHighlight;
-              this.deepPositionHighlight = false;
-              this.showPositionNav = false;
-          }
-          if (cat === 'position') {
-              this.showPositionNav = !this.showPositionNav;
-              this.showPositionText = false;
-              this.deepPositionHighlight = !this.deepPositionHighlight;
-              this.deepTeamHighlight = false;
-              this.showTeamNav = false;
-          }
-      }
-  },
-  mounted() {
-      this.selected = this.$route.name;
-  },
-   // get navigation and search suggestions data
-  created() {
-    fetch(paths.loadAllTeamsUrl)
-      .then(response => response.json())
-      .then((result) => {
-        this.teams = result;
-      });
-      fetch(paths.loadPositinsUrl)
-        .then(response => response.json())
-        .then(result => {
-            this.positions = result;
-        });
-  },
+    }),
+    methods: {
+        toggleDeepNav: function(cat) {
+            if (cat === 'team') {
+                this.showTeamNav = !this.showTeamNav;
+                this.showTeamText = false;
+                this.deepTeamHighlight = !this.deepTeamHighlight;
+                this.deepPositionHighlight = false;
+                this.showPositionNav = false;
+            }
+            if (cat === 'position') {
+                this.showPositionNav = !this.showPositionNav;
+                this.showPositionText = false;
+                this.deepPositionHighlight = !this.deepPositionHighlight;
+                this.deepTeamHighlight = false;
+                this.showTeamNav = false;
+            }
+        },
+        ...mapActions({
+            getNavigationItems: 'getNavigationItems'
+        })
+    },
+    computed: {
+        ...mapState({
+            teams: 'teams',
+            positions: 'positions',
+            test: 'test'
+        }),
+    },
+    mounted() {
+        this.selected = this.$route.name;
+    },
+    // get navigation and search suggestions data
+    created() {
+        if (this.teams.length === 0 || this.positions.length === 0) {
+            this.getNavigationItems();
+        }
+    },
 }
 </script>
 

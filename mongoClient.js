@@ -8,12 +8,10 @@ module.exports = {
   createConnection: function(callback) {
     client.connect((err, db) => {
     
-      // perform actions on the collection object
       if (err) {
         throw err;
       }
-      console.log(db);
-      //const collection = client.db("ffNow").collection("test");
+
       _client = db;
       _db = db.db("ffNow");
       if (callback) {

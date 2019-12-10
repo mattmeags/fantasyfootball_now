@@ -4,7 +4,7 @@
             <eva-icon name="menu" v-on:click.native="menuClick"></eva-icon>
         </div>
 
-        <Menu v-bind:teams='headerData.conferences' v-bind:showNav='showMenu'></Menu>
+        <!--<Menu v-bind:teams='headerData.conferences' v-bind:showNav='showMenu'></Menu>-->
         <h1 v-on:click='menuClick'>This is the header</h1>
         <!--<Search v-bind:teams='headerData.conferences'></Search>-->
     </header>

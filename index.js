@@ -54,6 +54,8 @@ app.get('/getPositions', (req, res) => {
  * @description - express route that loads team data for team page
  */
 app.post('/loadTeam', async (req, res) => {
+    console.log('load team');
+    console.log(req.body);
     const teamModel = require('./models/teamModel');
     const team = await teamModel(req.body.teamId, db);
     await res.json(team);

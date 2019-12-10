@@ -2,6 +2,8 @@
     <div class="container" v-if="childDataLoaded">
     <Banner v-bind:name="$route.params.team" v-bind:location="team.location"></Banner>
       <!--{{team}}-->
+    {{teamData}}
+
     {{team.passing}}
      api team: 
      rushRec {
@@ -76,9 +78,8 @@ import Banner from '@/components/layout/Banner.vue';
 import ChartFilter from '@/components/data/ChartFilter.vue';
 import StandardDataObject from '../../src/assets/scripts/dataObjects.js';
 import TileHeader from '@/components/layout/TileHeader.vue';
-
-const paths = require('../assets/scripts/paths');
-
+import paths from '../assets/scripts/paths';
+import {mapState, mapActions} from 'vuex';
 
 export default {
     //TODO get filters working correctly
@@ -119,9 +120,15 @@ export default {
     computed: {
         receivingTargetsLabel: function() {
             return this.receivingTargetsData.labels;
-        }
+        },
+        ...mapState({
+            teamData: 'teamData'
+        })
     },
     methods: {
+        ...mapActions({
+            getTeamData: 'getTeamData'
+        }),
         /**
         * @function loadTeamData
         * @param {string} teamMascot
@@ -135,11 +142,16 @@ export default {
             try {
                 self.team = response.data;
                 console.log('response: ', response.data);
-                this.rushingAttemptsData = this.getDonutSplit('rb','rushingAttempts');
-                this.receivingTargetsData = this.getFilteredCompareData(this.receivingCompareSeries, 'all');
-                this.tdData = this.getFilteredStackedData(this.tdStackedSeries, 'all');
-                this.recYardsData = this.getFilteredColumnData('recYards', 'all');
-                this.rushYardsData = this.getFilteredColumnData('rushYards', 'all');
+                // this.rushingAttemptsData = this.getDonutSplit('rb','rushingAttempts');
+                // this.receivingTargetsData = this.getFilteredCompareData(this.receivingCompareSeries, 'all');
+                // this.tdData = this.getFilteredStackedData(this.tdStackedSeries, 'all');
+                // this.recYardsData = this.getFilteredColumnData('recYards', 'all');
+                // this.rushYardsData = this.getFilteredColumnData('rushYards', 'all');
+                this.rushingAttemptsData = response.data.rushingSplitData;
+                this.receivingTargetsData = response.data.receivingTargetsData;
+                this.tdData = response.data.tdData;
+                this.recYardsData = response.data.recYardsData;
+                this.rushYardsData = response.data.rushYardsData;
                 this.childDataLoaded = true;
             } catch(error) {
                 console.log(error);
@@ -152,105 +164,105 @@ export default {
         * @desc creates chartDataObject based on position a skill
         * TODO so far this works pie, see if it works for anything else;
         */
-        getDonutSplit: function(position, seriesKey) {
-            console.log('getdonutsplit');
-            let chartData = {
-                labels: [],
-                series: []
-            };
-            console.log(this.team);
-             this.team.rushRec.forEach((player) => {
-                if (player.position.toLowerCase() == position) {
-                    chartData.labels.push(player.playerName);
-                    chartData.series.push(player[seriesKey]);
-                }
-            });
-            console.log(chartData);
-            return chartData;
+        // getDonutSplit: function(position, seriesKey) {
+        //     console.log('getdonutsplit');
+        //     let chartData = {
+        //         labels: [],
+        //         series: []
+        //     };
+        //     console.log(this.team);
+        //      this.team.rushRec.forEach((player) => {
+        //         if (player.position.toLowerCase() == position) {
+        //             chartData.labels.push(player.playerName);
+        //             chartData.series.push(player[seriesKey]);
+        //         }
+        //     });
+        //     console.log(chartData);
+        //     return chartData;
 
-        },
-        getFilteredCompareData: function(seriesValues, filter) {
-            let labels = [];
-            let series = [];
-            let series2 = [];
+        // },
+        // getFilteredCompareData: function(seriesValues, filter) {
+        //     let labels = [];
+        //     let series = [];
+        //     let series2 = [];
 
-            let chartData = {
-                labels: [],
-                series: [{data: []}, {data: []}]
-            };
+        //     let chartData = {
+        //         labels: [],
+        //         series: [{data: []}, {data: []}]
+        //     };
 
-            this.team.rushRec.forEach((player) => {
-                if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
-                    if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-                            return false;
-                    }
+        //     this.team.rushRec.forEach((player) => {
+        //         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
+        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
+        //                     return false;
+        //             }
 
-                    if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-                        return false;
-                    }
-                    chartData.labels.push(player.playerName);
-                    chartData.series[0].data.push(player[seriesValues.seriesValue1]);
-                    chartData.series[1].data.push(player[seriesValues.seriesValue2]);
-                }
-            });
+        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
+        //                 return false;
+        //             }
+        //             chartData.labels.push(player.playerName);
+        //             chartData.series[0].data.push(player[seriesValues.seriesValue1]);
+        //             chartData.series[1].data.push(player[seriesValues.seriesValue2]);
+        //         }
+        //     });
 
-            return chartData;
-        },
-        getFilteredStackedData: function(seriesValues, filter) {
-            // empty data
-            seriesValues.forEach(element => {
-                element.seriesObject.data = [];
-            });
+        //     return chartData;
+        // },
+        // getFilteredStackedData: function(seriesValues, filter) {
+        //     // empty data
+        //     seriesValues.forEach(element => {
+        //         element.seriesObject.data = [];
+        //     });
 
-            let chartData = {
-                labels: [],
-                series: []
-            }
+        //     let chartData = {
+        //         labels: [],
+        //         series: []
+        //     }
 
-            this.team.rushRec.forEach((player) => {
-                if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
-                    if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-                            return false;
-                    }
-                    // if any of the values are greater than 0 push all values required
-                    seriesValues.forEach(element => {
-                        if (player[element.seriesName] > 0) {
-                            chartData.labels.push(player.playerName);
-                            seriesValues.forEach(element2 => {
-                                element2.seriesObject.data.push(player[element2.seriesName]);
-                            });
-                            return;
-                        }
-                    });
-                }
-            });
-            seriesValues.forEach(element => {
-                chartData.series.push(element.seriesObject);
-            });
+        //     this.team.rushRec.forEach((player) => {
+        //         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
+        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
+        //                     return false;
+        //             }
+        //             // if any of the values are greater than 0 push all values required
+        //             seriesValues.forEach(element => {
+        //                 if (player[element.seriesName] > 0) {
+        //                     chartData.labels.push(player.playerName);
+        //                     seriesValues.forEach(element2 => {
+        //                         element2.seriesObject.data.push(player[element2.seriesName]);
+        //                     });
+        //                     return;
+        //                 }
+        //             });
+        //         }
+        //     });
+        //     seriesValues.forEach(element => {
+        //         chartData.series.push(element.seriesObject);
+        //     });
 
-            return chartData
-        },
-        getFilteredColumnData: function(seriesKey, filter) {
-            let chartData = {
-                labels: [],
-                series: [{name: seriesKey, data: []}]
-            }
+        //     return chartData
+        // },
+        // getFilteredColumnData: function(seriesKey, filter) {
+        //     let chartData = {
+        //         labels: [],
+        //         series: [{name: seriesKey, data: []}]
+        //     }
 
-            this.team.rushRec.forEach(player => {
-                if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
-                    if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-                            return false;
-                    }
+        //     this.team.rushRec.forEach(player => {
+        //         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
+        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
+        //                     return false;
+        //             }
 
-                    if (player[seriesKey] > 0) {
-                        chartData.labels.push(player.playerName);
-                        chartData.series[0].data.push(player[seriesKey]);
-                    }
-                }
-            });
+        //             if (player[seriesKey] > 0) {
+        //                 chartData.labels.push(player.playerName);
+        //                 chartData.series[0].data.push(player[seriesKey]);
+        //             }
+        //         }
+        //     });
 
-            return chartData;
-        },
+        //     return chartData;
+        // },
 
         //Comes from v-on:filterChange
         updateRecChartWithFilter: function(selected) {
@@ -271,12 +283,13 @@ export default {
     beforeRouteUpdate(to, from, next) {
         console.log(to);
         console.log(from);
-        this.loadTeamData(to.params.team);
+        //this.loadTeamData(to.params.team);
         next();
     },
     created() {
         this.loadTeamData(this.$route.params.team);
         console.log('route object: ', this.$route);
+       //this.getTeamData(this.$route.params.team);
     }
 };
 </script>
