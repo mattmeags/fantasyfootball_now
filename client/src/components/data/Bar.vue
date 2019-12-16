@@ -1,5 +1,5 @@
 <template>
-    <div class="chart">
+    <div class="chart">afsadfsad {{isHorizontal}}
         <apexchart type=bar height=350 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
@@ -8,7 +8,7 @@
 const util = require('../../assets/scripts/utilities');
 export default {
     name: 'Bar',
-    props: ['labels', 'values'],
+    props: ['labels', 'values', 'isHorizontal'],
     computed: {
         series() {
             return this.values;
@@ -28,7 +28,8 @@ export default {
                 plotOptions: {
                     bar: {
                         columnWidth: '35%',
-                        distributed: true
+                        distributed: true,
+                        horizontal: this.isHorizontal
                     }
                 },
                 dataLabels: {

@@ -1,10 +1,7 @@
-const jsonQuery = require('json-query');
 const globals = require('./global');
-const rootPath = '../data_files/json/';
-const extension = '.js';
+const averages = require('./averages');
 
-
-function TeamModel (team, teamData) {
+function TeamModel (team, teamData, avgs) {
     this.teamName = team;
     //TODO: leave these for now while in dev but may not need all of them in long run
     this.rushRec = teamData.rushRec;
@@ -38,10 +35,11 @@ function TeamModel (team, teamData) {
         }
     ]
     this.rushingSplitData = getRushSplit(this.rushRec);
-    this.receivingTargetsData = getCompareData(receivingCompareSeries, this.rushRec);
-    this.tdData = getStackedData(tdStackedSeries, this.rushRec);
-    this.recYardsData = getColumnData('recYards', this.rushRec);
-    this.rushYardsData = getColumnData('rushYards', this.rushRec);
+    this.receivingTargetsData = getGroupedColumnData(receivingCompareSeries, this.rushRec);
+    this.tdData = getStackedColumnData(tdStackedSeries, this.rushRec);
+    this.recYardsData = getColumnPlayerData('recYards', this.rushRec);
+    this.rushYardsData = getColumnPlayerData('rushYards', this.rushRec);
+    this.totalRushYardsAgainstData = new BarData(['Rushing Yards Against', 'Average Rushing Yards Against'], [this.teamDefense.rushingYardsAgainst, avgs.rushAgainst], true);
 }
 
 
@@ -69,7 +67,7 @@ function getRushSplit(playerData) {
 
 }
 
-function getCompareData(seriesValues, playerData) {
+function getGroupedColumnData(seriesValues, playerData) {
     let chartData = {
         labels: [],
         series: [{data: []}, {data: []}]
@@ -93,7 +91,7 @@ function getCompareData(seriesValues, playerData) {
     return chartData;
 }
 
-function getStackedData(seriesValues, playerData) {
+function getStackedColumnData(seriesValues, playerData) {
     // empty data
     seriesValues.forEach(element => {
         element.seriesObject.data = [];
@@ -129,10 +127,11 @@ function getStackedData(seriesValues, playerData) {
     return chartData
 }
 
-function getColumnData(seriesKey, playerData) {
+function getColumnPlayerData(seriesKey, playerData, horizontal = false) {
     let chartData = {
         labels: [],
-        series: [{name: seriesKey, data: []}]
+        series: [{name: seriesKey, data: []}],
+        isHorizontal: horizontal
     }
 
     playerData.forEach(player => {
@@ -151,14 +150,30 @@ function getColumnData(seriesKey, playerData) {
     return chartData;
 }
 
+function BarData(labels, data, horizontal) {
+    this.labels = labels;
+    this.series = data;
+    this.isHorizontal = horizontal;
+}
+
 async function init(team, db) {
-    const teamName  = team.replace(team.charAt(0), team.charAt(0).toLowerCase());
-    const fullTeamName = globals.fullTeams[globals.teams.indexOf(teamName)];
-    const rushRechData = await db.collection(teamName).find({}).toArray();
-    const wholeTeamData = await db.collection('all').find({'name': fullTeamName}).toArray();
-    const fullTeamData = await Object.assign(rushRechData[0], wholeTeamData[0]);
     
-    return new TeamModel(fullTeamName, fullTeamData);
+    //const teamName  = team.replace(team.charAt(0), team.charAt(0).toLowerCase());
+    const fullTeamName = globals.fullTeams[globals.teams.indexOf(team)];
+    const rushRecData = await db.collection(team).find({}).toArray();
+    console.log(fullTeamName);
+    const wholeTeamData = await db.collection('all').find({
+        defense: {'name': fullTeamName}
+    }).toArray();
+    // await wholeTeamData.forEach(element => {
+
+    // });
+    console.log(wholeTeamData);
+    const fullTeamData = await Object.assign(rushRecData[0], wholeTeamData[0]);
+    const avgs = {
+        rushAgainst: await averages.getAvgRushAgainst()
+    }
+    return new TeamModel(fullTeamName, fullTeamData, avgs);
 }
 
 module.exports = init;

@@ -48,6 +48,7 @@ async function addCollections() {
             }).then(() => {
                 db.collection(team).insertMany(teamCollection, function(err, res) {
                     if (err) {
+                        console.log('error here');
                         throw (err);
                     }
                     resolve(res);

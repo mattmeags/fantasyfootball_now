@@ -65,6 +65,10 @@
                 <Bar v-bind:labels="rushYardsData.labels" v-bind:values="rushYardsData.series"></Bar>
             </div>
         </div>
+        jas;kjfkasjf;kj;lkdas
+        {{rushYardsAgainstData.labels}}
+        {{rushYardsAgainstData.series}}
+        <Bar v-bind:labels="rushYardsAgainstData.labels" v-bind:values="rushYardsAgainstData.series" v-bind:isHorizontal="rushYardsAgainstData.isHorizontal"></Bar>
     </div>
 </template>
 
@@ -152,6 +156,7 @@ export default {
                 this.tdData = response.data.tdData;
                 this.recYardsData = response.data.recYardsData;
                 this.rushYardsData = response.data.rushYardsData;
+                this.rushYardsAgainstData = response.data.totalRushYardsAgainstData;
                 this.childDataLoaded = true;
             } catch(error) {
                 console.log(error);

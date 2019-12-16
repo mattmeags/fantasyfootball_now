@@ -155,6 +155,7 @@ module.exports = {
         'netYardsAgainstPerPassAttempt',
         'passingFirstDownsAgainst',
         'rushingAttemptsAgainst',
+        'rushingYardsAgainst',
         'rushingTDsAgainst',
         'rushingYardsPerAttemptAgainst',
         'rushingFirstDownsAgainst',
