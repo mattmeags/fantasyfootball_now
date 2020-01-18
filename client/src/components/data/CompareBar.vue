@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const util = require('../../assets/scripts/utilities');
+import util from '../../assets/scripts/utilities';
 
 export default {
   name: 'CompareBar',

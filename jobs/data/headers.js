@@ -25,6 +25,7 @@ module.exports = {
         'recPerGame',
         'recYardsPerGame',
         'completionPercentage',
+        'receivingYardsPerTarget',
         'totalTouches',
         'yardsPerTouch',
         'yardsFromScrimage',

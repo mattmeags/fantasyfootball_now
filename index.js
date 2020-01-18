@@ -1,11 +1,10 @@
 const express = require('express'),
       cors = require('cors'),
       morgan = require('morgan'),
-      bodyParser = require('body-parser'),
-      jsonQuery = require('json-query'),
-      convertor = require('./convertor');
+      bodyParser = require('body-parser');
 const mongodbClient = require('./mongoClient');
 const globals = require('./models/global');
+const mongoQueries = require('./scripts/mongoQueries');
 
 let db;
 
@@ -62,24 +61,67 @@ app.post('/loadTeam', async (req, res) => {
 });
 
 app.get('/loadPlayer', (req, res) => {
-    console.log(req);
+    console.log(req.body.position);
 });
 
-app.post('/loadPosition', async (req, res) => {
-    let getPostionDataPromises = globals.teams.map(team => {
-        new Promise(function (resolve, reject) {
-            db.collection(team).find({}).toArray((err, res) => {
-                if (err) {
-                    throw (err);
-                }
-                resolve(res);
-            });
+//TODO: can we make these one call? repeating alot of stuff
+app.post('/filterGroupedColumnData', async (req, res) => {
+    const getGroupedColumnData = require('./models/data/groupColData');
+    const teamData = await getFullTeam(req.body.team, db);
+    const filteredGroupedColumnData = await getGroupedColumnData(req.body.seriesValues, teamData[0].rushRec, req.body.filter)
+    let result = {};
+    result[req.body.updateState] = await filteredGroupedColumnData;
+    await res.json(result);
+});
+
+app.post('/filterStackedColumnData', async (req, res) => {
+    const getStackedColumnData = require('./models/data/stackedColData');
+    const teamData = await mongoQueries.getFullTeam(req.body.team, db);
+    const filteredStackedColumnData = await getStackedColumnData(req.body.seriesValues, teamData[0].rushRec, req.body.filter);
+    let result = {};
+    result[req.body.updateState] = await filteredStackedColumnData;
+    await res.json(result);
+});
+
+app.post('/filterColumnData', async (req, res) => {
+    const getColumnPlayerData = require('./models/data/getColumnPlayerData');
+    const teamData = await mongoQueries.getFullTeam(req.body.team, db);
+    const filteredColumnData = await getColumnPlayerData(req.body.seriesValues, teamData[0].rushRec, req.body.filter);
+    let result = {};
+    result[req.body.updateState] = await filteredColumnData;
+    await res.json(result);
+});
+
+app.post('/loadPositions', async (req, res) => {
+    const position = req.body.position;
+    if (position === 'Running Back') {
+        const RBModel = require('./models/positions/runningback');
+        const rushingData = await RBModel(db);
+        await res.json( {
+            header: globals.rbTableHeader,
+            position: rushingData
         });
-        Promise.all(getPostionDataPromises).then((responses) => {
-            console.log(responses);
+    } else if (position === 'Quarterback') {
+        const QBModel = require('./models/positions/quarterback');
+        const passingData = await QBModel(db);
+        await res.json({
+           header: globals.qbTableHeader, 
+           position: passingData
         });
-    });
- req.body.position
+    } else if (position === 'Wide Receiver' || position === 'Tight End') {
+        const ReceivingModel = require('./models/positions/receiver');
+        let receivingData;
+        if (position === 'Wide Receiver') {
+            receivingData = await ReceivingModel(db, 'wr');
+        } else {
+            receivingData = await ReceivingModel(db, 'te');
+        }
+        await res.json({
+            header: globals.receivingTableHeader,
+            position: receivingData
+        });
+    }
+    console.log(req.body.position);
 })
 
 const port = process.env.PORT || 4000;

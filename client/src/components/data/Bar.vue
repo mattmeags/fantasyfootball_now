@@ -1,14 +1,14 @@
 <template>
-    <div class="chart">afsadfsad {{isHorizontal}}
+    <div class="chart">
         <apexchart type=bar height=350 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
 
 <script>
-const util = require('../../assets/scripts/utilities');
+import util from '../../assets/scripts/utilities';
 export default {
     name: 'Bar',
-    props: ['labels', 'values', 'isHorizontal'],
+    props: ['labels', 'values', 'isHorizontal', 'trimLabels'],
     computed: {
         series() {
             return this.values;
@@ -37,7 +37,7 @@ export default {
                 },
 
                 xaxis: {
-                    categories: util.trimNames(this.labels),
+                    categories: this.trimLabels ? util.trimNames(this.labels) : this.labels,
                     // labels: {
                     //     style: {
                     //         //colors: colors,

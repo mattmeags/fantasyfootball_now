@@ -13,23 +13,41 @@ async function addCollections() {
     const rushDefense = require('../data_files/json/all/rushDefense');
     const rushOffense = require('../data_files/json/all/rushOffense');
     const passOffense = require('../data_files/json/all/passOffense');
-    let allCollection = [];
-    allCollection.push(
-        {
-            defense: defense,
-            offense: offense,
-            passDefense: passDefense,
-            rushDefense: rushDefense,
-            rushOffense, rushOffense,
-            passOffense: passOffense
-        }
-    );
-    db.collection('all').drop()
-    db.collection('all').insertMany(allCollection, function(err, res) {
-        if (err) {
-            console.log('line 23');
-            throw (err);
-          }
+    let allCollection = {
+        allDefense: defense,
+        allOffense: offense,
+        allPassDefense: passDefense,
+        allRushDefense: rushDefense,
+        allRushOffense: rushOffense,
+        allPassOffense: passOffense
+    };
+    // db.collection('all').drop();
+    // db.collection('all').insertMany(allCollection, function(err, res) {
+    //     if (err) {
+    //         console.log('line 23');
+    //         throw (err);
+    //       }
+    // });
+    // db.collection('allDefense').insertMany(defense, function(err, res) {
+    //     if (err) {
+    //         throw (err);
+    //     }
+    // });
+
+    let allCollectionPromises = Object.keys(allCollection).map((key) => {
+        return new Promise(function(resolve, reject) {
+            new Promise(function(resolve, reject) {
+                db.collection(key).drop();
+                resolve();
+            }).then(() => {
+                db.collection(key).insertMany(allCollection[key], function(err, res) {
+                    if (err) {
+                        throw (err);
+                    }
+                    resolve(res);
+                });
+            });
+        });
     });
 
     let addCollectionPromises = globals.teams.map(team => {
@@ -57,7 +75,9 @@ async function addCollections() {
         }); 
     });
 
-    Promise.all(addCollectionPromises).then(() => {
+    let collectionPromises = allCollectionPromises.concat(addCollectionPromises);
+
+    Promise.all(collectionPromises).then(() => {
         console.log('done');
         mongoClient.closeConnection();
     });

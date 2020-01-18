@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const utilities = require('../../assets/scripts/utilities');
+import utilities from '../../assets/scripts/utilities';
 
 export default {
   name: 'DonutSplit',

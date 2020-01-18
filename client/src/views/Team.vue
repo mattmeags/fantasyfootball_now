@@ -1,41 +1,17 @@
 <template>
-    <div class="container" v-if="childDataLoaded">
-    <Banner v-bind:name="$route.params.team" v-bind:location="team.location"></Banner>
-      <!--{{team}}-->
-    {{teamData}}
-
-    {{team.passing}}
-     api team: 
-     rushRec {
-         number,
-         playerNumber,
-         position,
-         gamesPlayed,
-         gamesStared
-         rushingAttempts
-         rushingYards,
-         rushTD,
-         longestRushAttempt,
-         yardsPerAttempt,
-        yardsPerGame
-        'rushAttemptsPerGame',
-    'recTargets',
-    'receptions',
-    'recYards',
-    'yardsPerRec',
-    'recTD',
-    'longestRec',
-    'recPerGame',
-    'recYardsPerGame',
-    'completionPercentage',
-    'totalTouches',
-    'yardsPerTouch',
-    'yardsFromScrimage',
-    'totalTD'
-     }
-     passing {
-         same
-     }
+    <div class="container" v-if="teamDataLoaded">{{tdFilterValues}}
+        <Banner v-bind:name="teamName" v-bind:location="team.location"></Banner>
+        <div class="row">
+            <div class="tile w-4">
+                <Bar v-bind:labels="rushYardsAgainstData.labels" v-bind:values="rushYardsAgainstData.series" v-bind:isHorizontal="rushYardsAgainstData.isHorizontal" v-bind:trimLabels="false"></Bar>
+            </div>
+            <div class="tile w-4">
+                <Bar v-bind:labels="passYardsAgainstData.labels" v-bind:values="passYardsAgainstData.series" v-bind:isHorizontal="passYardsAgainstData.isHorizontal" v-bind:trimLabels="false"></Bar>
+            </div>
+            <div class="tile w-4">    
+                <Bar v-bind:labels="offensePlaySplit.labels" v-bind:values="offensePlaySplit.series" v-bind:isHorizontal="offensePlaySplit.isHorizontal" v-bind:trimLabels="false"></Bar>
+            </div>
+        </div>
         <div class="row">
             <div class="tile w-4">
                 <TileHeader title="Rushing Split"></TileHeader>
@@ -45,30 +21,28 @@
             <div class="tile w-4">
                 <TileHeader title="Targerts & Receptions"></TileHeader>
                 <CompareBar v-bind:labels="receivingTargetsLabel" v-bind:values="receivingTargetsData.series" v-on:playerSelect="loadPlayer"></CompareBar>
-                <ChartFilter v-bind:filterValues="{receivingFilterValues}" v-on:filterChange="updateRecChartWithFilter"></ChartFilter>
+                <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRecChartWithFilter"></ChartFilter>
             </div>
             
             <div class="tile w-4">
                 <TileHeader title="Touchdown Count"></TileHeader>
                 <!--TODO check baltimore when loaded for QB rushes-->
                 <StackedBar v-bind:labels="tdData.labels" v-bind:values="tdData.series" v-on:playerSelect="loadPlayer"></StackedBar>
-                <ChartFilter v-bind:filterValues="{receivingFilterValues}" v-on:filterChange="updateTDChartWithFilter"></ChartFilter>
+                <ChartFilter v-bind:filterValues="tdFilterValues" v-on:filterChange="updateTDChartWithFilter"></ChartFilter>
             </div>
         </div>
         <div class="row">
             <div class="tile w-6">
                 <TileHeader title="Receiving Yards"></TileHeader>
-                <Bar v-bind:labels="recYardsData.labels" v-bind:values="recYardsData.series"></Bar>
+                <Bar v-bind:labels="recYardsData.labels" v-bind:values="recYardsData.series" v-bind:trimLabels="true"></Bar>
+                <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRecYardsChartWithFilter"></ChartFilter>
             </div>
             <div class="tile w-6">
-                <TileHeader title="Rushing Yeards"></TileHeader>
-                <Bar v-bind:labels="rushYardsData.labels" v-bind:values="rushYardsData.series"></Bar>
+                <TileHeader title="Rushing Yards"></TileHeader>
+                <Bar v-bind:labels="rushYardsData.labels" v-bind:values="rushYardsData.series" v-bind:trimLabels="true"></Bar>
+                <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRushYardsChartWithFilter"></ChartFilter>
             </div>
         </div>
-        jas;kjfkasjf;kj;lkdas
-        {{rushYardsAgainstData.labels}}
-        {{rushYardsAgainstData.series}}
-        <Bar v-bind:labels="rushYardsAgainstData.labels" v-bind:values="rushYardsAgainstData.series" v-bind:isHorizontal="rushYardsAgainstData.isHorizontal"></Bar>
     </div>
 </template>
 
@@ -98,14 +72,10 @@ export default {
         TileHeader
     },
     data: () => ({
+        teamMascot: '',
         team: {},
-        rushingAttemptsData: {},
-        receivingTargetsData: {},
-        tdData : {},
-        recYardsData: {},
-        rushYardsData: {},
-        childDataLoaded: false,
         receivingFilterValues:['wr', 'te', 'rb'],
+        tdFilterValues:['wr', 'te', 'rb', 'qb'],
         receivingCompareSeries: {
             seriesValue1: 'recTargets',
             seriesValue2: 'receptions'
@@ -119,168 +89,82 @@ export default {
                 seriesName: 'recTD',
                 seriesObject: {name: 'Receiving Touchdown', data: []}
             }
-        ]
+        ],
+        filterStackApi: 'filterStackedColumnData',
+        filterGroupedApi: 'filterGroupedColumnData',
+        filterColumnApi: 'filterColumnData'
     }),
     computed: {
         receivingTargetsLabel: function() {
             return this.receivingTargetsData.labels;
         },
         ...mapState({
-            teamData: 'teamData'
+            rushingAttemptsData: 'rushingSplitData',
+            tdData: 'tdData',
+            recYardsData: 'recYardsData',
+            rushYardsData: 'rushYardsData',
+            rushYardsAgainstData: 'totalRushYardsAgainstData',
+            passYardsAgainstData: 'totalPassYardsAgainstData',
+            offensePlaySplit: 'offensePlaySplit',
+            teamDataLoaded: 'teamDataLoaded',
+            receivingTargetsData: 'receivingTargetsData',
+            teamName: 'teamName'
         })
     },
     methods: {
         ...mapActions({
-            getTeamData: 'getTeamData'
+            getTeamData: 'getTeamData',
+            filterCharts: 'filterCharts'
         }),
-        /**
-        * @function loadTeamData
-        * @param {string} teamMascot
-        * @desc uses mascot name from route to get to assign team data 
-        */
-        loadTeamData: async function(teamMascot) {
-            let self = this;
-            let response = await axios.post(paths.loadSingleTeamUrl, {
-                teamId: teamMascot
-            });
-            try {
-                self.team = response.data;
-                console.log('response: ', response.data);
-                // this.rushingAttemptsData = this.getDonutSplit('rb','rushingAttempts');
-                // this.receivingTargetsData = this.getFilteredCompareData(this.receivingCompareSeries, 'all');
-                // this.tdData = this.getFilteredStackedData(this.tdStackedSeries, 'all');
-                // this.recYardsData = this.getFilteredColumnData('recYards', 'all');
-                // this.rushYardsData = this.getFilteredColumnData('rushYards', 'all');
-                this.rushingAttemptsData = response.data.rushingSplitData;
-                this.receivingTargetsData = response.data.receivingTargetsData;
-                this.tdData = response.data.tdData;
-                this.recYardsData = response.data.recYardsData;
-                this.rushYardsData = response.data.rushYardsData;
-                this.rushYardsAgainstData = response.data.totalRushYardsAgainstData;
-                this.childDataLoaded = true;
-            } catch(error) {
-                console.log(error);
-            }
-        },
-        /**TODO fix comment
-        * TODO posibily make constructor
-        * @function getDonutSplit
-        * @params {string} position
-        * @desc creates chartDataObject based on position a skill
-        * TODO so far this works pie, see if it works for anything else;
-        */
-        // getDonutSplit: function(position, seriesKey) {
-        //     console.log('getdonutsplit');
-        //     let chartData = {
-        //         labels: [],
-        //         series: []
-        //     };
-        //     console.log(this.team);
-        //      this.team.rushRec.forEach((player) => {
-        //         if (player.position.toLowerCase() == position) {
-        //             chartData.labels.push(player.playerName);
-        //             chartData.series.push(player[seriesKey]);
-        //         }
-        //     });
-        //     console.log(chartData);
-        //     return chartData;
-
-        // },
-        // getFilteredCompareData: function(seriesValues, filter) {
-        //     let labels = [];
-        //     let series = [];
-        //     let series2 = [];
-
-        //     let chartData = {
-        //         labels: [],
-        //         series: [{data: []}, {data: []}]
-        //     };
-
-        //     this.team.rushRec.forEach((player) => {
-        //         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
-        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-        //                     return false;
-        //             }
-
-        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-        //                 return false;
-        //             }
-        //             chartData.labels.push(player.playerName);
-        //             chartData.series[0].data.push(player[seriesValues.seriesValue1]);
-        //             chartData.series[1].data.push(player[seriesValues.seriesValue2]);
-        //         }
-        //     });
-
-        //     return chartData;
-        // },
-        // getFilteredStackedData: function(seriesValues, filter) {
-        //     // empty data
-        //     seriesValues.forEach(element => {
-        //         element.seriesObject.data = [];
-        //     });
-
-        //     let chartData = {
-        //         labels: [],
-        //         series: []
-        //     }
-
-        //     this.team.rushRec.forEach((player) => {
-        //         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
-        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-        //                     return false;
-        //             }
-        //             // if any of the values are greater than 0 push all values required
-        //             seriesValues.forEach(element => {
-        //                 if (player[element.seriesName] > 0) {
-        //                     chartData.labels.push(player.playerName);
-        //                     seriesValues.forEach(element2 => {
-        //                         element2.seriesObject.data.push(player[element2.seriesName]);
-        //                     });
-        //                     return;
-        //                 }
-        //             });
-        //         }
-        //     });
-        //     seriesValues.forEach(element => {
-        //         chartData.series.push(element.seriesObject);
-        //     });
-
-        //     return chartData
-        // },
-        // getFilteredColumnData: function(seriesKey, filter) {
-        //     let chartData = {
-        //         labels: [],
-        //         series: [{name: seriesKey, data: []}]
-        //     }
-
-        //     this.team.rushRec.forEach(player => {
-        //         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
-        //             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
-        //                     return false;
-        //             }
-
-        //             if (player[seriesKey] > 0) {
-        //                 chartData.labels.push(player.playerName);
-        //                 chartData.series[0].data.push(player[seriesKey]);
-        //             }
-        //         }
-        //     });
-
-        //     return chartData;
-        // },
-
         //Comes from v-on:filterChange
+        //TODO: after phase 1 see if you need to pass the series or can just make local to model and can update the team model as well
         updateRecChartWithFilter: function(selected) {
-            this.receivingTargetsData = this.getFilteredCompareData(this.receivingCompareSeries, selected);
+            console.log(this.teamMascot);
+            const payload = {
+                teamMascot: this.teamMascot,
+                seriesValues: this.receivingCompareSeries,
+                filter: selected,
+                api: this.filterGroupedApi,
+                updateState: 'receivingTargetsData'
+            }
+            //this.receivingTargetsData = this.getFilteredCompareData(this.receivingCompareSeries, selected);
+            this.filterCharts(payload);
         },
         updateTDChartWithFilter: function(selected) {
-            this.tdData = this.getFilteredStackedData(this.tdStackedSeries, selected);
+            //this.tdData = this.getFilteredStackedData(this.tdStackedSeries, selected);
+             const payload = {
+                teamMascot: this.teamMascot,
+                seriesValues: this.tdStackedSeries,
+                filter: selected,
+                api: this.filterStackApi,
+                updateState: 'tdData'
+            }
+             this.filterCharts(payload);
         },
+        updateRushYardsChartWithFilter: function(selected) {
+            const payload = {
+                teamMascot: this.teamMascot,
+                seriesValues: 'rushYards',
+                filter: selected,
+                api: this.filterColumnApi,
+                updateState: 'rushYardsData'
+            }
+             this.filterCharts(payload);
+        },
+        updateRecYardsChartWithFilter: function(selected) {
+            const payload = {
+                teamMascot: this.teamMascot,
+                seriesValues: 'recYards',
+                filter: selected,
+                api: this.filterColumnApi,
+                updateState: 'recYardsData'
+            }
+             this.filterCharts(payload);
+        },
+
+        //TODO: come back to here when doing player drill in
         loadPlayer: function (player) {
             console.log(player);
-            // this.$http.post('/loadPlayer', data, {
-            //         Player: player
-            // });
             this.$router.push('/player');
         }
     },
@@ -289,12 +173,19 @@ export default {
         console.log(to);
         console.log(from);
         //this.loadTeamData(to.params.team);
+        //this.getTeamData(this.$route.params.team);
+        this.getTeamData(this.$route.params.team);
         next();
     },
     created() {
-        this.loadTeamData(this.$route.params.team);
+        //this.loadTeamData(this.$route.params.team);
         console.log('route object: ', this.$route);
-       //this.getTeamData(this.$route.params.team);
+        //this.getTeamData(this.$route.params.team);
+    },
+    mounted() {
+        
+        this.teamMascot = this.$route.params.team;
+        this.getTeamData(this.$route.params.team);
     }
 };
 </script>

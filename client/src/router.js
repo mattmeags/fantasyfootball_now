@@ -2,8 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Team from './views/Team.vue';
-import Player from './views/Player.vue';
+import Player from './views/Player.vue'
 import StyleGuide from './views/StyleGuide.vue';
+import Position from './views/Position.vue';
 
 Vue.use(Router);
 
@@ -40,5 +41,10 @@ export default new Router({
       name: 'styleguide',
       component: StyleGuide,
     },
+    {
+      path: '/position/:position',
+      name: 'position',
+      component: Position,
+    }
   ],
 });

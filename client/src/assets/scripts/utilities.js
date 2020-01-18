@@ -17,8 +17,12 @@ const utilities = {
     */
   trimNames: (names) => {
     const namesFix = names.map(name => name.substring(0, name.indexOf('\\')));
+    console.log(namesFix);
     return namesFix;
   },
+  trimName: (name) => {
+    return name.substring(0, name.indexOf('\\'));
+  }
 };
 
-module.exports = utilities;
+export default utilities;

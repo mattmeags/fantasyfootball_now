@@ -57,7 +57,7 @@ async function initTeam(team) {
         passingFile = csvPath + team + '/passing.csv';
 
     const rushRecData = await convertCSV(rushRedFile, headers.playerHeader);
-    const passingData = await convertCSV(passingFile, headers.playerPassing);
+    const passingData = await convertCSV(passingFile, headers.playerPassing, true);
 
     await fs.outputFile(jsonPath + team + '/rushRec.js', 'module.exports = ' +  JSON.stringify(rushRecData));
     await fs.outputFile(jsonPath + team + '/passing.js', 'module.exports = ' +  JSON.stringify(passingData));  
@@ -68,7 +68,7 @@ async function initTeam(team) {
  * @param {string} csvFile - path to csv file to convert
  * @description converts csv files into json objects, returns object
  */
-async function convertCSV(csvFile, header) {
+async function convertCSV(csvFile, header, isPassing = false) {
 
     return await csvtojson({
         noheader: false,
@@ -78,7 +78,9 @@ async function convertCSV(csvFile, header) {
     .then((jsonObj) => {
         console.log('resolved');
         //remove original header
-        jsonObj.shift();
+        if (!isPassing) {
+            jsonObj.shift();
+        }
         //console.log(playerData);
         return jsonObj;
     }, onError);

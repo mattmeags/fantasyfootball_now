@@ -1,11 +1,12 @@
 <template>
     <nav>
-        <div class="nav-wrapper">
+        <div class="nav-wrapper" v-on:keyup.esc="toggleDeepNav('all')">
             <ul class="icon-nav">
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false"><router-link to="/" ><eva-icon name="home" fill="white"></eva-icon></router-link></li>
+                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false" v-on:click="toggleDeepNav('all')"><router-link to="/" ><eva-icon name="home" fill="white"></eva-icon></router-link></li>
                 <li class="nav-item" v-bind:class="[{deepSelected: deepTeamHighlight}, {'selected' : selected === 'team'}]" v-on:click="toggleDeepNav('team')" v-on:mouseover="showTeamText = true" v-on:mouseout="showTeamText = false"><eva-icon name="people" fill="white"></eva-icon></li>
                 <li class="nav-item" v-bind:class="[{deepSelected: deepPositionHighlight}, {'selected' : selected === 'position'}]" v-on:click="toggleDeepNav('position')" v-on:mouseover="showPositionText = true" v-on:mouseout="showPositionText = false"><eva-icon name="award" fill="white"></eva-icon></li>
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"  v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><router-link to=""><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>
+                <!--Phase 3 -->
+                <!--<li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"  v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><router-link to=""><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>-->
             </ul>
             <ul class="hidden-nav">
                 <li class="nav-text" v-bind:class="{active: showHomeText}">Landing</li>
@@ -19,7 +20,7 @@
             </ul>
             <ul class="hidden-position-nav" v-bind:class="{active: showPositionNav}">
                 <li class="title">Position</li>
-                <li v-for="position in positions" v-bind:key="position"><router-link v-bind:to="'/' + position">{{position}}</router-link></li>
+                <li v-for="position in positions" v-bind:key="position" v-on:click="toggleDeepNav('position')"><router-link v-bind:to="'/position/' + position">{{position}}</router-link></li>
             </ul>
         </div>
         <span v-for="team in teams" v-bind:key="team">{{team}}</span>
@@ -59,6 +60,14 @@ export default {
                 this.deepPositionHighlight = !this.deepPositionHighlight;
                 this.deepTeamHighlight = false;
                 this.showTeamNav = false;
+            }
+            //TODO: escapse should close
+            if (cat === 'all') {
+                this.showTeamNav = false
+                this.showTeamText = false;
+                this.showPositionNav = false;
+                this.showPositionText = false;
+                this.showTeamText = false;
             }
         },
         ...mapActions({
