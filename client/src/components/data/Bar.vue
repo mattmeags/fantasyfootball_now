@@ -5,10 +5,10 @@
 </template>
 
 <script>
-const util = require('../../assets/scripts/utilities');
+import util from '../../assets/scripts/utilities';
 export default {
     name: 'Bar',
-    props: ['labels', 'values'],
+    props: ['labels', 'values', 'isHorizontal', 'trimLabels'],
     computed: {
         series() {
             return this.values;
@@ -28,7 +28,8 @@ export default {
                 plotOptions: {
                     bar: {
                         columnWidth: '35%',
-                        distributed: true
+                        distributed: true,
+                        horizontal: this.isHorizontal
                     }
                 },
                 dataLabels: {
@@ -36,7 +37,7 @@ export default {
                 },
 
                 xaxis: {
-                    categories: util.trimNames(this.labels),
+                    categories: this.trimLabels ? util.trimNames(this.labels) : this.labels,
                     // labels: {
                     //     style: {
                     //         //colors: colors,

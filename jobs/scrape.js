@@ -18,6 +18,7 @@ async function initData() {
         return;
     }
     browser = await puppeteer.launch({
+        args: ["--proxy-server='direct://'", '--proxy-bypass-list=*'],
         headless: true
     });
     for (let i = 0; i < pageSelectors.length; i++) {
@@ -38,6 +39,7 @@ async function scrape(table, browser) {
     try {
 
         page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
         console.log(table)
         console.log(table.url);
         await page.goto(table.url, { waitUntil: 'domcontentloaded' });
@@ -54,10 +56,11 @@ async function scrape(table, browser) {
         const hoverSelector = table.menuSelector + ' .hasmore';
         await console.log(hoverSelector);
         //const tableMenu = await page.$('#all_team_stats .hasmore');
-        const tableMenu = await page.$(hoverSelector);
+        //const tableMenu = await page.$(hoverSelector);
 
         //console.log(tableMenu.html());
 
+        await page.waitFor(hoverSelector);
         await page.hover(hoverSelector);
 
         await page.waitFor('.drophover');
@@ -113,83 +116,112 @@ async function writeCSVFiles(data, fileName) {
     }
 }
 
+const getCreatedFolders = () => {
+    return new Promise((resolve, reject) => {
+        fs.readdir('data_files/csv/', (err, createdFolders) => {
+            if (err) {
+                reject(err);
+            } else {
+                console.log('bout to resolve');
+                resolve(createdFolders);
+            }
+        })
+    });
+}
+
 /**
  * @function parseCheck
  * @description checks that the scrape was successful and all csv files were created, and if not creates a new pageselector object of everything missing and reruns the scrape
  */
-function parseCheck () {
+async function parseCheck () {
+
     const filesPerTeamFolder = 2;
-    const teamFiles = ['passing', 'rushrec'];
+    const teamFiles = ['passing.csv', 'rushRec.csv'];
     const allFolderFiles = ['allTeamOffense', 'passingOffense', 'rushingOffense', 'allTeamDefense', 'passingDefense', 'rushingDefense'];
     //console.log(TEAMS);
     const expectedFolders = new Array('all').concat(TEAMS);
     const filesInAllFolder = 6;
-
-    fs.readdir('data_files/csv/', (err, createdFolders) => {
-        // console.log(expectedFolders);
-        // console.log(createdFolders);
-        let newPageSelectors = [];
+    let newPageSelectors = [];
+    
+    console.log('parseCheck');
+    fs.readdir('data_files/csv/', async (err, createdFolders) => {
+        console.log('READING first dir??');
         let missingItems = expectedFolders.filter(folderName => !createdFolders.includes(folderName));
         // console.log(missingItems);
 
-        console.log(missingItems);
         if (missingItems.includes('all')) {
             console.log('missing all');
             // handle all not existing
-            newPageSelectors.concat(pageselectors.getTeamRelatedData());
+            newPageSelectors = newPageSelectors.concat(pageselectors.getTeamRelatedData());
             if (missingItems.length > 1) {
                 console.log('missing all and a few moer');
                 missingItems.splice(missingItems.indexOf('all'), missingItems.indexOf('all') + 1);
-                // console.log(pageselectors.fixTeams(missingItems));
-                newPageSelectors.push(pageselectors.fixTeams(missingItems));
+                console.log(newPageSelectors.concat(pageselectors.fixTeams(missingItems)));
+                newPageSelectors = newPageSelectors.concat(pageselectors.fixTeams(missingItems));
             }
-        } else {
+        } else if (missingItems.length > 0) {
             // All folder exists, just teams missing
-            newPageSelectors.concat(pageselectors.fixTeams(missingItems));
+            const missingTeamSelectors = pageselectors.fixTeams(missingItems);
+            console.log('missingTeamSelectors: ', missingTeamSelectors);
+            newPageSelectors = newPageSelectors.concat(missingTeamSelectors);
+            console.log('new page selectors after team fix teams', newPageSelectors);
         }
-
+        let missingPassTeams = [];
+        let missingRushRecTeams = [];
         for (let i = 0; i < createdFolders.length; i++) {
-            fs.readdir('data_files/csv/' + createdFolders[i], (err, createdFiles) => {
-                if (createdFolders[i] === 'all') {
-                    if (createdFiles.length != filesInAllFolder) {
-                        let missingAllFiles = allFolderFiles.filter(fileName => !createdFiles.includes(fileName));
-                    
-                        if (!missingAllFiles.includes('allTeamOffense')) {
-                            newPageSelectors.concat(pageselectors.getAllTeamOffense());
-                        }
-                        if (!missingAllFiles.includes('passingOffense')) {
-                            newPageSelectors.concat(pageselectors.getAllPassing());
-                        }
-                        if (!missingAllFiles.includes('rushingOffense')) {
-                            newPageSelectors.concat(pageselectors.getAllRushingOffense());
-                        }
-                        if (!missingAllFiles.includes('allTeamDefense')) {
-                            newPageSelectors.concat(pageselectors.getAllTeamDefense());
-                        }
-                        if (!missingAllFiles.includes('passingDefense')) {
-                            newPageSelectors.concat(pageselectors.getAllPassingDefense());
-                        }
-                        if (!missingAllFiles.includes('rushingDefense')) {
-                            newPageSelectors.concat(pageselectors.getAllRushingDefense());
-                        }
+            let createdFiles = fs.readdirSync('data_files/csv/' + createdFolders[i]);
+            if (createdFolders[i] === 'all') {
+                if (createdFiles.length != filesInAllFolder) {
+                    let missingAllFiles = allFolderFiles.filter(fileName => !createdFiles.includes(fileName));
+                
+                    if (!missingAllFiles.includes('allTeamOffense')) {
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllTeamOffense());
                     }
-                } else {
-                    if (createdFiles.length != filesPerTeamFolder) {
-                        console.log('missing team files');
-                        let missingTeamFiles = teamFiles.filter(fileName => !createdFiles.includes(fileName));
-                        if (!missingTeamFiles.includes('passing')) {
-                            newPageSelector.concat(pageselectors.getPassing(createdFolders[i]));
-                        }
-                        if (!missingTeamFiles.includes('rushRec')) {
-                            newPageSelectors.concat(pageselectors.getPassing(createdFolders[i]));
-                        }
+                    if (!missingAllFiles.includes('passingOffense')) {
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllPassing());
+                    }
+                    if (!missingAllFiles.includes('rushingOffense')) {
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllRushingOffense());
+                    }
+                    if (!missingAllFiles.includes('allTeamDefense')) {
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllTeamDefense());
+                    }
+                    if (!missingAllFiles.includes('passingDefense')) {
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllPassingDefense());
+                    }
+                    if (!missingAllFiles.includes('rushingDefense')) {
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllRushingDefense());
                     }
                 }
-            });
+            } else {
+                if (createdFiles.length != filesPerTeamFolder) {
+                    let missingTeamFiles = teamFiles.filter(fileName => !createdFiles.includes(fileName));
+                    console.log('createdTeamFiles: ', createdFiles);
+                    console.log('missingTeamFiles: ', missingTeamFiles);
+                    if (missingTeamFiles.includes('passing.csv')) {
+                        console.log('missingPassTeam: ', createdFolders[i]);
+                        missingPassTeams.push(createdFolders[i]);
+                    }
+                    if (missingTeamFiles.includes('rushRec.csv')) {
+                        console.log('missingRushRecTeam: ', createdFolders[i]);
+                        missingRushRecTeams.push(createdFolders[i]);
+                    }
+                }
+            }
         }
-        pageSelectors = newPageSelectors;
+
+        newPageSelectors = newPageSelectors.concat(pageselectors.fixTeamsPass(missingPassTeams));
+        newPageSelectors = newPageSelectors.concat(pageselectors.fixTeamsRushRec(missingRushRecTeams));
+        
+        console.log('NEW PAGE SELECTORS: ', newPageSelectors);
+        pageSelectors = [];
+        
+        pageSelectors = pageSelectors.concat(newPageSelectors);
+        
+        console.log('PAGE SELECTORS: ', pageSelectors);Array('all').concat(TEAMS);
         initData();
     });
 }
+
 //parseCheck();
 initData();
