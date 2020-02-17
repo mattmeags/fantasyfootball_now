@@ -1,9 +1,17 @@
 <template>
-    <div>
+    <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
-                    <th v-for="head in header" v-bind:key="header.id" v-on:click="sort(head)">{{head}}</th>
+                    <th v-for="head in header" v-bind:key="header.id" v-on:click="sort(head)">
+                        <div class="d-flex">
+                            {{head}}
+                            <span v-if="head in currentSort">
+                                <eva-icon v-show="!currentSort[head]" name="arrow-ios-downward-outline" fill="#29CB97"></eva-icon>
+                                <eva-icon v-show="currentSort[head]" name="arrow-ios-upward-outline" fill="#29CB97"></eva-icon>
+                            </span>
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -28,8 +36,10 @@
         methods: {
             sort(head) {
                 const index = this.header.indexOf(head);
-                console.log(index);
-                console.log(this.currentSort);
+                // Set currentSort to empty if new sort
+                if (!(head in this.currentSort)) {
+                    this.currentSort = {};
+                }
                 if (!head in this.currentSort !== head && !this.currentSort[head]) {
                     this.currentSort[head] = true;
                     this.tableData.sort((a, b) => {
@@ -79,5 +89,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../assets/styles/styles.scss';
+    @import '../../assets/styles/tables';
 </style>

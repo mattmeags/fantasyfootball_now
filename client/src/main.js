@@ -27,8 +27,27 @@ Vue.config.productionTip = false;
 
 Vue.component('apexchart', VueApexCharts);
 
-new Vue({
+const app = new Vue({
+  data: { loading: false },
   router,
   store,
   render(h) { return h(App); },
 }).$mount('#app');
+console.log('you');
+console.log(router);
+
+// //Router hooks to support loading
+// router.beforeEach((to, from, next) => {
+//   console.log('before..');
+//   app.loading = true;
+//   next();
+// });
+
+// router.afterEach((to, from, next) => {
+//   console.log('after..')
+//   setTimeout(() => app.loading = false, 1500);
+
+// });
+
+
+

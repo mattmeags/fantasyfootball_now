@@ -1,15 +1,17 @@
 <template>
     <div class="chart">
-        <apexchart type="bar" height=350 :series="series" :options="chartOptions"></apexchart>
+        <apexchart type="bar" height=266 :series="series" :options="chartOptions"></apexchart>
     </div>
 </template>
 
 <script>
-import util from '../../assets/scripts/utilities';
+//TODO: fix indent
+import {trimNames} from '../../assets/scripts/utilities';
+import chartProperties from '../../assets/scripts/chartProperties';
 
 export default {
   name: 'CompareBar',
-  props: ['labels', 'values'],
+  props: ['labels', 'values', 'colors'],
 
   // using computed over data so its reactive and updates when the props do
   computed: {
@@ -36,18 +38,52 @@ export default {
           },
         },
         xaxis: {
-          categories: util.trimNames(this.labels),
+          categories: trimNames(this.labels),
+          labels: {
+              style: {
+                  fontSize: chartProperties.labelsFontSizeSmall,
+                  fontFamily: chartProperties.fontFamily,
+                  colors: chartProperties.labelsColor
+              }
+          }
+        },
+        yaxis: {
+          labels: {
+              style: {
+                  fontSize: chartProperties.labelsFontSizeSmall,
+                  fontFamily: chartProperties.fontFamily,
+                  colors: chartProperties.labelsColor
+              }
+          }
+        },
+        legend: {
+          position: 'top',
+          fontSize: chartProperties.labelsFontSizeSmall,
+          fontFamily: chartProperties.fontFamily,
+          labels: {
+            colors: chartProperties.labelsColor
+          },
         },
         dataLabels: {
           textAnchor: 'middle',
+          style: {
+            fontSize: chartProperties.labelsFontSizeSmall,
+            fontFamily:  chartProperties.fontFamily,
+          }
         },
         chart: {
+          // width: '100%',
+          // height: '100%',
+          toolbar: {
+            show: false
+          },
           events: {
             dataPointSelection: (event, chartContext, config) => {
               this.chartDive(this.labels[config.dataPointIndex]);
             },
           },
         },
+        colors: this.colors,
       };
     },
   },
@@ -58,3 +94,4 @@ export default {
   },
 };
 </script>
+

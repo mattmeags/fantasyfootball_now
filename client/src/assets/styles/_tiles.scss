@@ -3,15 +3,13 @@
     border-radius: $border-radius;
     box-shadow: 2px 4px 10px -6px $tietary;
     position: relative;
-
-    select {
-        position: absolute;
-        right: 15px;
-        top: 15px;
-    }
+    overflow: scroll;
 
     .chart {
-        padding-top: 25px;
+        //padding-top: 25px;
+        //display: flex;
+        //height: 100%;
+        // width:
     }
 
     &:hover {
@@ -20,4 +18,14 @@
         box-shadow: 4px 6px 10px -6px $tietary;
         transition: all .03s linear;
     }
+}
+
+.filter {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.tile-chart-wrapper {
+    position: relative;
 }

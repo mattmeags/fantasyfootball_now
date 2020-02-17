@@ -1,29 +1,52 @@
 <template>
     <nav>
-        <div class="nav-wrapper" v-on:keyup.esc="toggleDeepNav('all')">
-            <ul class="icon-nav">
-                <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false" v-on:click="toggleDeepNav('all')"><router-link to="/" ><eva-icon name="home" fill="white"></eva-icon></router-link></li>
-                <li class="nav-item" v-bind:class="[{deepSelected: deepTeamHighlight}, {'selected' : selected === 'team'}]" v-on:click="toggleDeepNav('team')" v-on:mouseover="showTeamText = true" v-on:mouseout="showTeamText = false"><eva-icon name="people" fill="white"></eva-icon></li>
-                <li class="nav-item" v-bind:class="[{deepSelected: deepPositionHighlight}, {'selected' : selected === 'position'}]" v-on:click="toggleDeepNav('position')" v-on:mouseover="showPositionText = true" v-on:mouseout="showPositionText = false"><eva-icon name="award" fill="white"></eva-icon></li>
-                <!--Phase 3 -->
-                <!--<li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"  v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><router-link to=""><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>-->
-            </ul>
-            <ul class="hidden-nav">
-                <li class="nav-text" v-bind:class="{active: showHomeText}">Landing</li>
-                <li class="nav-text" v-bind:class="{active: showTeamText}">Teams</li>
-                <li class="nav-text" v-bind:class="{active: showPositionText}">Positions</li>
-                <li class="nav-text" v-bind:class="{active: showDashboardText}">My Dashboard</li>
-            </ul>
+        <div class="nav-wrapper" v-on:keydown.esc="toggleDeepNav('all')">
+            <div class="desktop-only">
+                <ul class="icon-nav">
+                    <li class="nav-item" v-bind:class="{'selected' : selected === 'home'}" v-on:mouseover="showHomeText = true" v-on:mouseout="showHomeText = false" v-on:click="toggleDeepNav('all')"><router-link to="/" ><eva-icon name="home" fill="white"></eva-icon></router-link></li>
+                    <li class="nav-item" v-bind:class="[{'deepSelected': deepTeamHighlight}, {'selected' : selected === 'team'}]" v-on:click="toggleDeepNav('team')" v-on:mouseover="showTeamText = true" v-on:mouseout="showTeamText = false"><eva-icon name="people" fill="white"></eva-icon></li>
+                    <li class="nav-item" v-bind:class="[{'deepSelected': deepPositionHighlight}, {'selected' : selected === 'position'}]" v-on:click="toggleDeepNav('position')" v-on:mouseover="showPositionText = true" v-on:mouseout="showPositionText = false"><eva-icon name="award" fill="white"></eva-icon></li>
+                    <!--Phase 3 -->
+                    <!--<li class="nav-item" v-bind:class="{'selected' : selected === 'dashboard'}"  v-on:mouseover="showDashboardText = true" v-on:mouseout="showDashboardText = false"><router-link to=""><eva-icon name="pie-chart-2" fill="white"></eva-icon></router-link></li>-->
+                </ul>
+                <ul class="hidden-nav" v-bind:class="{active: showMobileTopLevel}">
+                    <li class="nav-text" v-bind:class="{active: showHomeText}">Landing</li>
+                    <li class="nav-text" v-bind:class="{active: showTeamText}">Teams</li>
+                    <li class="nav-text" v-bind:class="{active: showPositionText}">Positions</li>
+                    <li class="nav-text" v-bind:class="{active: showDashboardText}">My Dashboard</li>
+                </ul>
+            </div>
+
+            <div class="nav-wrapper mobile-only">
+                <div class="mobile-menu-action" v-on:click="toggleMobileMenu()">
+                    <eva-icon name="menu-outline" fill="white"></eva-icon>
+                </div>
+                <ul class="mobile-level-one" v-bind:class="{active: showMobileTopLevel}">
+                    <div class="close-icon" v-on:click="toggleMobileMenu()">
+                        <eva-icon name="close-outline" fill="white"></eva-icon>
+                    </div>
+                    <li><router-link to="/" >Landing</router-link></li>
+                    <li v-on:click="toggleDeepNav('team')"><span>Teams</span> <eva-icon name="arrow-ios-forward-outline" fill="white"></eva-icon></li>
+                    <li v-on:click="toggleDeepNav('position')"><span>Positions</span> <eva-icon name="arrow-ios-forward-outline" fill="white"></eva-icon></li>
+                </ul>
+            </div>
             <ul class="hidden-teams-nav" v-bind:class="{active: showTeamNav}">
+                <li class="mobile-only mobile-level-two-actions d-flex">
+                    <eva-icon name="arrow-ios-back-outline" fill="white" v-on:click="toggleDeepNav('team')"></eva-icon>
+                    <eva-icon name="close-outline" fill="white" v-on:click="closeMobileMenuFromDeep('team')"></eva-icon>
+                </li>
                 <li class="title">Teams</li>
                 <li v-for="team in teams" v-bind:key="team" v-on:click="toggleDeepNav('team')"><router-link v-bind:to="'/team/' + team">{{team}}</router-link></li>
             </ul>
             <ul class="hidden-position-nav" v-bind:class="{active: showPositionNav}">
+                <li class="mobile-only mobile-level-two-actions">
+                    <eva-icon name="arrow-ios-back-outline" fill="white" v-on:click="toggleDeepNav('position')"></eva-icon>
+                    <eva-icon name="close-outline" fill="white" v-on:click="closeMobileMenuFromDeep('position')"></eva-icon>
+                </li>
                 <li class="title">Position</li>
                 <li v-for="position in positions" v-bind:key="position" v-on:click="toggleDeepNav('position')"><router-link v-bind:to="'/position/' + position">{{position}}</router-link></li>
             </ul>
         </div>
-        <span v-for="team in teams" v-bind:key="team">{{team}}</span>
     </nav>
     
 </template>
@@ -43,16 +66,19 @@ export default {
         deepTeamHighlight: false,
         showPositionNav: false,
         deepPositionHighlight: false,
+        showMobileTopLevel: false,
         selected: ''
     }),
     methods: {
         toggleDeepNav: function(cat) {
+            console.log('toggledeepnav');
             if (cat === 'team') {
                 this.showTeamNav = !this.showTeamNav;
                 this.showTeamText = false;
                 this.deepTeamHighlight = !this.deepTeamHighlight;
                 this.deepPositionHighlight = false;
                 this.showPositionNav = false;
+                this.selected = 'team';
             }
             if (cat === 'position') {
                 this.showPositionNav = !this.showPositionNav;
@@ -60,19 +86,29 @@ export default {
                 this.deepPositionHighlight = !this.deepPositionHighlight;
                 this.deepTeamHighlight = false;
                 this.showTeamNav = false;
+                this.selected = 'position';
             }
-            //TODO: escapse should close
+            //TODO: escapse should close and should close on click off
             if (cat === 'all') {
+                console.log('esc');
                 this.showTeamNav = false
                 this.showTeamText = false;
                 this.showPositionNav = false;
                 this.showPositionText = false;
                 this.showTeamText = false;
+                this.selected = 'home';
             }
         },
         ...mapActions({
             getNavigationItems: 'getNavigationItems'
-        })
+        }),
+        toggleMobileMenu: function() {
+            this.showMobileTopLevel = !this.showMobileTopLevel;
+        },
+        closeMobileMenuFromDeep: function(cat) {
+            this.toggleMobileMenu();
+            this.toggleDeepNav(cat);
+        }
     },
     computed: {
         ...mapState({
@@ -81,29 +117,32 @@ export default {
             test: 'test'
         }),
     },
-    mounted() {
-        this.selected = this.$route.name;
-    },
+    // beforeRouteUpdate() {
+    //     this.selected = this.$route.name;
+    // },
     // get navigation and search suggestions data
     created() {
-        if (this.teams.length === 0 || this.positions.length === 0) {
-            this.getNavigationItems();
-        }
+        // if (this.teams.length === 0 || this.positions.length === 0) {
+        //     this.getNavigationItems();
+        // }
+        this.getNavigationItems();
     },
 }
 </script>
 
 <style lang="scss">
-    @import "../../assets/styles/_variables.scss";
+    @import "../../assets/styles/_variables";
+    @import "../../assets/styles/_visibility";
 
     nav {
         position: fixed;
         left: 0;
-        top: 0;
+        top: 48px;
         height: 100%;
-        width: 40px;
+        width: $nav-width;
         background: $secondary;
-        z-index: 10;
+        //text-align: center;
+        z-index: $domiant-index;
 
         .nav-wrapper {
             position: relative;
@@ -123,6 +162,16 @@ export default {
             z-index: 1;
             position: absolute;
             top: 0;
+
+            &.active {
+                left: 40px;
+                transition: all 0.3s ease-out;
+
+                @include respondUp($tabletViewport) {
+                    left: 0;
+                    transition: none;
+                }
+            }
         }
 
         .nav-item {
@@ -185,39 +234,135 @@ export default {
         .hidden-position-nav {
             position: absolute;
             top: 0;
-            left: -180px;
-            width: 180px;
-            background: $tietary;
+            left: -220px;
+            width: 220px;
+            background: $secondary;
             padding-top: 0;
             overflow-y: scroll;
             height: 100vw;
+            //padding-left: 15px;
 
             .title {
                 background: $accent4;
-                padding: 16px 0;
+                padding: 16px 0 16px 15px;
                 color: $white;
                 font-weight: bold;
-
             }
 
             a {
                 color: $white;
                 display: block;
-                padding: 5px 0;
+                padding: 10px 0 10px 15px;
                 text-transform: capitalize;
+                border-bottom: $border;
+
+                
 
                 &:hover {
                     background: $accent;
                     transition: 0.3s all linear;
                 }
+
+                @include respondUp($tabletViewport) {
+                    padding: 5px 0 5px 15px;
+                    border: none;
+                }
             }
 
             &.active {
-                left: 40px;
+                left: 0;
                 z-index: 6;
                 height: 100%;
                 transition: 0.3s left ease-out;
+
+                @include respondUp($tabletViewport) {
+                    left: $nav-width
+                }
             }
+
+            @include respondUp($tabletViewport) {
+                background: $tietary;
+                width: 180px;
+                left: -180px;
+            }
+        }
+
+        .mobile-level-one {
+            position: absolute;
+            left: -220px;
+            top: 0;
+            width: 220px;
+            height: 100%;
+            background: $secondary;
+            padding-top: 50px;
+
+            li {
+                padding: 10px 0;
+                border-bottom: $border;
+                padding-left: $nav-width;
+                margin-left: -$nav-width;
+                display: flex;
+                align-items: center;
+                position: relative;
+
+                &:first-of-type {
+                    border-top: $border;
+                }
+
+                i {
+                    position: absolute;
+                    right: 10px;
+                }
+
+                a,
+                span {
+                    padding-left: 15px;
+                    color: $white;
+                    font-size: $font-size-desktop;
+                }
+            }
+
+            &.active {
+                left: 0;
+                transition: 0.3s left ease-out;
+                z-index: 6;
+            }
+        }
+
+        .mobile-level-two-actions {
+            // display: flex;
+            // justify-content: space-between;
+            position: relative;
+            padding: 10px 0 0;
+            background: $accent4;
+
+            i {
+                height: 100%;
+                padding: 0 7px;
+
+                &:last-of-type {
+                    position: absolute;
+                    right: 0;
+                }
+            }
+        }
+
+        .mobile-menu-action {
+            padding-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .close-icon {
+            position: absolute;
+            right: 7px;
+            top: 10px;
+        }
+    }
+
+    .cursor--pointer {
+        &:hover {
+            cursor: pointer;
         }
     }
 </style>
