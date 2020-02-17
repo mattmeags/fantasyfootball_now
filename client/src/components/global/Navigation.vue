@@ -122,9 +122,6 @@ export default {
     // },
     // get navigation and search suggestions data
     created() {
-        // if (this.teams.length === 0 || this.positions.length === 0) {
-        //     this.getNavigationItems();
-        // }
         this.getNavigationItems();
     },
 }
@@ -141,7 +138,6 @@ export default {
         height: 100%;
         width: $nav-width;
         background: $secondary;
-        //text-align: center;
         z-index: $domiant-index;
 
         .nav-wrapper {
@@ -240,7 +236,6 @@ export default {
             padding-top: 0;
             overflow-y: scroll;
             height: 100vw;
-            //padding-left: 15px;
 
             .title {
                 background: $accent4;
@@ -357,12 +352,6 @@ export default {
             position: absolute;
             right: 7px;
             top: 10px;
-        }
-    }
-
-    .cursor--pointer {
-        &:hover {
-            cursor: pointer;
         }
     }
 </style>
