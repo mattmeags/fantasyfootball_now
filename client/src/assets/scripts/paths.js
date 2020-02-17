@@ -7,7 +7,5 @@ export default {
   loadSingleTeamUrl: `${baseUrl}loadTeam`,
   loadPositinsUrl: `${baseUrl}getPositions`,
   loadPositionsPageUrl: `${baseUrl}loadPositions`,
-  createUrl: (endPoint) => {
-    return baseUrl + endPoint;
-  }
+  createUrl: (endPoint) => baseUrl + endPoint,
 };

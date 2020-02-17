@@ -35,7 +35,7 @@ module.exports = async function init(db) {
                 value: 0
             };
         res.forEach(result => {
-            if (result[0].passing) {
+            if (result.length > 0 && result[0].passing) {
                 result[0].passing.forEach(passer => {
                     if (passer.playerName !== 'Opp Total' && passer.playerName !== 'Team Total') {
                         if (passer.position.toLowerCase() === 'qb' || passer.position === '') {
@@ -67,7 +67,7 @@ module.exports = async function init(db) {
                 });
             }
             //get rushing data for qbs
-            if (result[0].rushRec) {
+            if (result.length > 0 && result[0].rushRec) {
                 result[0].rushRec.forEach(passer => {
                     if (passer.playerName !== 'Opp Total' && passer.playerName !== 'Team Total') {
                         if (passer.position.toLowerCase() === 'qb') {

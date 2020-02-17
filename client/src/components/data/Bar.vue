@@ -1,14 +1,15 @@
 <template>
     <div class="chart">
-        <apexchart type=bar height=350 :options="chartOptions" :series="series" ></apexchart>
+        <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
 
 <script>
-import util from '../../assets/scripts/utilities';
+import {trimNames} from '../../assets/scripts/utilities';
+import chartProperties from '../../assets/scripts/chartProperties';
 export default {
     name: 'Bar',
-    props: ['labels', 'values', 'isHorizontal', 'trimLabels'],
+    props: ['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
     computed: {
         series() {
             return this.values;
@@ -16,34 +17,63 @@ export default {
         chartOptions() {
             return {
                 chart: {
-                height: 350,
-                type: 'bar',
-                // events: {
-                //   click: function (chart, w, e) {
-                //     console.log(chart, w, e)
-                //   }
-                // },
+                    height: '100%',
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    },
+                    // events: {
+                    //   click: function (chart, w, e) {
+                    //     console.log(chart, w, e)
+                    //   }
+                    // },
                 },
-                //colors: colors,
+                colors: this.colors,
                 plotOptions: {
                     bar: {
                         columnWidth: '35%',
+                        columnHeight: '10px',
                         distributed: true,
-                        horizontal: this.isHorizontal
+                        horizontal: this.isHorizontal,
+                        dataLabels: {
+                            position: 'bottom'
+                        }
                     }
                 },
                 dataLabels: {
-                    enabled: false,
+                    enabled: this.isHorizontal,
+                    textAnchor: 'start',
+                    style: {
+                        fontSize: chartProperties.labelsFontSizeSmall,
+                        fontFamily:  chartProperties.fontFamily,
+                    },
+                    formatter: function (val, opt) {
+                        return opt.w.globals.labels[opt.dataPointIndex]
+                    }
                 },
-
+                legend: {
+                    position: 'top'
+                },
                 xaxis: {
-                    categories: this.trimLabels ? util.trimNames(this.labels) : this.labels,
-                    // labels: {
-                    //     style: {
-                    //         //colors: colors,
-                    //         fontSize: '14px'
-                    //     }
-                    // }
+                    categories: this.trimLabels ? trimNames(this.labels) : this.labels,
+                    labels: {
+                        style: {
+                            fontSize: chartProperties.labelsFontSizeSmall,
+                            fontFamily: chartProperties.fontFamily,
+                            colors: chartProperties.labelsColor
+                        }
+                    }
+                },
+                yaxis: {
+                    show: !this.isHorizontal,
+                    labels: {
+                        show: !this.isHorizontal,
+                        style: {
+                            fontSize: chartProperties.labelsFontSizeSmall,
+                            fontFamily: chartProperties.fontFamily,
+                            colors: chartProperties.labelsColor
+                        }
+                    }
                 }
             }
         }

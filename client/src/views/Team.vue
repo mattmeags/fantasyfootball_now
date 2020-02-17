@@ -1,75 +1,91 @@
 <template>
-    <div class="container" v-if="teamDataLoaded">{{tdFilterValues}}
-        <Banner v-bind:name="teamName" v-bind:location="team.location"></Banner>
-        <div class="row">
-            <div class="tile w-4">
-                <Bar v-bind:labels="rushYardsAgainstData.labels" v-bind:values="rushYardsAgainstData.series" v-bind:isHorizontal="rushYardsAgainstData.isHorizontal" v-bind:trimLabels="false"></Bar>
+    <div v-if="teamDataLoaded">
+        <div class="container">
+            <div class="row">
+                <div class="tile w-4">
+                    <TileHeader title="Rush Yards Against"></TileHeader>
+                    <Bar v-bind:labels="rushYardsAgainstData.labels" v-bind:values="rushYardsAgainstData.series" v-bind:colors="[teamColors[0], teamColors[teamColors.length - 1]]" v-bind:isHorizontal="rushYardsAgainstData.isHorizontal" v-bind:trimLabels="false"></Bar>
+                </div>
+                <div class="tile w-4">
+                    <TileHeader title="Receiving Yards Against"></TileHeader>
+                    <Bar v-bind:labels="passYardsAgainstData.labels" v-bind:values="passYardsAgainstData.series" v-bind:colors="[teamColors[0], teamColors[teamColors.length - 1]]" v-bind:isHorizontal="passYardsAgainstData.isHorizontal" v-bind:trimLabels="false"></Bar>
+                </div>
+                <div class="tile w-4">
+                    <TileHeader title="Passing Plays vs Rushing Plays"></TileHeader>
+                    <Bar v-bind:labels="offensePlaySplit.labels" v-bind:values="offensePlaySplit.series" v-bind:colors="[teamColors[0], teamColors[teamColors.length - 1]]" v-bind:isHorizontal="offensePlaySplit.isHorizontal" v-bind:trimLabels="false"></Bar>
+                </div>
             </div>
-            <div class="tile w-4">
-                <Bar v-bind:labels="passYardsAgainstData.labels" v-bind:values="passYardsAgainstData.series" v-bind:isHorizontal="passYardsAgainstData.isHorizontal" v-bind:trimLabels="false"></Bar>
+            <div class="row tall">
+                <div class="tile-stack-container w-4">
+                    <div class="tile h-2">
+                        <TileHeader title="Rushing Split"></TileHeader>
+                        <DonutSplit v-bind:labels="rushingAttemptsData.labels" v-bind:values="rushingAttemptsData.series" v-on:playerSelect="loadPlayer" v-bind:colors="teamColors"></DonutSplit>
+                    </div>
+                
+                    <div class="tile h-2">
+                        <TileHeader title="Touchdown Count"></TileHeader>
+                        <StackedBar v-bind:labels="tdData.labels" v-bind:values="tdData.series" v-bind:colors="[teamColors[0], teamColors[teamColors.length - 1]]" v-on:playerSelect="loadPlayer"></StackedBar>
+                        <ChartFilter v-bind:filterValues="tdFilterValues" v-on:filterChange="updateTDChartWithFilter"></ChartFilter>
+                    </div>
+                </div>
+                
+                <div class="tile h-1 w-8">
+                    <div class="tile-chart-wrapper">
+                        <TileHeader title="Receiving Yards"></TileHeader>
+                        <Bar v-bind:labels="recYardsData.labels" v-bind:values="recYardsData.series" v-bind:trimLabels="true" v-bind:colors="teamColors"></Bar>
+                        <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRecYardsChartWithFilter"></ChartFilter>
+                    </div>
+                    <div class="tile-chart-wrapper">
+                        <TileHeader title="Rushing Yards"></TileHeader>
+                        <Bar v-bind:labels="rushYardsData.labels" v-bind:values="rushYardsData.series" v-bind:trimLabels="true" v-bind:colors="teamColors"></Bar>
+                        <ChartFilter v-bind:filterValues="tdFilterValues" v-on:filterChange="updateRushYardsChartWithFilter"></ChartFilter>
+                    </div>
+                </div>
+                
+                
             </div>
-            <div class="tile w-4">    
-                <Bar v-bind:labels="offensePlaySplit.labels" v-bind:values="offensePlaySplit.series" v-bind:isHorizontal="offensePlaySplit.isHorizontal" v-bind:trimLabels="false"></Bar>
-            </div>
-        </div>
-        <div class="row">
-            <div class="tile w-4">
-                <TileHeader title="Rushing Split"></TileHeader>
-                <DonutSplit v-bind:labels="rushingAttemptsData.labels" v-bind:values="rushingAttemptsData.series" v-on:playerSelect="loadPlayer"></DonutSplit>
-            </div>
-        
-            <div class="tile w-4">
-                <TileHeader title="Targerts & Receptions"></TileHeader>
-                <CompareBar v-bind:labels="receivingTargetsLabel" v-bind:values="receivingTargetsData.series" v-on:playerSelect="loadPlayer"></CompareBar>
-                <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRecChartWithFilter"></ChartFilter>
-            </div>
-            
-            <div class="tile w-4">
-                <TileHeader title="Touchdown Count"></TileHeader>
-                <!--TODO check baltimore when loaded for QB rushes-->
-                <StackedBar v-bind:labels="tdData.labels" v-bind:values="tdData.series" v-on:playerSelect="loadPlayer"></StackedBar>
-                <ChartFilter v-bind:filterValues="tdFilterValues" v-on:filterChange="updateTDChartWithFilter"></ChartFilter>
-            </div>
-        </div>
-        <div class="row">
-            <div class="tile w-6">
-                <TileHeader title="Receiving Yards"></TileHeader>
-                <Bar v-bind:labels="recYardsData.labels" v-bind:values="recYardsData.series" v-bind:trimLabels="true"></Bar>
-                <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRecYardsChartWithFilter"></ChartFilter>
-            </div>
-            <div class="tile w-6">
-                <TileHeader title="Rushing Yards"></TileHeader>
-                <Bar v-bind:labels="rushYardsData.labels" v-bind:values="rushYardsData.series" v-bind:trimLabels="true"></Bar>
-                <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRushYardsChartWithFilter"></ChartFilter>
+            <div class="row">
+                <div class="tile w-12">
+                        <TileHeader title="Targerts & Receptions"></TileHeader>
+                        <CompareBar v-bind:labels="receivingTargetsLabel" v-bind:values="receivingTargetsData.series" v-on:playerSelect="loadPlayer" v-bind:colors="[teamColors[0], teamColors[teamColors.length - 1]]"></CompareBar>
+                        <ChartFilter v-bind:filterValues="receivingFilterValues" v-on:filterChange="updateRecChartWithFilter"></ChartFilter>
+                </div>
             </div>
         </div>
     </div>
+    <div v-else>
+        <Loading></Loading>
+    </div>
+    
 </template>
 
 <script>
-import axios from 'axios';
+// components
 import DonutSplit from '@/components/data/DonutSplit.vue';
 import CompareBar from '@/components/data/CompareBar.vue';
 import StackedBar from '@/components/data/StackedBar.vue';
 import Bar from '@/components/data/Bar.vue';
-import Banner from '@/components/layout/Banner.vue';
 import ChartFilter from '@/components/data/ChartFilter.vue';
-import StandardDataObject from '../../src/assets/scripts/dataObjects.js';
-import TileHeader from '@/components/layout/TileHeader.vue';
+import TileHeader from '@/components/global/layout/TileHeader.vue';
+import Loading from '@/components/global/Loading.vue';
+
+//assets
 import paths from '../assets/scripts/paths';
+import axios from 'axios';
 import {mapState, mapActions} from 'vuex';
 
+import {getColors} from '../assets/scripts/utilities';
+
 export default {
-    //TODO get filters working correctly
     name: 'team',
     components: {
         DonutSplit,
         CompareBar,
         StackedBar,
-        Banner, 
         ChartFilter,
         Bar,
-        TileHeader
+        TileHeader,
+        Loading
     },
     data: () => ({
         teamMascot: '',
@@ -108,8 +124,12 @@ export default {
             offensePlaySplit: 'offensePlaySplit',
             teamDataLoaded: 'teamDataLoaded',
             receivingTargetsData: 'receivingTargetsData',
-            teamName: 'teamName'
-        })
+            teamName: 'teamName',
+            color: 'color'
+        }),
+        teamColors: function() {
+            return getColors(this.color);
+        }
     },
     methods: {
         ...mapActions({
@@ -127,11 +147,9 @@ export default {
                 api: this.filterGroupedApi,
                 updateState: 'receivingTargetsData'
             }
-            //this.receivingTargetsData = this.getFilteredCompareData(this.receivingCompareSeries, selected);
             this.filterCharts(payload);
         },
         updateTDChartWithFilter: function(selected) {
-            //this.tdData = this.getFilteredStackedData(this.tdStackedSeries, selected);
              const payload = {
                 teamMascot: this.teamMascot,
                 seriesValues: this.tdStackedSeries,
@@ -170,22 +188,33 @@ export default {
     },
     /* HOOKS */
     beforeRouteUpdate(to, from, next) {
-        console.log(to);
-        console.log(from);
+        console.log('to: ', to);
+        console.log('from: ', from);
         //this.loadTeamData(to.params.team);
         //this.getTeamData(this.$route.params.team);
-        this.getTeamData(this.$route.params.team);
+        console.log(this.$route.params.team)
+        this.getTeamData(to.params.team);
         next();
     },
-    created() {
-        //this.loadTeamData(this.$route.params.team);
-        console.log('route object: ', this.$route);
-        //this.getTeamData(this.$route.params.team);
-    },
-    mounted() {
+    // created() {
+    //     //this.loadTeamData(this.$route.params.team);
+    //     console.log('route object: ', this.$route);
+    //     // //this.getTeamData(this.$route.params.team);
+    //     // console.log('hiya');
+    //     // console.log(this.teamName);
+    //     // console.log(this.color)
         
+    // },
+    mounted() {
+        console.log('mounted');
         this.teamMascot = this.$route.params.team;
         this.getTeamData(this.$route.params.team);
     }
 };
 </script>
+
+<style lang="scss">
+    @import '../assets/styles/grid';
+    @import '../assets/styles/tiles';
+    
+</style>

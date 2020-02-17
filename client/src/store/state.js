@@ -1,0 +1,20 @@
+export default {
+    teams: [],
+    positions: [],
+    test: 'hello world',
+    rushingSplitData: {},
+    receivingTargetsData: {},
+    tdData: {},
+    rushYardsData: {},
+    recYardsData: {},
+    totalRushYardsAgainstData: {},
+    totalPassYardsAgainstData: {},
+    offensePlaySplit: {},
+    teamDataLoaded: false,
+    positionDataLoaded: false,
+    teamName: '',
+    positionData: [],
+    positionDataHeader: [],
+    positionLeaderData: [],
+    globalHeader: 'Fantasy Football Now'
+}
