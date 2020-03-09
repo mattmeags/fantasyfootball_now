@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer'),
     cheerio = require('cheerio'),
     fs = require('fs-extra'),
-    pageselectors = require('./data/pageselectors');
-const TEAMS = require('../models/global').teams;
+    pageselectors = require('./data/pageselectors'),
+    TEAMS = require('../models/global').teams;
 
 let browser, page;
 
@@ -22,7 +22,9 @@ async function initData() {
         headless: true
     });
     for (let i = 0; i < pageSelectors.length; i++) {
+        page = await browser.newPage();
         await scrape(pageSelectors[i], browser);
+        await page.close();
     }
     await browser.close();
 
@@ -38,7 +40,7 @@ async function initData() {
 async function scrape(table, browser) {
     try {
 
-        page = await browser.newPage();
+        //page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36')
         console.log(table)
         console.log(table.url);
@@ -53,43 +55,60 @@ async function scrape(table, browser) {
 
         //await page.hover('#all_team_stats .hasmore');
 
-        const hoverSelector = table.menuSelector + ' .hasmore';
-        await console.log(hoverSelector);
-        //const tableMenu = await page.$('#all_team_stats .hasmore');
-        //const tableMenu = await page.$(hoverSelector);
+        //all table properties should have same length execpt url which is a string and not an array
+        for (let i = 0; i < table.menuSelectors.length; i++) {
+            const hoverSelector = table.menuSelectors[i] + ' .hasmore';
+            await console.log(hoverSelector);
 
-        //console.log(tableMenu.html());
+            //const tableMenu = await page.$('#all_team_stats .hasmore');
+            //const tableMenu = await page.$(hoverSelector);
 
-        await page.waitFor(hoverSelector);
-        await page.hover(hoverSelector);
+            //console.log(tableMenu.html());
 
-        await page.waitFor('.drophover');
+            await page.waitFor(hoverSelector);
+            await page.hover(hoverSelector, {visible: true});
+            
+            try {
+                await page.waitFor('.drophover', { visible: true });
+            } catch (e) {
+                await page.hover(hoverSelector, { visible: true });
+                await page.waitFor('.drophover', { visible: true });
+            }
+            
 
-        const csvBtnSelector = hoverSelector + ' li:nth-of-type(4) button';
-        //const csvBtn = await page.$('#all_team_stats .hasmore li:nth-of-type(4) button');
-        await console.log(csvBtnSelector);
-        const csvBtn = await page.$(csvBtnSelector);
-        await console.log('after hover wait and button query');
+            const csvBtnSelector = hoverSelector + ' li:nth-of-type(4) button';
+            //const csvBtn = await page.$('#all_team_stats .hasmore li:nth-of-type(4) button');
 
-        await csvBtn.click();
-        await console.log('after click');
-        const content = await page.$('.table_outer_container');
+            await console.log(csvBtnSelector);
+            const csvBtn = await page.$(csvBtnSelector);
+            await console.log('after hover wait and button query');
+            //await console.log(csvBtn);
 
-        await page.$eval('.table_outer_container', (element) => {
-            console.log(element.innerHTML);
-        });
+            await page.waitFor(csvBtnSelector, {visible: true});
+            await csvBtn.click();
+            await console.log('after click');
+            //TODO: commenting out cause I don't know if these do anything
+            // const content = await page.$('.table_outer_container');
 
+            // await page.$eval('.table_outer_container', (element) => {
+            //     console.log(element.innerHTML);
+            // });
 
-        await page.waitFor(table.csvSelector);
-        await console.log('after waiting for csv table');
-        await console.log(table.csvSelector);
+            await page.waitFor(table.csvSelector[i]);
+            await console.log('after waiting for csv table');
+            await console.log(table.csvSelector[i]);
 
-        let text = await page.evaluate(() => document.querySelector('[id^="csv_"]').innerHTML);
-        text = await text.slice(19, -1).trim();
-        await console.log(text);
+            let text = await page.evaluate(() => document.querySelector('[id^="csv_"]').innerHTML);
+            //csv plain text loaded w/ HTML comment, this removes comment
+            text = await text.slice(19, -1).trim();
+            await console.log(text);
 
-        await writeCSVFiles(text, table.fileName);
-        await page.close();
+            await writeCSVFiles(text, table.fileName[i]);
+            //await page.mouse.move(100, 100);
+            await page.reload();
+            
+        }
+        //await page.close();
         await console.log('end...');
         return;
 
@@ -156,8 +175,8 @@ async function parseCheck () {
             if (missingItems.length > 1) {
                 console.log('missing all and a few moer');
                 missingItems.splice(missingItems.indexOf('all'), missingItems.indexOf('all') + 1);
-                console.log(newPageSelectors.concat(pageselectors.fixTeams(missingItems)));
-                newPageSelectors = newPageSelectors.concat(pageselectors.fixTeams(missingItems));
+                console.log(newPageSelectors.concat(pageselectors.init(missingItems)));
+                newPageSelectors = newPageSelectors.concat(pageselectors.init(missingItems));
             }
         } else if (missingItems.length > 0) {
             // All folder exists, just teams missing
@@ -175,22 +194,22 @@ async function parseCheck () {
                     let missingAllFiles = allFolderFiles.filter(fileName => !createdFiles.includes(fileName));
                 
                     if (!missingAllFiles.includes('allTeamOffense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllTeamOffense());
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(false, false));
                     }
                     if (!missingAllFiles.includes('passingOffense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllPassing());
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(true, false, false));
                     }
                     if (!missingAllFiles.includes('rushingOffense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllRushingOffense());
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(false, true, false));
                     }
                     if (!missingAllFiles.includes('allTeamDefense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllTeamDefense());
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(false, false));
                     }
                     if (!missingAllFiles.includes('passingDefense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllPassingDefense());
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(true, false, false));
                     }
                     if (!missingAllFiles.includes('rushingDefense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getAllRushingDefense());
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(false, true, false));
                     }
                 }
             } else {
