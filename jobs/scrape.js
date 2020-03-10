@@ -4,9 +4,9 @@ const puppeteer = require('puppeteer'),
     pageselectors = require('./data/pageselectors'),
     TEAMS = require('../models/global').teams;
 
-let browser, page;
+let browser, page, year = '2019';
 
-let pageSelectors = pageselectors.init(TEAMS);
+let pageSelectors = pageselectors.init(year, TEAMS);
 
 /**
  * @function initData
@@ -68,6 +68,7 @@ async function scrape(table, browser) {
             await page.waitFor(hoverSelector);
             await page.hover(hoverSelector, {visible: true});
             
+            //hacky but seems to work
             try {
                 await page.waitFor('.drophover', { visible: true });
             } catch (e) {
@@ -135,6 +136,7 @@ async function writeCSVFiles(data, fileName) {
     }
 }
 
+//TODO:this isn't even used
 const getCreatedFolders = () => {
     return new Promise((resolve, reject) => {
         fs.readdir('data_files/csv/', (err, createdFolders) => {
@@ -154,65 +156,66 @@ const getCreatedFolders = () => {
  */
 async function parseCheck () {
 
-    const filesPerTeamFolder = 2;
-    const teamFiles = ['passing.csv', 'rushRec.csv'];
-    const allFolderFiles = ['allTeamOffense', 'passingOffense', 'rushingOffense', 'allTeamDefense', 'passingDefense', 'rushingDefense'];
-    //console.log(TEAMS);
-    const expectedFolders = new Array('all').concat(TEAMS);
-    const filesInAllFolder = 6;
-    let newPageSelectors = [];
+    const filesPerTeamFolder = 2,
+        teamFiles = ['passing.csv', 'rushRec.csv'],
+        allFolderFiles = ['allTeamOffense', 'passingOffense', 'rushingOffense', 'allTeamDefense', 'passingDefense', 'rushingDefense'],
+        expectedFolders = new Array('all').concat(TEAMS),
+        numFilesInAllFolder = allFolderFiles.length;
+
+    let newPageSelectors = [],
+        missingPassTeams = [],
+        missingRushRecTeams = [];
     
     console.log('parseCheck');
+    //TODO: need to check for year folder now
     fs.readdir('data_files/csv/', async (err, createdFolders) => {
         console.log('READING first dir??');
-        let missingItems = expectedFolders.filter(folderName => !createdFolders.includes(folderName));
-        // console.log(missingItems);
+        // FOLDER CHECKING
+        let missingFolders = expectedFolders.filter(folderName => !createdFolders.includes(folderName));
 
-        if (missingItems.includes('all')) {
-            console.log('missing all');
-            // handle all not existing
-            newPageSelectors = newPageSelectors.concat(pageselectors.getTeamRelatedData());
-            if (missingItems.length > 1) {
-                console.log('missing all and a few moer');
-                missingItems.splice(missingItems.indexOf('all'), missingItems.indexOf('all') + 1);
-                console.log(newPageSelectors.concat(pageselectors.init(missingItems)));
-                newPageSelectors = newPageSelectors.concat(pageselectors.init(missingItems));
+        if (missingFolders.includes('all')) {
+            // handle all folder not existing
+            newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueSelectors(year));
+            if (missingFolders.length > 1) {
+                // All folder is missing but other folders are missing as well
+                const otherMissingFolders = missingFolders.splice(missingFolders.indexOf('all'), missingFolders.indexOf('all') + 1);
+                newPageSelectors = newPageSelectors.concat(pageselectors.init(otherMissingFolders, year));
             }
-        } else if (missingItems.length > 0) {
-            // All folder exists, just teams missing
-            const missingTeamSelectors = pageselectors.fixTeams(missingItems);
-            console.log('missingTeamSelectors: ', missingTeamSelectors);
+        } else if (missingFolders.length > 0) {
+            // All folder exists, just team folders missing
+            const missingTeamSelectors = pageselectors.init(missingFolders, year);
             newPageSelectors = newPageSelectors.concat(missingTeamSelectors);
-            console.log('new page selectors after team fix teams', newPageSelectors);
         }
-        let missingPassTeams = [];
-        let missingRushRecTeams = [];
+        // FILE CHECKING
         for (let i = 0; i < createdFolders.length; i++) {
-            let createdFiles = fs.readdirSync('data_files/csv/' + createdFolders[i]);
+            let createdFiles = fs.readdirSync('data_files/csv/' + createdFolders[i] + '/' + year);
             if (createdFolders[i] === 'all') {
-                if (createdFiles.length != filesInAllFolder) {
+                if (createdFiles.length != numFilesInAllFolder) {
+                    // Checking missing files in the all folder
                     let missingAllFiles = allFolderFiles.filter(fileName => !createdFiles.includes(fileName));
                 
                     if (!missingAllFiles.includes('allTeamOffense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(false, false));
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(year, false, false));
                     }
                     if (!missingAllFiles.includes('passingOffense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(true, false, false));
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(yaer, true, false, false));
                     }
                     if (!missingAllFiles.includes('rushingOffense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(false, true, false));
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueOffenseSelectors(year, false, true, false));
                     }
                     if (!missingAllFiles.includes('allTeamDefense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(false, false));
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(year, false, false));
                     }
                     if (!missingAllFiles.includes('passingDefense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(true, false, false));
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(year, true, false, false));
                     }
                     if (!missingAllFiles.includes('rushingDefense')) {
-                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(false, true, false));
+                        newPageSelectors = newPageSelectors.concat(pageselectors.getLeagueDefenseSelctors(year, false, true, false));
                     }
                 }
             } else {
+                // Check missing files in team folders
+                //TODO: will have to adjust w/ year folders and week by week data
                 if (createdFiles.length != filesPerTeamFolder) {
                     let missingTeamFiles = teamFiles.filter(fileName => !createdFiles.includes(fileName));
                     console.log('createdTeamFiles: ', createdFiles);
@@ -229,15 +232,16 @@ async function parseCheck () {
             }
         }
 
-        newPageSelectors = newPageSelectors.concat(pageselectors.fixTeamsPass(missingPassTeams));
-        newPageSelectors = newPageSelectors.concat(pageselectors.fixTeamsRushRec(missingRushRecTeams));
+        // Combine Page selector objects for pass and rush into newPageSelectors which has all
+        //TODO: we probably don't need all this, pageseletors.js has alot of init functions there is likely a way to clean up
+        newPageSelectors = newPageSelectors.concat(pageselectors.fixTeamsPass(missingPassTeams, year));
+        newPageSelectors = newPageSelectors.concat(pageselectors.fixTeamsRushRec(missingRushRecTeams, year));
         
         console.log('NEW PAGE SELECTORS: ', newPageSelectors);
         pageSelectors = [];
-        
         pageSelectors = pageSelectors.concat(newPageSelectors);
-        
-        console.log('PAGE SELECTORS: ', pageSelectors);Array('all').concat(TEAMS);
+        console.log('PAGE SELECTORS: ', pageSelectors);
+
         initData();
     });
 }

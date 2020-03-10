@@ -1,5 +1,4 @@
 const TEAMS = require('../../models/global').teams,
-    baseURL = 'https://www.pro-football-reference.com',
     teamCodes = ['crd', 'atl', 'rav', 'buf', 'car', 'chi', 'cin', 'cle', 'dal', 'den', 'det', 'gnb', 'htx', 'clt', 'jax', 'kan', 'sdg', 'ram', 'mia', 'min', 'nwe', 'nor', 'nyg', 'nyj', 'rai', 'phi', 'pit', 'sfo', 'sea', 'tam', 'oti', 'was'],
     passingMenuSelector = '#all_passing',
     passingCsvSelector = '#csv_passing',
@@ -60,12 +59,12 @@ class PageSelector {
  * @description - PageSelector object specific to team data
  */
 class TeamPageSelector extends PageSelector {
-    constructor(teamObj, passing = true, rushRec = true) {
+    constructor(teamObj, year, passing = true, rushRec = true) {
         const all = passing && rushRec,
             menuSelectorArr = [passingMenuSelector, rushRecMenuSelector],
             csvSelectorArr = [passingCsvSelector, rushRecCsvSelector],
-            fileNameArr = [teamObj.name + passFileName, teamObj.name + rushRecFileName],
-            url = '/teams/' + teamObj.code + '/2018.htm'
+            fileNameArr = [teamObj.name + '/' + year + passFileName, teamObj.name + '/' + year + rushRecFileName],
+            url = '/teams/' + teamObj.code + '/' + year + '.htm'
 
         super(url, menuSelectorArr, csvSelectorArr, fileNameArr, all, passing, rushRec);
     }
@@ -76,11 +75,11 @@ class TeamPageSelector extends PageSelector {
  * @description - PageSelector object specific to total league offensive data
  */
 class LeagueOffensePageSelector extends PageSelector {
-    constructor(passing = true, rushing = true, whole = true) {
-        const url = '/years/2018/',
+    constructor(year, passing = true, rushing = true, whole = true) {
+        const url = '/years/'+ year + '/',
             menuSelectorArr = [passingMenuSelector, '#all_rushing', '#all_team_stats', ],
             csvSelectorArr = [passingCsvSelector, '#csv_rushing', '#csv_team_stats'],
-            fileNameArr = ['all/passingOffense', 'all/rushingOffense', 'all/allTeamOffense'],
+            fileNameArr = ['all/' + year + '/passingOffense', 'all/' + year + '/rushingOffense', 'all/' + year + '/allTeamOffense'],
             all = passing && rushing && whole;
 
         super(url, menuSelectorArr, csvSelectorArr, fileNameArr, all, passing, rushing, whole);
@@ -92,11 +91,11 @@ class LeagueOffensePageSelector extends PageSelector {
  * @description - PageSelector object specific to total league defensive data
  */
 class LeagueDefensePageSelector extends PageSelector {
-    constructor(passing = true, rushing = true, whole = true) {
-        const url = '/years/2018/opp.htm',
+    constructor(year, passing = true, rushing = true, whole = true) {
+        const url = '/years/' + year + '/opp.htm',
             menuSelectorArr = [passingMenuSelector, '#all_rushing', '#all_team_stats'],
             csvSelectorArr = [passingCsvSelector, '#csv_rushing', '#csv_team_stats'],
-            fileNameArr = ['all/passingDefense', 'all/rushingDefense', 'all/allTeamDefense'],
+            fileNameArr = ['all/' + year + '/passingDefense', 'all/' + year + '/rushingDefense', 'all/' + year + '/allTeamDefense'],
             all = passing && rushing && whole;
 
         super(url, menuSelectorArr, csvSelectorArr, fileNameArr, all, passing, rushing, whole);
@@ -122,14 +121,18 @@ function getTeamCodes(teams) {
 /**
  * @private
  * @param {Array} teams - array of TeamCodes Objects to be used in scrape
+ * @param {string} year - year to scan
  * @returns {Array} exportedPageSelectors - array of PageSelector Objects for passing
  * @desc adds page selector objects for team passing stats
  */
-function getTeamSelectors(teams) {
+function getTeamSelectors(teams, year, passing = true, rushRec = true) {
     for (var i = 0; i < teams.length; i++) {
         exportedPageSelectors.push(
             new TeamPageSelector(
-                teams[i]
+                teams[i],
+                year,
+                passing,
+                rushRec
             )
         );
     }
@@ -138,59 +141,61 @@ function getTeamSelectors(teams) {
 
 /**
  * @private
+ * @param {string} year - year to scan
  * @description creates PageSelectors for offensive and defensive league data
  */
-function getLeagueSelectors() {
-    getLeagueOffenseSelectors();
-    getLeagueDefenseSelctors();
+function getLeagueSelectors(year) {
+    getLeagueOffenseSelectors(year);
+    getLeagueDefenseSelctors(year);
 }
 
 /**
  * @public
+ * @param {string} year - year to scan
  * @param {boolean} pass - include offensive passing in page selectors
  * @param {boolean} rush - include offensive rushing in page selectors
  * @param {boolean} whole - include 'whole' offensive in page selectors
  */
-function getLeagueOffenseSelectors(pass = true, rush = true, whole = true) {
+function getLeagueOffenseSelectors(year, pass = true, rush = true, whole = true) {
     exportedPageSelectors.push(
-        new LeagueOffensePageSelector(pass, rush, whole)
+        new LeagueOffensePageSelector(year, pass, rush, whole)
     );
 }
 
 /**
  * @public
+ * @param {string} year - year to scan
  * @param {boolean} pass - include defensive passing in page selectors
  * @param {boolean} rush - include defensive rushing in page selectors
  * @param {boolean} whole - include 'whole' defensive in page selectors
  */
-function getLeagueDefenseSelctors(pass = true, rush = true, whole = true) {
+function getLeagueDefenseSelctors(year, pass = true, rush = true, whole = true) {
     exportedPageSelectors.push(
-        new LeagueDefensePageSelector(pass, rush, whole)
+        new LeagueDefensePageSelector(year, pass, rush, whole)
     );
 }
 
 module.exports = {
-    init: function (teams = TEAMS) {
+    init: function (year, teams = TEAMS) {
         exportedPageSelectors = [];
         const scanTeams = getTeamCodes(teams);
-        getTeamSelectors(scanTeams);
-        getLeagueSelectors(scanTeams);
+        getTeamSelectors(scanTeams, year);
+        getLeagueSelectors(year);
         return exportedPageSelectors;
     },
-    fixTeamsPass: (missingTeams) => {
+    fixTeamsPass: (missingTeams, year) => {
         exportedPageSelectors = [];
-        console.log('fixpass: ', missingTeams);
         const scanMissingTeams = getTeamCodes(missingTeams);
-        getTeamSelectors(scanMissingTeams, true, false);
+        getTeamSelectors(scanMissingTeams, year, true, false);
         return exportedPageSelectors;
     },
-    fixTeamsRushRec: (missingTeams) => {
+    fixTeamsRushRec: (missingTeams, year) => {
         exportedPageSelectors = [];
         const scanMissingTeams = getTeamCodes(missingTeams);
-        //getRushRec(scanMissingTeams);
-        getTeamSelectors(scanMissingTeams, false, true);
+        getTeamSelectors(scanMissingTeams, year, false, true);
         return exportedPageSelectors;
     },
     getLeagueOffenseSelectors: getLeagueOffenseSelectors,
-    getLeagueDefenseSelctors: getLeagueDefenseSelctors
+    getLeagueDefenseSelctors: getLeagueDefenseSelctors,
+    getLeagueSelectors: getLeagueSelectors
 }
