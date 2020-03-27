@@ -1,12 +1,4 @@
 const mongoQueries = require('../../scripts/mongoQueries');
-//const mongodbClient = require('../../mongoClient');
-
-
-// mongodbClient.createConnection(async () => {
-//     db = mongodbClient.getDb();
-//     const test = await init(db);
-//     await console.log('test: ', test);
-// });
 
 module.exports = async function init(db) {
     const qbRequests = await mongoQueries.getAllFullTeam(db);
@@ -102,7 +94,6 @@ module.exports = async function init(db) {
             mostInts: mostInts,
             mostRushingTds: mostRushingTds
         };
-        //console.log(passingData);
     });
     return passingData;
 }

@@ -135,7 +135,7 @@ export default {
         position: fixed;
         left: 0;
         top: 48px;
-        height: 100%;
+        height: 95%;
         width: $nav-width;
         background: $secondary;
         z-index: $domiant-index;

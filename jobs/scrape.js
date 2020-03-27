@@ -1,12 +1,12 @@
 const puppeteer = require('puppeteer'),
     cheerio = require('cheerio'),
     fs = require('fs-extra'),
-    pageselectors = require('./data/pageselectors');
-const TEAMS = require('../models/global').teams;
+    pageselectors = require('./data/pageselectors'),
+    TEAMS = require('../models/global').teams;
 
 let browser, page;
 
-let pageSelectors = pageselectors.init(TEAMS);
+let pageSelectors = pageselectors.init(['Jaguars']);
 
 /**
  * @function initData

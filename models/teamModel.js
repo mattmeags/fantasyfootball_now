@@ -85,6 +85,7 @@ function BarData(labels, data, horizontal) {
 async function init(team, db) {
 
     const fullTeamName = utilites.getFullTeamNameFromMascot(team);
+    console.log('fullTeamName: ', fullTeamName);
     const color = utilites.getTeamColorFromMascot(team);
     const rushRecData = await mongoQueries.getFullTeam(team, db);
     const defense = await db.collection('allDefense').find({'name' : fullTeamName}).toArray();

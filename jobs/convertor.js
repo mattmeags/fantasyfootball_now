@@ -26,11 +26,10 @@ async function allTeam() {
 
     const allOffenseData = await convertCSV(allPath + 'allTeamOffense.csv', headers.allTeamOffenseHeader);
     const allDefenseData = await convertCSV(allPath + 'allTeamDefense.csv', headers.allTeamDefenseHeader);
-    const allPassOffenseData = await convertCSV(allPath + 'passingOffense.csv', headers.allTeamPassingOffense);
-    const allPassDefenseData = await convertCSV(allPath + 'passingDefense.csv', headers.allTeamPassingDefense);
-    const allRushOffenseData = await convertCSV(allPath + 'rushingOffense.csv', headers.allTeamRushingOffense);
-    console.log(allRushOffenseData);
-    const allRushDefenseData = await convertCSV(allPath + 'rushingDefense.csv', headers.allTeamRushingDefense);
+    const allPassOffenseData = await convertCSV(allPath + 'passingOffense.csv', headers.allTeamPassingOffense, true);
+    const allPassDefenseData = await convertCSV(allPath + 'passingDefense.csv', headers.allTeamPassingDefense, true);
+    const allRushOffenseData = await convertCSV(allPath + 'rushingOffense.csv', headers.allTeamRushingOffense, true);
+    const allRushDefenseData = await convertCSV(allPath + 'rushingDefense.csv', headers.allTeamRushingDefense, true);
 
     const allData = {
         offense: allOffenseData,
@@ -68,7 +67,7 @@ async function initTeam(team) {
  * @param {string} csvFile - path to csv file to convert
  * @description converts csv files into json objects, returns object
  */
-async function convertCSV(csvFile, header, isPassing = false) {
+async function convertCSV(csvFile, header, skipExtraRow = false) {
 
     return await csvtojson({
         noheader: false,
@@ -78,7 +77,7 @@ async function convertCSV(csvFile, header, isPassing = false) {
     .then((jsonObj) => {
         console.log('resolved');
         //remove original header
-        if (!isPassing) {
+        if (!skipExtraRow) {
             jsonObj.shift();
         }
         //console.log(playerData);

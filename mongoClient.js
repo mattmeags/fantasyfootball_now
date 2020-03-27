@@ -15,6 +15,7 @@ module.exports = {
       _client = db;
       _db = db.db("ffNow");
       if (callback) {
+		  console.log('callback');
         return callback();
       } else {
         return;
@@ -22,6 +23,7 @@ module.exports = {
     });  
   },
   getDb: function() {
+	console.log('created??')
     return _db;
   },
   closeConnection: function() {

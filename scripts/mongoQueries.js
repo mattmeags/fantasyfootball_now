@@ -12,5 +12,9 @@ module.exports = {
             });
         });
         return allTeamPromises;
+    },
+    getAllDefense: async (db) => {
+        const allDefensePromises = await db.collection('allDefense').find({}).toArray();
+        return allDefensePromises;
     }
 }
