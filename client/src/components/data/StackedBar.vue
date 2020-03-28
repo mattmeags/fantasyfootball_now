@@ -6,7 +6,7 @@
 
 <script>
 import {trimNames} from '../../assets/scripts/utilities';
-import chartProperties from '../../assets/scripts/chartProperties';
+import dataMixin from '../../mixins/dataMixin';
 
 export default {
   name: 'StackedBar',
@@ -16,48 +16,28 @@ export default {
       return this.values;
     },
     chartOptions() {
-      console.log(this.colors);
+
       return {
         plotOptions: {
-          bar: {
-            horizontal: false,
-            dataLabels: {
-              position: 'top',
-            },
-          },
+			bar: {
+				horizontal: false,
+				dataLabels: {
+					position: 'top',
+				},
+			},
         },
         xaxis: {
-          categories: trimNames(this.labels),
-          labels: {
-              style: {
-                  fontSize: chartProperties.labelsFontSizeSmall,
-                  fontFamily: chartProperties.fontFamily,
-                  colors: chartProperties.labelsColor
-              }
-          }
-        },
-        yaxis: {
-          labels: {
-              style: {
-                  fontSize: chartProperties.labelsFontSizeSmall,
-                  fontFamily: chartProperties.fontFamily,
-                  colors: chartProperties.labelsColor
-              }
-          }
+        	categories: trimNames(this.labels),
+
         },
         legend: {
-          position: 'top',
-          fontSize: chartProperties.labelsFontSizeSmall,
-          fontFamily: chartProperties.fontFamily,
-          labels: {
-            colors: chartProperties.labelsColor
-          },
+          	position: 'top',
         },
         chart: {
-          stacked: true,
-          toolbar: {
-            show: false
-          },
+          	stacked: true,
+          	toolbar: {
+            	show: false
+          	},
 
           //TODO: Later phase
           // events: {
