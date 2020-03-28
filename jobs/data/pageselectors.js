@@ -5,7 +5,8 @@ const TEAMS = require('../../models/global').teams,
     rushRecMenuSelector = '#all_rushing_and_receiving',
     rushRecCsvSelector = '#csv_rushing_and_receiving',
     passFileName = '/passing',
-    rushRecFileName = '/rushRec';
+    rushRecFileName = '/rushRec',
+    weekCodes = ['week_1', 'week_2', 'week_3', 'week_4', 'week_5', 'week_6', 'week_7', 'week_8', 'week_9', 'week_10', 'week_11', 'week_12', 'week_13', 'week_14', 'week_15', 'week_16', 'week_17'];
 
 let exportedPageSelectors = [];
 
@@ -102,6 +103,16 @@ class LeagueDefensePageSelector extends PageSelector {
     }
 }
 
+class TeamWeeklyPageSelector {
+    constructor(year, week) {
+        this.url = 'years/' + year + week +'.htm';
+        this.linkSelector = '.gamelink';
+        this.offMenuSelector = '#all_player_offense';
+        this.offCsvSelector = '#csv_player_offense';
+        this.defMenuSelector = '#all_player_defense';
+    }
+}
+
 /**
  * @private
  * @function getTeamCodes
@@ -175,26 +186,57 @@ function getLeagueDefenseSelctors(year, pass = true, rush = true, whole = true) 
     );
 }
 
+/**
+ * @public
+ * @param {array} missingTeams 
+ * @param {string} year 
+ */
+function fixTeamsPass(missingTeams, year) {
+    exportedPageSelectors = [];
+    const scanMissingTeams = getTeamCodes(missingTeams);
+    getTeamSelectors(scanMissingTeams, year, true, false);
+    return exportedPageSelectors;
+}
+
+/**
+ * @public
+ * @param {*} missingTeams 
+ * @param {*} year 
+ */
+function fixTeamsRushRec(missingTeams, year) {
+    exportedPageSelectors = [];
+    const scanMissingTeams = getTeamCodes(missingTeams);
+    getTeamSelectors(scanMissingTeams, year, false, true);
+    return exportedPageSelectors;
+}
+
+function initWeeklyTeam(year) {
+    exportedPageSelectors = [];
+    for (var i = 0; i < weekCodes.length; ++i) {
+        new TeamWeeklyPageSelector(
+            year,
+            weekCodes[i]
+        )
+    }
+}
+
+/**
+ * @public
+ * @param {*} year 
+ * @param {*} teams 
+ */
+function init(year, teams = TEAMS) {
+    exportedPageSelectors = [];
+    const scanTeams = getTeamCodes(teams);
+    getTeamSelectors(scanTeams, year);
+    getLeagueSelectors(year);
+    return exportedPageSelectors;
+}
+
 module.exports = {
-    init: function (year, teams = TEAMS) {
-        exportedPageSelectors = [];
-        const scanTeams = getTeamCodes(teams);
-        getTeamSelectors(scanTeams, year);
-        getLeagueSelectors(year);
-        return exportedPageSelectors;
-    },
-    fixTeamsPass: (missingTeams, year) => {
-        exportedPageSelectors = [];
-        const scanMissingTeams = getTeamCodes(missingTeams);
-        getTeamSelectors(scanMissingTeams, year, true, false);
-        return exportedPageSelectors;
-    },
-    fixTeamsRushRec: (missingTeams, year) => {
-        exportedPageSelectors = [];
-        const scanMissingTeams = getTeamCodes(missingTeams);
-        getTeamSelectors(scanMissingTeams, year, false, true);
-        return exportedPageSelectors;
-    },
+    init: init,
+    fixTeamsPass: fixTeamsPass,
+    fixTeamsRushRec: fixTeamsRushRec,
     getLeagueOffenseSelectors: getLeagueOffenseSelectors,
     getLeagueDefenseSelctors: getLeagueDefenseSelctors,
     getLeagueSelectors: getLeagueSelectors
