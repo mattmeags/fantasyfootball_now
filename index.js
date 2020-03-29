@@ -120,6 +120,13 @@ app.post('/loadPositions', async (req, res) => {
             header: globals.receivingTableHeader,
             position: receivingData
         });
+    } else if (position === 'Defense') {
+        const DefenseModel = require('./models/positions/defense');
+        const defenseData = await(DefenseModel(db));
+        await res.json({
+            header: globals.DefenseTableHeader,
+            position:  defenseData
+        });
     }
     console.log(req.body.position);
 })

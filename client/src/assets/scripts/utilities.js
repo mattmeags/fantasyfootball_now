@@ -23,9 +23,10 @@ export function trimNames (names) {
 };
 export function trimName(name) {
     let finalName;
-    console.log('trimName');
     if (name.indexOf('\\') != -1) {
         finalName = name.substring(0, name.indexOf('\\'));
+    } else {
+        finalName = name;
     }
     if (finalName.indexOf('*') != -1) {
         console.log(finalName)
@@ -36,7 +37,7 @@ export function trimName(name) {
     }
     return finalName;
 };
-
+// this can be a mixin
 export function getColors(teamColor) {
     const Color = require('color');
 
