@@ -128,8 +128,8 @@ $h3-desktop-size: 32px;
 $h4-mobile-size: 16px;
 $h4-desktop-size: 24px;
 
-$font-size-mobile: 16px;
-$font-size-desktop: 24px;
+$font-size-mobile: 14px;
+$font-size-desktop: 16px;
 
 
 /* VIEWPORTS */
@@ -143,3 +143,10 @@ $border-radius: 4px;
 $border: 1px solid $tietary;
 $border2: 2px solid $accent2;
 $border3: 3px solid $accent;
+
+/* Navigation */
+$domiant-index: 10;
+$nav-width: 40px;
+
+/* Grid */
+$header-height: 48px;

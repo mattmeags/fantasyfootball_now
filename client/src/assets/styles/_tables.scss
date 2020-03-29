@@ -1,3 +1,6 @@
+@import './variables';
+@import './mixins';
+
 table {
     border-collapse: collapse;
 
@@ -10,8 +13,12 @@ table {
     }
     td,
     th {
-        padding: 10px 20px 10px 0;
+        padding: 5px 10px 5px 0;
         text-align: left;
+
+        @include respondUp($tabletViewport) {
+            padding: 10px 20px 10px 0;
+        }
     }
     th + tr {
         td {
@@ -20,5 +27,11 @@ table {
     }
     tr:hover {
         background: rgba($tietary, 0.2);
+    }
+}
+
+.tile {
+    .table-wrapper {
+        padding: 15px;
     }
 }

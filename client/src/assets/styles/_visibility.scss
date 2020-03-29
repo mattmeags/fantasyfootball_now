@@ -1,0 +1,21 @@
+@import './mixins';
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.mobile-only {
+    @include mobileOnly();
+}
+
+.desktop-only {
+    @include desktopOnly();
+}

@@ -12,14 +12,19 @@
 }
 
 @mixin mobileOnly {
-    @media (max-width: stripUnit($tabletViewport) + 1 + px ) {
+    display: block;
+
+    @media (min-width: $tabletViewport) {
         display: none;
     }
+
 }
 
 @mixin desktopOnly {
-    @include respondUp($desktopViewport) {
-        display: none;
+    display: none;
+
+    @media (min-width: $tabletViewport) {
+        display: block;
     }
 }
 

@@ -7,7 +7,7 @@ const getStackedColumnData = require('./data/stackedColData');
 const mongoQueries = require('../scripts/mongoQueries');
 const getColumnPlayerData = require('./data/getColumnPlayerData');
 
-function TeamModel (team, teamData, avgs) {
+function TeamModel (team, teamData, avgs, color) {
     this.teamName = team;
     //TODO: leave these for now while in dev but may not need all of them in long run
     this.rushRec = teamData.rushRec;
@@ -48,6 +48,7 @@ function TeamModel (team, teamData, avgs) {
     this.totalRushYardsAgainstData = new BarData(['Rushing Yards Against', 'League Total Average Rushing Yards Against'], [parseInt(this.teamDefense.rushingYardsAgainst, 10), avgs.rushAgainst], true);
     this.totalPassYardsAgainstData = new BarData(['Passing Yards Against', 'League Total Average Passing Yards Against'], [parseInt(this.teamDefense.passingYardsAgainst, 10), avgs.passAgainst], true);
     this.offensePlaySplit = new BarData(['Passing Plays', 'Rushing Plays'], [parseInt(this.teamPassOffense.attempts, 10), parseInt(this.teamRushOffense.attempts, 10)], true);
+    this.color = color;
 }
 
 
@@ -84,7 +85,8 @@ function BarData(labels, data, horizontal) {
 async function init(team, db) {
 
     const fullTeamName = utilites.getFullTeamNameFromMascot(team);
-
+    console.log('fullTeamName: ', fullTeamName);
+    const color = utilites.getTeamColorFromMascot(team);
     const rushRecData = await mongoQueries.getFullTeam(team, db);
     const defense = await db.collection('allDefense').find({'name' : fullTeamName}).toArray();
     const passOffense = await db.collection('allPassOffense').find({'name' : fullTeamName}).toArray();
@@ -94,14 +96,13 @@ async function init(team, db) {
         passOffense: await passOffense[0],
         rushOffense: await rushOffense[0]
     }
-    ///console.log(wholeTeamData);
     const fullTeamData = await Object.assign(rushRecData[0], wholeTeamData);
     console.log(fullTeamData.defense);
     const avgs = {
         rushAgainst: await averages.getAvgRushAgainst(),
         passAgainst: await averages.getAvgPassAgainst()
     }
-    return new TeamModel(fullTeamName, fullTeamData, avgs);
+    return new TeamModel(fullTeamName, fullTeamData, avgs, color);
 }
 
 module.exports = init;
