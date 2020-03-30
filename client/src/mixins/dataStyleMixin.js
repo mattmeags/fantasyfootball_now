@@ -8,6 +8,7 @@ export default {
     computed: {
         chartOptions() {
             return {
+                // used in Donut Split
                 legend: {
                     fontSize: fontSize,
                     fontFamily: fontFamily,
@@ -18,14 +19,14 @@ export default {
 						stroke: labelsColor
 					}
                 },
-                // Used in Bar
+                // Used in Bar, Compare Bar, Stacked Bar
                 dataLabels: {
                     style: {
 						fontSize: fontSize,
 						fontFamily: fontFamily
 					}
                 },
-                // Used in Bar
+                // Used in Bar, Compare Bar, Stacked Bar
                 xaxis: {
                     labels: {
                         style: {
@@ -35,7 +36,7 @@ export default {
                         }
                     }
                 },
-                // Used in Bar
+                // Used in Bar, Compare Bar, Stacked Bar
                 yaxis: {
                     labels: {
                         fontSize: fontSize,
