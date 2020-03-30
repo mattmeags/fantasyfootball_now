@@ -39,8 +39,14 @@ export default {
 		i {
 			position: absolute;
 			right: 0;
-			top: 3px;
+			top: 5px;
+			right: 2px;
 			pointer-events: none;
+
+			svg {
+				height: 20px;
+				width: 20px;
+			}
 		}
 	}
 	select {
