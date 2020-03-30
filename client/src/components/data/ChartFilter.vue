@@ -37,9 +37,16 @@ export default {
 		position: relative;
 
 		i {
-		position: absolute;
-		right: 0;
-		top: 3px;
+			position: absolute;
+			right: 0;
+			top: 5px;
+			right: 2px;
+			pointer-events: none;
+
+			svg {
+				height: 20px;
+				width: 20px;
+			}
 		}
 	}
 	select {

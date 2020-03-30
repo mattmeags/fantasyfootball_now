@@ -48,4 +48,12 @@ export function getColors(teamColor) {
     }
     return dataColors;
 }
+const baseUrl = 'http://localhost:4000/';
+export let paths = {
+    loadAllTeamsUrl: `${baseUrl}getTeams`,
+    loadSingleTeamUrl: `${baseUrl}loadTeam`,
+    loadPositinsUrl: `${baseUrl}getPositions`,
+    loadPositionsPageUrl: `${baseUrl}loadPositions`,
+    createUrl: (endPoint) => baseUrl + endPoint,
+}
   

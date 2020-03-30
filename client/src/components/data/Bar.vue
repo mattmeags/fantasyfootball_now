@@ -6,10 +6,22 @@
 
 <script>
 import {trimNames} from '../../assets/scripts/utilities';
-import chartProperties from '../../assets/scripts/chartProperties';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 export default {
     name: 'Bar',
-    props: ['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
+    props: {
+        // The X-axis
+        labels: Array,
+        // Data
+        values: Array,
+        // boolean if horizontal
+        isHorizontal: Boolean,
+        // TODO: find out whaat for
+        trimLabels: Boolean,
+        // Array of team colors
+        colors: Array
+    }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
+    mixins: [dataStyleMixin],
     computed: {
         series() {
             return this.values;
@@ -43,10 +55,6 @@ export default {
                 dataLabels: {
                     enabled: this.isHorizontal,
                     textAnchor: 'start',
-                    style: {
-                        fontSize: chartProperties.labelsFontSizeSmall,
-                        fontFamily:  chartProperties.fontFamily,
-                    },
                     formatter: function (val, opt) {
                         return opt.w.globals.labels[opt.dataPointIndex]
                     }
@@ -56,23 +64,11 @@ export default {
                 },
                 xaxis: {
                     categories: this.trimLabels ? trimNames(this.labels) : this.labels,
-                    labels: {
-                        style: {
-                            fontSize: chartProperties.labelsFontSizeSmall,
-                            fontFamily: chartProperties.fontFamily,
-                            colors: chartProperties.labelsColor
-                        }
-                    }
                 },
                 yaxis: {
                     show: !this.isHorizontal,
                     labels: {
                         show: !this.isHorizontal,
-                        style: {
-                            fontSize: chartProperties.labelsFontSizeSmall,
-                            fontFamily: chartProperties.fontFamily,
-                            colors: chartProperties.labelsColor
-                        }
                     }
                 }
             }
