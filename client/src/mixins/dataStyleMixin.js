@@ -18,12 +18,14 @@ export default {
 						stroke: labelsColor
 					}
                 },
+                // Used in Bar
                 dataLabels: {
                     style: {
 						fontSize: fontSize,
 						fontFamily: fontFamily
 					}
                 },
+                // Used in Bar
                 xaxis: {
                     labels: {
                         style: {
@@ -33,6 +35,7 @@ export default {
                         }
                     }
                 },
+                // Used in Bar
                 yaxis: {
                     labels: {
                         fontSize: fontSize,
