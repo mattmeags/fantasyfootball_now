@@ -2,7 +2,6 @@ const mongoQueries = require('../../scripts/mongoQueries');
 
 module.exports = async function init(db) {
     const qbRequests = await mongoQueries.getAllFullTeam(db);
-    console.log(qbRequests.length);
     const passingData = await Promise.all(qbRequests).then((res) => {
         let passingData = [],
             rushingData = [],
@@ -63,9 +62,7 @@ module.exports = async function init(db) {
                 result[0].rushRec.forEach(passer => {
                     if (passer.playerName !== 'Opp Total' && passer.playerName !== 'Team Total') {
                         if (passer.position.toLowerCase() === 'qb') {
-                            //console.log(passer);
                             rushingData.push({
-                                //id: parseInt(passer.number, 10),
                                 name: passer.playerName,
                                 rushYards: passer.rushYards,
                                 rushTDs: passer.rushTD
