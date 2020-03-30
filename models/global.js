@@ -16,13 +16,13 @@ const GLOBAL_CONSTANTS = {
     rbTableHeader: ['Name', 'Rushing Attempts', 'Rush Yards', 'Rushing Touchdowns', 'Receptions', 'Receiving Yards', 'Receiving Touchdowns', 'Fumbles'],
     receivingTableHeader: ['Name', 'Targets', 'Completions', 'Touchdowns', 'Receiving Yards'],
     qbTableHeader: ['Name', 'Passing Yards', 'Passing Touchdowns', 'Completion Percentage', 'Interceptions', 'Rushing Yards', 'Rushing Touchdowns'],
+    DefenseTableHeader: ['name', 'Points Against', 'Yards Against', 'Passing Yards Against', 'Passing TDs Against', 'Interceptions', 'Rushing Yards Against', 'Rushing TDs Against'],
     colors: ['#97233F', '#A71930', '#241773', '#00338D', '#0085CA', '#0B162A', '#FB4F14', '#311D00', '#041E42', '#FB4F14', '#0076B6', '#203731', '#03202F', '#002C5F', '#D7A22A', '#E31837', '#002A5E', '#002244', '#008E97', '#4F2683', '#002244', '#D3BC8D', '#0B2265', '#125740', '#A5ACAF', '#004C54', '#FFB612', '#AA0000', '#002244', '#D50A0A', '#0C2340', '#773141'],
     fullTeams: function() {
         let fullTeamsArr = [];
         this.teams.forEach((team, index) => {
             fullTeamsArr.push(this.cities[index] + ' ' + team);
         });
-        console.log(fullTeamsArr);
         return fullTeamsArr;
     },
 }
