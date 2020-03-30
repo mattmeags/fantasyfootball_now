@@ -37,9 +37,10 @@ export default {
 		position: relative;
 
 		i {
-		position: absolute;
-		right: 0;
-		top: 3px;
+			position: absolute;
+			right: 0;
+			top: 3px;
+			pointer-events: none;
 		}
 	}
 	select {

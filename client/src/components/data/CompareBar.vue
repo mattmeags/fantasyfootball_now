@@ -36,9 +36,9 @@ export default {
 						},
 					},
 				},
-				// xaxis: {
-				// 	categories: trimNames(this.labels),
-				// },
+				xaxis: {
+					categories: trimNames(this.labels),
+				},
 				legend: {
 					position: 'top',
 				},

@@ -1,5 +1,5 @@
 <template>
-    <div class="chart">
+    <div class="chart">{}
       <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
@@ -17,35 +17,35 @@ export default {
     },
     chartOptions() {
 
-      return {
-        plotOptions: {
-			bar: {
-				horizontal: false,
-				dataLabels: {
-					position: 'top',
+      	return {
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					dataLabels: {
+						position: 'top',
+					},
 				},
 			},
-        },
-        xaxis: {
-        	categories: trimNames(this.labels),
+			xaxis: {
+				categories: trimNames(this.labels),
 
-        },
-        legend: {
-          	position: 'top',
-        },
-        chart: {
-          	stacked: true,
-          	toolbar: {
-            	show: false
-          	},
+			},
+			legend: {
+				position: 'top',
+			},
+			chart: {
+				stacked: true,
+				toolbar: {
+					show: false
+				},
 
-          //TODO: Later phase
-          // events: {
-          //   dataPointSelection: (event, chartContext, config) => {
-          //     this.chartDive(this.labels[config.dataPointIndex]);
-          //   },
-          // },
-        },
+			//TODO: Later phase
+			// events: {
+			//   dataPointSelection: (event, chartContext, config) => {
+			//     this.chartDive(this.labels[config.dataPointIndex]);
+			//   },
+			// },
+			},
         colors: this.colors
       };
     },
