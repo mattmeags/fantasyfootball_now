@@ -6,12 +6,12 @@
 
 <script>
 import {convertStringToInt, trimNames} from '../../assets/scripts/utilities';
-import dataMixin from '../../mixins/dataMixin';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 
 export default {
   name: 'DonutSplit',
   props: ['labels', 'values', 'colors'],
-  mixins: [dataMixin],
+  mixins: [dataStyleMixin],
   computed: {
       series() {
         return convertStringToInt(this.values)

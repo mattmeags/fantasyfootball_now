@@ -1,5 +1,5 @@
 import axios from 'axios';
-import paths from '../assets/scripts/paths';
+import { paths } from '../assets/scripts/utilities';
 
 export default {
     getNavigationItems(context) {

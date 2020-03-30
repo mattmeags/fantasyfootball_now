@@ -70,7 +70,6 @@ import TileHeader from '@/components/global/layout/TileHeader.vue';
 import Loading from '@/components/global/Loading.vue';
 
 //assets
-import paths from '../assets/scripts/paths';
 import axios from 'axios';
 import {mapState, mapActions} from 'vuex';
 

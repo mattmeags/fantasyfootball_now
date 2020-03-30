@@ -23,7 +23,7 @@ export function trimNames (names) {
 };
 export function trimName(name) {
     let finalName;
-    console.log('trimName');
+
     if (name.indexOf('\\') != -1) {
         finalName = name.substring(0, name.indexOf('\\'));
     }
@@ -46,5 +46,13 @@ export function getColors(teamColor) {
         dataColors.push(Color(dataColors[i]).darken(0.3).hex());
     }
     return dataColors;
+}
+const baseUrl = 'http://localhost:4000/';
+export let paths = {
+    loadAllTeamsUrl: `${baseUrl}getTeams`,
+    loadSingleTeamUrl: `${baseUrl}loadTeam`,
+    loadPositinsUrl: `${baseUrl}getPositions`,
+    loadPositionsPageUrl: `${baseUrl}loadPositions`,
+    createUrl: (endPoint) => baseUrl + endPoint,
 }
   

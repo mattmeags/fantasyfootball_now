@@ -6,7 +6,7 @@
 
 <script>
 import {trimNames} from '../../assets/scripts/utilities';
-import dataMixin from '../../mixins/dataMixin';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 
 export default {
   name: 'StackedBar',

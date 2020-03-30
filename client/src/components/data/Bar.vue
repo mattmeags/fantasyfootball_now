@@ -6,11 +6,22 @@
 
 <script>
 import {trimNames} from '../../assets/scripts/utilities';
-import dataMixin from '../../mixins/dataMixin';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 export default {
     name: 'Bar',
-    props: ['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
-    mixins: [dataMixin],
+    props: {
+        // The X-axis
+        labels: Array,
+        // Data
+        values: Array,
+        // boolean if horizontal
+        isHorizontal: Boolean,
+        // TODO: find out whaat for
+        trimLabels: Boolean,
+        // Array of team colors
+        colors: Array
+    }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
+    mixins: [dataStyleMixin],
     computed: {
         series() {
             return this.values;

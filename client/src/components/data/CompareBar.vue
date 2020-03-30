@@ -6,25 +6,25 @@
 
 <script>
 import {trimNames} from '../../assets/scripts/utilities';
-import dataMixin from '../../mixins/dataMixin';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 
 export default {
 	name: 'CompareBar',
 	props: ['labels', 'values', 'colors'],
-	mixins: [dataMixin],
+	mixins: [dataStyleMixin],
 	// using computed over data so its reactive and updates when the props do
 	computed: {
 		series() {
-		return [{
-			name: 'Targets',
-			type: 'column',
-			data: this.values[0].data,
-		},
-		{
-			name: 'Receptions',
-			type: 'column',
-			data: this.values[1].data,
-		}];
+			return [{
+				name: 'Targets',
+				type: 'column',
+				data: this.values[0].data,
+			},
+			{
+				name: 'Receptions',
+				type: 'column',
+				data: this.values[1].data,
+			}];
 		},
 		chartOptions() {
 			return {
@@ -36,9 +36,9 @@ export default {
 						},
 					},
 				},
-				xaxis: {
-					categories: trimNames(this.labels),
-				},
+				// xaxis: {
+				// 	categories: trimNames(this.labels),
+				// },
 				legend: {
 					position: 'top',
 				},
