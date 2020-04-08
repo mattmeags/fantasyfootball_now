@@ -12,7 +12,7 @@ module.exports = {
     },
     getNameFromCode: (code) => {
         return globals.teams[globals.teamCodes.indexOf(code)];
-    }
+    },
     arrayUnique: function (array) {
         console.log(array.length);
         if (array.length) {
