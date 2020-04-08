@@ -1,13 +1,14 @@
-const TEAMS = require('../../models/global').teams,
-    teamCodes = ['crd', 'atl', 'rav', 'buf', 'car', 'chi', 'cin', 'cle', 'dal', 'den', 'det', 'gnb', 'htx', 'clt', 'jax', 'kan', 'sdg', 'ram', 'mia', 'min', 'nwe', 'nor', 'nyg', 'nyj', 'rai', 'phi', 'pit', 'sfo', 'sea', 'tam', 'oti', 'was'],
+//TODO: maybe one init function that takes options object
+const GLOBALS = require('../../models/global'),
+    TEAMS = GLOBALS.teams,
+    teamCodes = GLOBALS.teamCodes,
     passingMenuSelector = '#all_passing',
     passingCsvSelector = '#csv_passing',
     rushRecMenuSelector = '#all_rushing_and_receiving',
     rushRecCsvSelector = '#csv_rushing_and_receiving',
     passFileName = '/passing',
     rushRecFileName = '/rushRec',
-    weekCodes = ['week_1', 'week_2', 'week_3', 'week_4', 'week_5', 'week_6', 'week_7', 'week_8', 'week_9', 'week_10', 'week_11', 'week_12', 'week_13', 'week_14', 'week_15', 'week_16', 'week_17'];
-
+    weekCodes = GLOBALS.weekCodes;
 let exportedPageSelectors = [];
 
 /**
@@ -77,7 +78,7 @@ class TeamPageSelector extends PageSelector {
  */
 class LeagueOffensePageSelector extends PageSelector {
     constructor(year, passing = true, rushing = true, whole = true) {
-        const url = '/years/'+ year + '/',
+        const url = '/years/' + year + '/',
             menuSelectorArr = [passingMenuSelector, '#all_rushing', '#all_team_stats', ],
             csvSelectorArr = [passingCsvSelector, '#csv_rushing', '#csv_team_stats'],
             fileNameArr = ['all/' + year + '/passingOffense', 'all/' + year + '/rushingOffense', 'all/' + year + '/allTeamOffense'],
@@ -105,11 +106,14 @@ class LeagueDefensePageSelector extends PageSelector {
 
 class TeamWeeklyPageSelector {
     constructor(year, week) {
-        this.url = 'years/' + year + week +'.htm';
-        this.linkSelector = '.gamelink';
-        this.offMenuSelector = '#all_player_offense';
-        this.offCsvSelector = '#csv_player_offense';
-        this.defMenuSelector = '#all_player_defense';
+        const baseURL = 'https://www.pro-football-reference.com';
+        this.url = `${baseURL}/years/${year}/${week}.htm`;
+        this.week = week;
+        //this.linkSelector = '.gamelink a';
+
+        //this.offMenuSelector = '#all_player_offense';
+        //this.offCsvSelector = '#csv_player_offense';
+        //this.defMenuSelector = '#all_player_defense';
     }
 }
 
@@ -200,8 +204,8 @@ function fixTeamsPass(missingTeams, year) {
 
 /**
  * @public
- * @param {*} missingTeams 
- * @param {*} year 
+ * @param {array} missingTeams 
+ * @param {string} year 
  */
 function fixTeamsRushRec(missingTeams, year) {
     exportedPageSelectors = [];
@@ -210,20 +214,43 @@ function fixTeamsRushRec(missingTeams, year) {
     return exportedPageSelectors;
 }
 
+/**
+ * 
+ * @param {string} year 
+ * TODO: this isn't done
+ */
 function initWeeklyTeam(year) {
     exportedPageSelectors = [];
     for (var i = 0; i < weekCodes.length; ++i) {
-        new TeamWeeklyPageSelector(
-            year,
-            weekCodes[i]
-        )
+        exportedPageSelectors.push(
+            new TeamWeeklyPageSelector(
+                year,
+                weekCodes[i]
+            )
+        );
     }
+    console.log(exportedPageSelectors);
+    return exportedPageSelectors;
+}
+
+/**
+ * 
+ * @param {*} year 
+ * @param {*} teams 
+ */
+function fixTeams(year, teams) {
+    exportedPageSelectors = [];
+    if (teams) {
+        const scanTeams = getTeamCodes(teams);
+        getTeamSelectors(scanTeams, year);
+    }
+    return exportedPageSelectors;
 }
 
 /**
  * @public
- * @param {*} year 
- * @param {*} teams 
+ * @param {string} year 
+ * @param {array} teams 
  */
 function init(year, teams = TEAMS) {
     exportedPageSelectors = [];
@@ -235,9 +262,11 @@ function init(year, teams = TEAMS) {
 
 module.exports = {
     init: init,
-    fixTeamsPass: fixTeamsPass,
-    fixTeamsRushRec: fixTeamsRushRec,
+    //fixTeamsPass: fixTeamsPass,
+    //fixTeamsRushRec: fixTeamsRushRec,
     getLeagueOffenseSelectors: getLeagueOffenseSelectors,
     getLeagueDefenseSelctors: getLeagueDefenseSelctors,
-    getLeagueSelectors: getLeagueSelectors
+    getLeagueSelectors: getLeagueSelectors,
+    initWeeklyTeam: initWeeklyTeam,
+    fixTeams: fixTeams
 }
