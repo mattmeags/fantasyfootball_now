@@ -4,8 +4,8 @@ const puppeteer = require('puppeteer'),
     pageselectors = require('./data/pageselectors'),
     GLOBALS = require('../models/global'),
     TEAMS = GLOBALS.teams,
-    TEAMCODES = GLOBALS.teamCodes,
     WEEKCODES = GLOBALS.weekCodes,
+    CSVPATH = GLOBALS.csvPath,
     utilties = require('../scripts/utilities');
 
 let browser, 
@@ -319,7 +319,7 @@ async function initScrapeSpecificGameByWeek(missingWeeks) {
  */
 async function writeCSVFiles(data, fileName) {
     try {
-        const fullPath = 'data_files/csv/' + fileName + '.csv';
+        const fullPath = CSVPATH + fileName + '.csv';
         console.log(fullPath);
         if (typeof data === 'string') {
             fs.outputFile(fullPath, data);
@@ -364,7 +364,7 @@ async function parseCheck () {
         missingWeeks = [];
     
     console.log('parseCheck');
-    fs.readdir('data_files/csv/', async (err, createdFolders) => {
+    fs.readdir(CSVPATH, async (err, createdFolders) => {
         console.log('READING first dir??');
         // FOLDER CHECKING
         let missingFolders = expectedFolders.filter(folderName => !createdFolders.includes(folderName));
@@ -384,7 +384,7 @@ async function parseCheck () {
         }
         // FILE CHECKING
         for (let i = 0; i < createdFolders.length; i++) {
-            let createdFiles = fs.readdirSync(`data_files/csv/${createdFolders[i]}/${year}`);
+            let createdFiles = fs.readdirSync(`${CSVPATH}${createdFolders[i]}/${year}`);
             if (createdFolders[i] === 'all') {
                 if (createdFiles.length != numFilesInAllFolder) {
                     // Checking missing files in the all folder

@@ -9,14 +9,9 @@ const GLOBAL_CONSTANTS = {
     qbTableHeader: ['Name', 'Passing Yards', 'Passing Touchdowns', 'Completion Percentage', 'Interceptions', 'Rushing Yards', 'Rushing Touchdowns'],
     teamCodes: ['crd', 'atl', 'rav', 'buf', 'car', 'chi', 'cin', 'cle', 'dal', 'den', 'det', 'gnb', 'htx', 'clt', 'jax', 'kan', 'sdg', 'ram', 'mia', 'min', 'nwe', 'nor', 'nyg', 'nyj', 'rai', 'phi', 'pit', 'sfo', 'sea', 'tam', 'oti', 'was'],
     weekCodes: ['week_1', 'week_2', 'week_3', 'week_4', 'week_5', 'week_6', 'week_7', 'week_8', 'week_9', 'week_10', 'week_11', 'week_12', 'week_13', 'week_14', 'week_15', 'week_16', 'week_17'],
-    //TODO: there needs to be a better way to do this
-    fullTeams: () => {
-        let fullTeamsArr = [];
-        GLOBAL_CONSTANTS.teams.forEach((team, index) => {
-            fullTeamsArr.push(GLOBAL_CONSTANTS.cities[index] + ' ' + team);
-        });
-        return fullTeamsArr;
-    },
+    years: ['2018', '2019'],
+    csvPath: 'data_files/csv/',
+    jsonPath: 'data_files/json/'
 }
 
 GLOBAL_CONSTANTS.amountOfTeams = GLOBAL_CONSTANTS.teams.length,

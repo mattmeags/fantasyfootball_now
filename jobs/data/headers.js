@@ -204,5 +204,30 @@ module.exports = {
         'adjustedNetYardsPerAttempt',
         'sackPercentage',
         'expectedPointsContributedByPassingDefense'
+    ],
+    // [team]/[week_*]
+    teamWeekly: [
+        'name',
+        'team',
+        'passingCompletions',
+        'passingAttempts',
+        'passingYards',
+        'passingTDs',
+        'intsThrown',
+        'sacksTaken',
+        'passingYards',
+        'longestPass',
+        'passerRating',
+        'rushingAttempts',
+        'rushingYards',
+        'rushingTDs',
+        'longestRush',
+        'targets',
+        'receptions',
+        'receivingYards',
+        'receivingTDs',
+        'longestReception',
+        'fumbles',
+        'fumblesLost'
     ]
 }

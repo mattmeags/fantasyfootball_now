@@ -1,17 +1,25 @@
-const globals = require('../models/global');
+const GLOBALS = require('../models/global');
 module.exports = {
     getFullTeamNameFromMascot: (mascot) => {
-        const fullTeams = globals.fullTeams();
-        const fullTeamName = fullTeams[globals.teams.indexOf(mascot)];
+        const fullTeams = getFullTeams();
+        const fullTeamName = fullTeams[GLOBALS.teams.indexOf(mascot)];
         return fullTeamName;
     },
     getCodeFromName: (name) => {
-        const index = globals.teams.findIndex((el) => el === name),
-            code = globals.teamCodes[index];
-        return code;
+        // const index = GLOBALS.teams.findIndex((el) => el === name),
+        //     code = GLOBALS.teamCodes[index];
+        // return code;
+        return GLOBALS.teamCodes[GLOBALS.teams.indexOf(name)];
     },
     getNameFromCode: (code) => {
-        return globals.teams[globals.teamCodes.indexOf(code)];
+        return GLOBALS.teams[GLOBALS.teamCodes.indexOf(code)];
+    },
+    getFullTeams: () => {
+        let fullTeamsArr = [];
+        GLOBALS.teams.forEach((team, index) => {
+            fullTeamsArr.push(GLOBALS.cities[index] + ' ' + team);
+        });
+        return fullTeamsArr;
     },
     arrayUnique: function (array) {
         console.log(array.length);

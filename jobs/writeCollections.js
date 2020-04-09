@@ -7,12 +7,12 @@ function init(callback) {
 
 async function addCollections() {
     const db = mongoClient.getDb();
-    const defense = require('../data_files/json/all/defense');
-    const offense = require('../data_files/json/all/offense');
-    const passDefense = require('../data_files/json/all/passDefense');
-    const rushDefense = require('../data_files/json/all/rushDefense');
-    const rushOffense = require('../data_files/json/all/rushOffense');
-    const passOffense = require('../data_files/json/all/passOffense');
+    const defense = require(`../${globals.jsonPath}/all/defense`);
+    const offense = require(`../${globals.jsonPath}/all/offense`);
+    const passDefense = require(`../${globals.jsonPath}/all/passDefense`);
+    const rushDefense = require(`../${globals.jsonPath}/all/rushDefense`);
+    const rushOffense = require(`../${globals.jsonPath}/all/rushOffense`);
+    const passOffense = require(`../${globals.jsonPath}/all/passOffense`);
     let allCollection = {
         allDefense: defense,
         allOffense: offense,
@@ -52,8 +52,8 @@ async function addCollections() {
 
     let addCollectionPromises = globals.teams.map(team => {
         return new Promise(function(resolve, reject) {
-            const teamRushRecCollection = require('../data_files/json/' + team + '/rushRec');
-            const teamPassCollection = require('../data_files/json/' + team + '/passing');
+            const teamRushRecCollection = require(`../${globals.jsonPath}${team}/rushRec`);
+            const teamPassCollection = require(`../${globals.jsonPath}${team}/passing`);
       
             let teamCollection = [];
             teamCollection.push({
