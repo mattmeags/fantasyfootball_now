@@ -46,7 +46,7 @@ async function allTeam(year) {
     //TODO: this can change I thnk
     await Object.keys(allData).forEach(async (element) => {
         console.log(element);
-        await fs.outputFile(jsonPath + 'all/' + element + '.js', 'module.exports = ' + JSON.stringify(allData[element]));
+        await fs.outputFile(`${jsonPath}all/${year}/${element}.js`, 'module.exports = ' + JSON.stringify(allData[element]));
     });
 }
 
@@ -73,12 +73,16 @@ async function initTeam(team, year) {
             weekFile = `${teamCSVPath}${week}.csv`;
 
         // check file exists, so no error is thrown for bye week
-        await fs.access(weekFile, async (err) => {
-            if (!err) {
-                const teamData = await convertCSV(weekFile, headers.teamWeekly, false, true);
-                await fs.outputFile(`${teamJsonPath}${week}.js`, 'module.exports = ' + JSON.stringify(teamData));
-            }
-        });
+        if (fs.existsSync(weekFile)) {
+            const teamData = await convertCSV(weekFile, headers.teamWeekly, false, true);
+            await fs.outputFile(`${teamJsonPath}${week}.js`, 'module.exports = ' + JSON.stringify(teamData));
+        }
+        // await fs.access(weekFile, async (err) => {
+        //     if (!err) {
+        //         const teamData = await convertCSV(weekFile, headers.teamWeekly, false, true);
+        //         await fs.outputFile(`${teamJsonPath}${week}.js`, 'module.exports = ' + JSON.stringify(teamData));
+        //     }
+        // });
     } 
 };
 

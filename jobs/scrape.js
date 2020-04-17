@@ -10,7 +10,7 @@ const puppeteer = require('puppeteer'),
 
 let browser, 
     page,  
-    year = '2019',
+    year = '2018',
     pageSelectors = pageselectors.init(year, TEAMS),
     weeks = WEEKCODES;
 
@@ -78,7 +78,7 @@ async function initWeekly() {
 
             await scrapeWeekly(weeks[i], year);
 
-            if (i <= numberOfGames) {
+            if (j <= numberOfGames) {
                 let nextSelector = `.game_summaries .game_summary:nth-of-type(${j}) .gamelink a`;
                 await page.waitFor(nextSelector);
                 let nextGameLink = await page.$(nextSelector);
@@ -463,7 +463,7 @@ async function parseCheck () {
 
 function logError(err) {
     console.log('==========================error==================');
-    console.log(error);
+    console.log(err);
 }
 
 //parseCheck();
