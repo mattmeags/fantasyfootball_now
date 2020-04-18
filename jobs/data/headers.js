@@ -101,6 +101,7 @@ module.exports = {
         'yards',
         'tds',
         'longestRushAttempt',
+        'yardsPerAttempt',
         'yardsPerGame',
         'fumbles',
         'expectedPoints'
@@ -176,7 +177,7 @@ module.exports = {
         'yardsAgainst',
         'tdsAgainst',
         'yardsPerAttemptAgainst',
-        'yardsPerGame',
+        'yardsPerGameAgainst',
         'expectedPointsContributedByRushingDefense'
     ],
     // all/passingDefense
