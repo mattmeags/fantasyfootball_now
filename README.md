@@ -18,7 +18,7 @@ npm run scrape - scrapes the web for the data needed
 Give examples
 ```
 
-### Installing
+### Running
 Pull this repo on to your machine.
 In your terminal/command line change directory to the root folder of this proeject: 
 
@@ -59,16 +59,16 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Matt Meagher**
+<!-- 
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project. -->
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+<!-- ## License
 
-## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details -->
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
+<!-- ## Acknowledgments
 
 * Hat tip to anyone whose code was used
 * Inspiration
-* etc
+* etc -->
 
