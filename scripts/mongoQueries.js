@@ -18,5 +18,9 @@ module.exports = {
         //TODO all should be a constant
         const leagueData = await db.collection('all').find({year: year}).toArray();
         return leagueData[0];
+    },
+    getAllDefense: async (db) => {
+        const allDefensePromises = await db.collection('allDefense').find({}).toArray();
+        return allDefensePromises;
     }
 }

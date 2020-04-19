@@ -1,14 +1,27 @@
 <template>
     <div class="chart">
-        <apexchart type=bar height=350 :options="chartOptions" :series="series" ></apexchart>
+        <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
 
 <script>
-import util from '../../assets/scripts/utilities';
+import {trimNames} from '../../assets/scripts/utilities';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 export default {
     name: 'Bar',
-    props: ['labels', 'values', 'isHorizontal', 'trimLabels'],
+    props: {
+        // The X-axis
+        labels: Array,
+        // Data
+        values: Array,
+        // boolean if horizontal
+        isHorizontal: Boolean,
+        // TODO: find out whaat for
+        trimLabels: Boolean,
+        // Array of team colors
+        colors: Array
+    }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
+    mixins: [dataStyleMixin],
     computed: {
         series() {
             return this.values;
@@ -16,34 +29,47 @@ export default {
         chartOptions() {
             return {
                 chart: {
-                height: 350,
-                type: 'bar',
-                // events: {
-                //   click: function (chart, w, e) {
-                //     console.log(chart, w, e)
-                //   }
-                // },
+                    height: '100%',
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    },
+                    // events: {
+                    //   click: function (chart, w, e) {
+                    //     console.log(chart, w, e)
+                    //   }
+                    // },
                 },
-                //colors: colors,
+                colors: this.colors,
                 plotOptions: {
                     bar: {
                         columnWidth: '35%',
+                        columnHeight: '10px',
                         distributed: true,
-                        horizontal: this.isHorizontal
+                        horizontal: this.isHorizontal,
+                        dataLabels: {
+                            position: 'bottom'
+                        }
                     }
                 },
                 dataLabels: {
-                    enabled: false,
+                    enabled: this.isHorizontal,
+                    textAnchor: 'start',
+                    formatter: function (val, opt) {
+                        return opt.w.globals.labels[opt.dataPointIndex]
+                    }
                 },
-
+                legend: {
+                    position: 'top'
+                },
                 xaxis: {
-                    categories: this.trimLabels ? util.trimNames(this.labels) : this.labels,
-                    // labels: {
-                    //     style: {
-                    //         //colors: colors,
-                    //         fontSize: '14px'
-                    //     }
-                    // }
+                    categories: this.trimLabels ? trimNames(this.labels) : this.labels,
+                },
+                yaxis: {
+                    show: !this.isHorizontal,
+                    labels: {
+                        show: !this.isHorizontal,
+                    }
                 }
             }
         }

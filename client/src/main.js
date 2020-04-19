@@ -28,7 +28,12 @@ Vue.config.productionTip = false;
 Vue.component('apexchart', VueApexCharts);
 
 new Vue({
+  data: { loading: false },
   router,
   store,
   render(h) { return h(App); },
 }).$mount('#app');
+
+
+
+

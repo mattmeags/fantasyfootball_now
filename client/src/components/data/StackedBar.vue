@@ -1,40 +1,52 @@
 <template>
-    <div class="chart">
-      <apexchart type=bar height=350 :options="chartOptions" :series="series" ></apexchart>
+    <div class="chart">{}
+      <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart>
     </div>
 </template>
 
 <script>
-import util from '../../assets/scripts/utilities';
+import {trimNames} from '../../assets/scripts/utilities';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 
 export default {
   name: 'StackedBar',
-  props: ['labels', 'values'],
+  props: ['labels', 'values', 'colors'],
   computed: {
     series() {
       return this.values;
     },
     chartOptions() {
-      return {
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            dataLabels: {
-              position: 'top',
-            },
-          },
-        },
-        xaxis: {
-          categories: util.trimNames(this.labels),
-        },
-        chart: {
-          stacked: true,
-          events: {
-            dataPointSelection: (event, chartContext, config) => {
-              this.chartDive(this.labels[config.dataPointIndex]);
-            },
-          },
-        },
+
+      	return {
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					dataLabels: {
+						position: 'top',
+					},
+				},
+			},
+			xaxis: {
+				categories: trimNames(this.labels),
+
+			},
+			legend: {
+				position: 'top',
+			},
+			chart: {
+				stacked: true,
+				toolbar: {
+					show: false
+				},
+
+			//TODO: Later phase
+			// events: {
+			//   dataPointSelection: (event, chartContext, config) => {
+			//     this.chartDive(this.labels[config.dataPointIndex]);
+			//   },
+			// },
+			},
+        colors: this.colors
       };
     },
   },
@@ -45,3 +57,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .chart {
+    top: 15px;
+  }
+</style>

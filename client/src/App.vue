@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Header from '@/components/header/Header.vue';
+import Header from '@/components/global/header/Header.vue';
 // import Menu from '@/components/header/Menu.vue';
 import Navigation from '@/components/global/Navigation.vue';
 
@@ -27,24 +27,26 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+<style lang="scss">
+@import './assets/styles/variables';
+@import './assets/styles/typography';
+
+body {
+    background: $primary;
+    color: $tietary;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+main {
+  padding-top: 25px;
   text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+  position: relative;
+  left: $nav-width;
+  width: calc(100% - #{$nav-width});
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+
 </style>

@@ -1,31 +1,46 @@
 <template>
     <div class="chart">
-      <apexchart width="350" type="donut" v-bind:options="chartOptions" v-bind:series="series"></apexchart>
+      <apexchart type="donut" height=266 v-bind:options="chartOptions" v-bind:series="series"></apexchart>
     </div>
 </template>
 
 <script>
-import utilities from '../../assets/scripts/utilities';
+import {convertStringToInt, trimNames} from '../../assets/scripts/utilities';
+import dataStyleMixin from '../../mixins/dataStyleMixin';
 
 export default {
   name: 'DonutSplit',
-  props: ['labels', 'values'],
+  props: ['labels', 'values', 'colors'],
+  mixins: [dataStyleMixin],
   computed: {
       series() {
-        return utilities.convertStringToInt(this.values)
+        return convertStringToInt(this.values)
       },
 
       chartOptions() {
         return {
-          chart: {
-            type: 'donut',
-            events: {
-              dataPointSelection: (event, chartContext, config) => {
-                this.chartDive(this.labels[config.dataPointIndex]);
-              },
-            },
+          	chart: {
+				type: 'donut',
+				// width: '100%',
+				// height: '100%'
+				//height:,
+				// events: {
+				//   dataPointSelection: (event, chartContext, config) => {
+				//     this.chartDive(this.labels[config.dataPointIndex]);
+				//   },
+				//},
+          	},
+          	labels: trimNames(this.labels),
+          	legend: {
+				fontSize: '16px',
+				horizontalAlign: 'left',
+				position: 'right',
+				offsetY: 50,
+				itemMargin: {
+					horizontal: 5
+				}
           },
-          labels: utilities.trimNames(this.labels),
+          colors: this.colors
         }
       },
   },
@@ -36,3 +51,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .chart {
+    height: 100%;
+    width: 100%;
+    text-align: left;
+  }
+</style>

@@ -5,7 +5,6 @@
 </template>
 
 <script>
-    //TODO bind dynamic class
     export default {
         name: 'ColorBlock',
         props: ['colorClass']

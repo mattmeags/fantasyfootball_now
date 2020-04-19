@@ -25,7 +25,7 @@ async function init(db, position) {
                 value: 0
             };
         res.forEach(result => {
-            if (result[0].rushRec) {
+            if (result.length > 0 && 'rushRec' in result[0]) {
                 result[0].rushRec.forEach(player => {
                     if (player.playerName !== 'Opp Total' && player.playerName !== 'Team Total') {
                         if (player.position.toLowerCase() === position) {

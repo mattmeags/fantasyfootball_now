@@ -1,12 +1,4 @@
 const mongoQueries = require('../../scripts/mongoQueries');
-//const mongodbClient = require('../../mongoClient');
-
-
-// mongodbClient.createConnection(async () => {
-//     db = mongodbClient.getDb();
-//     const test = await init(db);
-//     await console.log('test: ', test);
-// });
 
 module.exports = async function init(db) {
     const qbRequests = await mongoQueries.getAllFullTeam(db, '2018');
@@ -35,7 +27,7 @@ module.exports = async function init(db) {
                 value: 0
             };
         res.forEach(result => {
-            if (result[0].passing) {
+            if (result.length > 0 && result[0].passing) {
                 result[0].passing.forEach(passer => {
                     if (passer.playerName !== 'Opp Total' && passer.playerName !== 'Team Total') {
                         if (passer.position.toLowerCase() === 'qb' || passer.position === '') {
@@ -67,13 +59,11 @@ module.exports = async function init(db) {
                 });
             }
             //get rushing data for qbs
-            if (result[0].rushRec) {
+            if (result.length > 0 && result[0].rushRec) {
                 result[0].rushRec.forEach(passer => {
                     if (passer.playerName !== 'Opp Total' && passer.playerName !== 'Team Total') {
                         if (passer.position.toLowerCase() === 'qb') {
-                            //console.log(passer);
                             rushingData.push({
-                                //id: parseInt(passer.number, 10),
                                 name: passer.playerName,
                                 rushYards: passer.rushYards,
                                 rushTDs: passer.rushTD
@@ -102,7 +92,6 @@ module.exports = async function init(db) {
             mostInts: mostInts,
             mostRushingTds: mostRushingTds
         };
-        //console.log(passingData);
     });
     return passingData;
 }

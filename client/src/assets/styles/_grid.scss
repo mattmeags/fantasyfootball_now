@@ -1,75 +1,130 @@
-$gutter: 1%;
+@import './variables';
+@import './mixins';
+$gutter: 0.875rem;
+
+//TODO: really go through this and see whats used and lremove tall andh- classes not needed
 .container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    //flex-direction: column;
     box-sizing: border-box;
-    padding: 0 25px;
+    padding: 20px 10px 0;
+    overflow: hidden;
+    @include respondUp($tabletViewport) {
+        padding: 25px;
+    }
+}
 
-    .row {
-        flex-basis: 100%;
+.row {
+    flex-basis: 100%;
+    margin-bottom: $gutter;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+
+    .tile {
         margin-bottom: $gutter;
-        display: flex;
-        justify-content: space-between;
 
-        .tile {
+        &:last-of-type {
+            margin-right: 0;
+        }
+
+        @include respondUp($tabletViewport) {
+            margin-bottom: 0;
             margin-right: $gutter;
-
-            &:last-of-type {
-                margin-right: 0;
-            }
         }
     }
 
+    &.tall {
+        @include respondUp($tabletViewport) {
+            max-height: calc(100vh * .7);
+        }
+    }
+
+    @include respondUp($tabletViewport) {
+        flex-wrap: nowrap;
+    }
+}
+
+.tile-stack-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0;
+    
+
+    @include respondUp($tabletViewport) {
+        margin-right: $gutter;
+        
+        &:last-child {
+            margin-right: 0;
+        }
+
+        .tile {
+            margin-right: 0;
+
+            &:not(:last-child) {
+                margin-bottom: $gutter;
+            }
+        }
+    }
+}
+.w-12,
+.w-11,
+.w-10,
+.w-9,
+.w-8,
+.w-7,
+.w-6,
+.w-5,
+.w-4,
+.w-3,
+.w-2,
+.w-1 {
+    flex-basis: 100%;
+}
+@include respondUp($tabletViewport) {
     .w- {
         &12 {
-            flex-basis: 100%;
+            max-width: 100%;
         }
         &11 {
-           width: 91%;
+            max-width: 91%;
         }
         &10 {
-           flex-basis: 83%; 
+            max-width: 83%; 
         }
         &9 {
-            flex-basis: 75%;
+            max-width: 75%;
         }
         &8 {
-            flex-basis: 66%;
+            max-width: 66%;
         }
         &7{
-            flex-basis: 58%;
+            max-width: 58%;
         }
         &6 {
-            flex-basis: 50%;
+            max-width: 50%;
         }
         &5 {
-            flex-basis: 42%;
+            max-width: 42%;
         }
         &4 {
-            flex-basis: 33%; 
+            max-width: 33%; 
         }
         &3 {
-            flex-basis: 25%;
+            max-width: 25%;
         }
         &2 {
-            flex-basis: 16% 
+            max-width: 16% 
         }
         &1 {
-            flex-basis: 8%;
+            max-width: 8%;
         }
         &*:last-of-type {
             background: red;
         }
     }
-
-    .h- {
-        &2 {
-            height: 250px;
-        }
-        &1 {
-            height: 125px;
-        }
-    }
 }
+

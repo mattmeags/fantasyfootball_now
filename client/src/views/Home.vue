@@ -11,7 +11,7 @@
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue';
 
-const paths = require('../assets/scripts/paths');
+import { paths } from '../assets/scripts/utilities'
 
 export default {
   name: 'home',
@@ -23,10 +23,10 @@ export default {
   }),
   mounted() {
     fetch(paths.loadAllTeamsUrl)
-      .then(response => response.json())
-      .then((result) => {
-        this.messages = result;
-      });
+		.then(response => response.json())
+		.then((result) => {
+			this.messages = result;
+		});
   },
 };
 
