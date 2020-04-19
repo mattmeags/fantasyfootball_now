@@ -1,29 +1,30 @@
 const mongoQueries = require('../../scripts/mongoQueries');
 
 module.exports = async function(db) {
-    const rbRequests = await mongoQueries.getAllFullTeam(db);
+    const rbRequests = await mongoQueries.getAllFullTeam(db, '2019');
     const rbData = await Promise.all(rbRequests).then(res => {
-        let rbDataTable = [],
-            mostTouches = {
-                title: 'Touches Leader',
-                name: '',
-                value: 0
-            },
-            mostReceptions = {
-                title: "Receptions Leader",
-                name: '',
-                value: 0
-            },
-            mostYards = {
-                title: "Rushing Yards Leader",
-                name: '',
-                value: 0
-            },
-            mostTds = {
-                title: 'Rushing Touchdowns Leader',
-                name: '',
-                value: 0
-            };
+    let rbDataTable = [],
+        mostTouches = {
+            title: 'Touches Leader',
+            name: '',
+            value: 0
+        },
+        mostReceptions = {
+            title: "Receptions Leader",
+            name: '',
+            value: 0
+        },
+        mostYards = {
+            title: "Rushing Yards Leader",
+            name: '',
+            value: 0
+        },
+        mostTds = {
+            title: 'Rushing Touchdowns Leader',
+            name: '',
+            value: 0
+        };
+        console.log(res);  
         res.forEach(result => {
             if (result.length > 0 && result[0].rushRec) {
                 result[0].rushRec.forEach(player => {

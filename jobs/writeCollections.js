@@ -1,86 +1,144 @@
 const mongoClient = require('../mongoClient');
 const globals = require('../models/global');
+const fs = require('fs');
 
 function init(callback) {
     mongoClient.createConnection(callback);
 }
 
 async function addCollections() {
-    const db = mongoClient.getDb();
-    const defense = require('../data_files/json/all/defense');
-    const offense = require('../data_files/json/all/offense');
-    const passDefense = require('../data_files/json/all/passDefense');
-    const rushDefense = require('../data_files/json/all/rushDefense');
-    const rushOffense = require('../data_files/json/all/rushOffense');
-    const passOffense = require('../data_files/json/all/passOffense');
-    let allCollection = {
-        allDefense: defense,
-        allOffense: offense,
-        allPassDefense: passDefense,
-        allRushDefense: rushDefense,
-        allRushOffense: rushOffense,
-        allPassOffense: passOffense
-    };
-    // db.collection('all').drop();
-    // db.collection('all').insertMany(allCollection, function(err, res) {
-    //     if (err) {
-    //         console.log('line 23');
-    //         throw (err);
-    //       }
-    // });
-    // db.collection('allDefense').insertMany(defense, function(err, res) {
-    //     if (err) {
-    //         throw (err);
-    //     }
-    // });
+    try {
+        const db = await mongoClient.getDb(),
+            allCollectionPromises = [];
+        // let allCollection = [];
+        let teamData = {},
+            allData = {
+                allDefense: [],
+                allOffense: [],
+                allPassDefense: [],
+                allRushDefense: [],
+                allRushOffense: [],
+                allPassOffense: []
+            };
 
-    let allCollectionPromises = Object.keys(allCollection).map((key) => {
-        return new Promise(function(resolve, reject) {
-            new Promise(function(resolve, reject) {
-                db.collection(key).drop();
-                resolve();
-            }).then(() => {
-                db.collection(key).insertMany(allCollection[key], function(err, res) {
-                    if (err) {
-                        throw (err);
+        //Create structure of league wide data
+        for (let year of globals.years) {
+            const defense = await require(`../${globals.jsonPath}all/${year}/defense`),
+                offense = require(`../${globals.jsonPath}all/${year}/offense`),
+                passDefense = require(`../${globals.jsonPath}all/${year}/passDefense`),
+                rushDefense = require(`../${globals.jsonPath}all/${year}/rushDefense`),
+                rushOffense = require(`../${globals.jsonPath}all/${year}/rushOffense`),
+                passOffense = require(`../${globals.jsonPath}all/${year}/passOffense`);
+
+            // Add year property to each object - better for querying
+            defense.forEach(obj => obj.year = year);
+            offense.forEach(obj => obj.year = year);
+            passDefense.forEach(obj => obj.year = year);
+            rushDefense.forEach(obj => obj.year = year);
+            rushOffense.forEach(obj => obj.year = year);
+            passOffense.forEach(obj => obj.year = year);
+
+            
+            await allData.allDefense.push(...defense);
+            await allData.allOffense.push(...offense);
+            await allData.allPassDefense.push(...passDefense);
+            await allData.allRushDefense.push(...rushDefense);
+            await allData.allRushOffense.push(...rushOffense);
+            await allData.allPassOffense.push(...passOffense);
+
+        }
+
+        //Create structure of team specific data
+        for (let team of globals.teams) {
+            //console.log(team);
+            teamData[team] = [];
+            for (const year of globals.years) {
+                const teamRushRecCollection = require(`../${globals.jsonPath}${team}/${year}/rushRec`),
+                    teamPassCollection = require(`../${globals.jsonPath}${team}/${year}/passing`);
+                //console.log(year);
+                let teamObj = {
+                    year: year,
+                    rushRec: teamRushRecCollection,
+                    passing: teamPassCollection
+                };
+
+                for (const week of globals.weekCodes) {
+                    const weekFile = `${globals.jsonPath}${team}/${year}/${week}.js`;
+
+                    //console.log(week);
+                    if (fs.existsSync(weekFile)) {
+                        //console.log(fs.existsSync(weekFile));
+                        const weekCollection = require(`../${weekFile}`);
+                        if (!weekCollection) {
+                            console.log(weekCollection);
+                        }
+                        teamObj[week] = weekCollection;
                     }
-                    resolve(res);
+                }
+
+                teamData[team].push(teamObj);
+            }
+        }
+        //await console.log(allCollection);
+        console.log(Object.keys(allData));
+        for (let key in allData) {
+            //await console.log(key);
+            await allCollectionPromises.push(
+                
+                new Promise(function (resolve, reject) {
+                    new Promise(async function (resolve, reject) {
+                        await console.log('drop key: ', key);
+                        await db.collection(key).drop();
+                        //await console.log('dropped');
+                        await resolve();
+                    }).then(() => {
+                        console.log('+++++++++++++++');
+                        console.log(key)
+                        //console.log(allData[key]);
+                        db.collection(key).insertMany(allData[key], function (err, res) {
+                            if (err) {
+                                console.log('this key is gving me shit: ', key);
+                                throw (err);
+                            }
+                            console.log('bet its failing here');
+                            resolve(res);
+                        });
+                    });
+                })
+            );
+        }
+            
+        
+
+        const teamCollectionPromises = await Object.keys(teamData).map((key) => {
+            return new Promise(function (resolve, reject) {
+                new Promise(async function (resolve, reject) {
+                    //await db.collection(key).drop();
+                    await resolve();
+                }).then(() => {
+                    //console.log(teamData);
+                    console.log('key: ', key);
+                    db.collection(key).insertMany(teamData[key], function (err, res) {
+                        if (err) {
+                            console.log('error here');
+                            throw (err);
+                        }
+                        resolve(res);
+                    });
                 });
             });
         });
-    });
 
-    let addCollectionPromises = globals.teams.map(team => {
-        return new Promise(function(resolve, reject) {
-            const teamRushRecCollection = require('../data_files/json/' + team + '/rushRec');
-            const teamPassCollection = require('../data_files/json/' + team + '/passing');
-      
-            let teamCollection = [];
-            teamCollection.push({
-                rushRec: teamRushRecCollection,
-                passing: teamPassCollection
-            });
-            new Promise(function(resolve, reject) {
-                db.collection(team).drop();
-                resolve();
-            }).then(() => {
-                db.collection(team).insertMany(teamCollection, function(err, res) {
-                    if (err) {
-                        console.log('error here');
-                        throw (err);
-                    }
-                    resolve(res);
-                });
-            });
-        }); 
-    });
+        let collectionPromises = await allCollectionPromises.concat(teamCollectionPromises);
 
-    let collectionPromises = allCollectionPromises.concat(addCollectionPromises);
-
-    Promise.all(collectionPromises).then(() => {
-        console.log('done');
-        mongoClient.closeConnection();
-    });
+        await Promise.all(collectionPromises).then(() => {
+            console.log('done');
+            mongoClient.closeConnection();
+        });
+        console.log(teamData);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 init(addCollections);

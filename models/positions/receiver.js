@@ -1,7 +1,7 @@
 const mongoQueries = require('../../scripts/mongoQueries');
 
 async function init(db, position) {
-    const receivingRequests = mongoQueries.getAllFullTeam(db);
+    const receivingRequests = mongoQueries.getAllFullTeam(db, '2018');
     const receivingData = await Promise.all(receivingRequests).then(res => {
         let receivingDataTable = [],
             mostReceptions = {

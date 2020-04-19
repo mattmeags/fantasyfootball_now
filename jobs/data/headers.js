@@ -101,6 +101,7 @@ module.exports = {
         'yards',
         'tds',
         'longestRushAttempt',
+        'yardsPerAttempt',
         'yardsPerGame',
         'fumbles',
         'expectedPoints'
@@ -176,7 +177,7 @@ module.exports = {
         'yardsAgainst',
         'tdsAgainst',
         'yardsPerAttemptAgainst',
-        'yardsPerGame',
+        'yardsPerGameAgainst',
         'expectedPointsContributedByRushingDefense'
     ],
     // all/passingDefense
@@ -204,5 +205,30 @@ module.exports = {
         'adjustedNetYardsPerAttempt',
         'sackPercentage',
         'expectedPointsContributedByPassingDefense'
+    ],
+    // [team]/[week_*]
+    teamWeekly: [
+        'name',
+        'team',
+        'passingCompletions',
+        'passingAttempts',
+        'passingYards',
+        'passingTDs',
+        'intsThrown',
+        'sacksTaken',
+        'passingYards',
+        'longestPass',
+        'passerRating',
+        'rushingAttempts',
+        'rushingYards',
+        'rushingTDs',
+        'longestRush',
+        'targets',
+        'receptions',
+        'receivingYards',
+        'receivingTDs',
+        'longestReception',
+        'fumbles',
+        'fumblesLost'
     ]
 }
