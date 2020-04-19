@@ -1,4 +1,3 @@
-//TODO: maybe one init function that takes options object
 const GLOBALS = require('../../models/global'),
     TEAMS = GLOBALS.teams,
     teamCodes = GLOBALS.teamCodes,
@@ -104,16 +103,15 @@ class LeagueDefensePageSelector extends PageSelector {
     }
 }
 
+/**
+ * @class
+ * @description - Page Selector object for specific week scrape
+ */
 class TeamWeeklyPageSelector {
     constructor(year, week) {
         const baseURL = 'https://www.pro-football-reference.com';
         this.url = `${baseURL}/years/${year}/${week}.htm`;
         this.week = week;
-        //this.linkSelector = '.gamelink a';
-
-        //this.offMenuSelector = '#all_player_offense';
-        //this.offCsvSelector = '#csv_player_offense';
-        //this.defMenuSelector = '#all_player_defense';
     }
 }
 
@@ -129,7 +127,6 @@ function getTeamCodes(teams) {
     teams.forEach(element => {
         teamCodesArr.push(new TeamCode(element));
     });
-    console.log(teamCodesArr);
     return teamCodesArr;
 }
 
@@ -192,32 +189,8 @@ function getLeagueDefenseSelctors(year, pass = true, rush = true, whole = true) 
 
 /**
  * @public
- * @param {array} missingTeams 
  * @param {string} year 
- */
-function fixTeamsPass(missingTeams, year) {
-    exportedPageSelectors = [];
-    const scanMissingTeams = getTeamCodes(missingTeams);
-    getTeamSelectors(scanMissingTeams, year, true, false);
-    return exportedPageSelectors;
-}
-
-/**
- * @public
- * @param {array} missingTeams 
- * @param {string} year 
- */
-function fixTeamsRushRec(missingTeams, year) {
-    exportedPageSelectors = [];
-    const scanMissingTeams = getTeamCodes(missingTeams);
-    getTeamSelectors(scanMissingTeams, year, false, true);
-    return exportedPageSelectors;
-}
-
-/**
- * 
- * @param {string} year 
- * TODO: this isn't done
+ * @description - create page selectors for specific week
  */
 function initWeeklyTeam(year) {
     exportedPageSelectors = [];
@@ -229,14 +202,14 @@ function initWeeklyTeam(year) {
             )
         );
     }
-    console.log(exportedPageSelectors);
     return exportedPageSelectors;
 }
 
 /**
- * 
- * @param {*} year 
- * @param {*} teams 
+ * @public
+ * @param {String} year 
+ * @param {Array} teams 
+ * @description -  creates pageselectors for missing teams
  */
 function fixTeams(year, teams) {
     exportedPageSelectors = [];
@@ -262,8 +235,6 @@ function init(year, teams = TEAMS) {
 
 module.exports = {
     init: init,
-    //fixTeamsPass: fixTeamsPass,
-    //fixTeamsRushRec: fixTeamsRushRec,
     getLeagueOffenseSelectors: getLeagueOffenseSelectors,
     getLeagueDefenseSelctors: getLeagueDefenseSelctors,
     getLeagueSelectors: getLeagueSelectors,

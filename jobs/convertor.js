@@ -7,7 +7,6 @@ const csvtojson = require('csvtojson'),
     jsonPath = globals.jsonPath,
     csvPath = globals.csvPath;
 
-//TODO: update comments
 /**
  * @function onError
  * @description - handles a clean error if csv convert fails
@@ -42,11 +41,9 @@ async function allTeam(year) {
         rushDefense: allRushDefenseData
     }
 
-    //TODO: this can change I thnk
-    await Object.keys(allData).forEach(async (element) => {
-        console.log(element);
-        await fs.outputFile(`${jsonPath}all/${year}/${element}.js`, 'module.exports = ' + JSON.stringify(allData[element]));
-    });
+    for (let key in allData) {
+        await fs.outputFile(`${jsonPath}all/${year}/${key}.js`, 'module.exports = ' + JSON.stringify(allData[key]));
+    }
 }
 
 /**
