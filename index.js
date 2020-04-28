@@ -5,6 +5,7 @@ const express = require('express'),
 const mongodbClient = require('./mongoClient');
 const globals = require('./models/global');
 const mongoQueries = require('./scripts/mongoQueries');
+let year = globals.years.reverse()[0];
 
 let db;
 
@@ -56,7 +57,8 @@ app.post('/loadTeam', async (req, res) => {
     console.log('load team');
     console.log(req.body);
     const teamModel = require('./models/teamModel');
-    const team = await teamModel(req.body.teamId, db);
+    console.log('team yar::', year)
+    const team = await teamModel(req.body.teamId, db, year);
     await res.json(team);
 });
 
@@ -67,7 +69,7 @@ app.get('/loadPlayer', (req, res) => {
 //TODO: can we make these one call? repeating alot of stuff
 app.post('/filterGroupedColumnData', async (req, res) => {
     const getGroupedColumnData = require('./models/data/groupColData');
-    const teamData = await getFullTeam(req.body.team, db);
+    const teamData = await mongoQueries.getFullTeam(req.body.team, year, db);
     const filteredGroupedColumnData = await getGroupedColumnData(req.body.seriesValues, teamData[0].rushRec, req.body.filter)
     let result = {};
     result[req.body.updateState] = await filteredGroupedColumnData;
@@ -76,7 +78,7 @@ app.post('/filterGroupedColumnData', async (req, res) => {
 
 app.post('/filterStackedColumnData', async (req, res) => {
     const getStackedColumnData = require('./models/data/stackedColData');
-    const teamData = await mongoQueries.getFullTeam(req.body.team, db);
+    const teamData = await mongoQueries.getFullTeam(req.body.team, year, db);
     const filteredStackedColumnData = await getStackedColumnData(req.body.seriesValues, teamData[0].rushRec, req.body.filter);
     let result = {};
     result[req.body.updateState] = await filteredStackedColumnData;
@@ -85,7 +87,7 @@ app.post('/filterStackedColumnData', async (req, res) => {
 
 app.post('/filterColumnData', async (req, res) => {
     const getColumnPlayerData = require('./models/data/getColumnPlayerData');
-    const teamData = await mongoQueries.getFullTeam(req.body.team, db);
+    const teamData = await mongoQueries.getFullTeam(req.body.team, year, db);
     const filteredColumnData = await getColumnPlayerData(req.body.seriesValues, teamData[0].rushRec, req.body.filter);
     let result = {};
     result[req.body.updateState] = await filteredColumnData;
@@ -96,14 +98,14 @@ app.post('/loadPositions', async (req, res) => {
     const position = req.body.position;
     if (position === 'Running Back') {
         const RBModel = require('./models/positions/runningback');
-        const rushingData = await RBModel(db);
+        const rushingData = await RBModel(db, year);
         await res.json( {
             header: globals.rbTableHeader,
             position: rushingData
         });
     } else if (position === 'Quarterback') {
         const QBModel = require('./models/positions/quarterback');
-        const passingData = await QBModel(db);
+        const passingData = await QBModel(db, year);
         await res.json({
            header: globals.qbTableHeader, 
            position: passingData
@@ -112,9 +114,9 @@ app.post('/loadPositions', async (req, res) => {
         const ReceivingModel = require('./models/positions/receiver');
         let receivingData;
         if (position === 'Wide Receiver') {
-            receivingData = await ReceivingModel(db, 'wr');
+            receivingData = await ReceivingModel(db, 'wr', year);
         } else {
-            receivingData = await ReceivingModel(db, 'te');
+            receivingData = await ReceivingModel(db, 'te', year);
         }
         await res.json({
             header: globals.receivingTableHeader,
@@ -129,7 +131,20 @@ app.post('/loadPositions', async (req, res) => {
         });
     }
     console.log(req.body.position);
-})
+});
+
+app.get('/getYears', (req, res) => {
+    res.json({
+        years: globals.years
+    });
+});
+
+app.post('/updateYear', (req, res) => {
+    year = req.body.year;
+    res.json({
+        success: true
+    })
+});
 
 const port = process.env.PORT || 4000;
 

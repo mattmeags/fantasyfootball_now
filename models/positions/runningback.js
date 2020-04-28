@@ -1,7 +1,7 @@
 const mongoQueries = require('../../scripts/mongoQueries');
 
-module.exports = async function(db) {
-    const rbRequests = await mongoQueries.getAllFullTeam(db, '2019');
+module.exports = async function(db, year) {
+    const rbRequests = await mongoQueries.getAllFullTeam(db, year);
     const rbData = await Promise.all(rbRequests).then(res => {
     let rbDataTable = [],
         mostTouches = {

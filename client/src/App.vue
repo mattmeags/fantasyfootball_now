@@ -2,10 +2,10 @@
   <div id="app">
     <Navigation></Navigation>
     <Header></Header>
-    <div id="nav">
+   <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
+    </div>-->
     <main>
       <router-view/>
     </main>
@@ -28,9 +28,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import './assets/styles/variables';
-@import './assets/styles/typography';
+@import '@/assets/styles';
 
+html {
+  height: 100%;
+}
 body {
     background: $primary;
     color: $tietary;
@@ -38,14 +40,21 @@ body {
     width: 100%;
     font-family: 'Roboto', sans-serif;
     margin: 0;
+    height: 100%;
 }
 
 main {
-  padding-top: 25px;
   text-align: center;
   position: relative;
   left: $nav-width;
   width: calc(100% - #{$nav-width});
+  height: 100%;
+  min-height: calc(100% - #{$header-height});
+  margin-top: $header-height;
+}
+
+#app {
+  height: 100%;
 }
 
 

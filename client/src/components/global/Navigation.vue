@@ -25,7 +25,7 @@
                     <div class="close-icon" v-on:click="toggleMobileMenu()">
                         <eva-icon name="close-outline" fill="white"></eva-icon>
                     </div>
-                    <li><router-link to="/" >Landing</router-link></li>
+                    <li><router-link to="/" v-on:click="toggleMobileMenu()">Landing</router-link></li>
                     <li v-on:click="toggleDeepNav('team')"><span>Teams</span> <eva-icon name="arrow-ios-forward-outline" fill="white"></eva-icon></li>
                     <li v-on:click="toggleDeepNav('position')"><span>Positions</span> <eva-icon name="arrow-ios-forward-outline" fill="white"></eva-icon></li>
                 </ul>
@@ -36,7 +36,7 @@
                     <eva-icon name="close-outline" fill="white" v-on:click="closeMobileMenuFromDeep('team')"></eva-icon>
                 </li>
                 <li class="title">Teams</li>
-                <li v-for="team in teams" v-bind:key="team" v-on:click="toggleDeepNav('team')"><router-link v-bind:to="'/team/' + team">{{team}}</router-link></li>
+                <li v-for="team in teams" v-bind:key="team" v-on:click="closeMobileMenuFromDeep('team')"><router-link v-bind:to="'/team/' + team">{{team}}</router-link></li>
             </ul>
             <ul class="hidden-position-nav" v-bind:class="{active: showPositionNav}">
                 <li class="mobile-only mobile-level-two-actions">
@@ -44,7 +44,7 @@
                     <eva-icon name="close-outline" fill="white" v-on:click="closeMobileMenuFromDeep('position')"></eva-icon>
                 </li>
                 <li class="title">Position</li>
-                <li v-for="position in positions" v-bind:key="position" v-on:click="toggleDeepNav('position')"><router-link v-bind:to="'/position/' + position">{{position}}</router-link></li>
+                <li v-for="position in positions" v-bind:key="position" v-on:click="closeMobileMenuFromDeep('position')"><router-link v-bind:to="'/position/' + position">{{position}}</router-link></li>
             </ul>
         </div>
     </nav>
@@ -71,7 +71,6 @@ export default {
     }),
     methods: {
         toggleDeepNav: function(cat) {
-            console.log('toggledeepnav');
             if (cat === 'team') {
                 this.showTeamNav = !this.showTeamNav;
                 this.showTeamText = false;
@@ -117,25 +116,26 @@ export default {
             test: 'test'
         }),
     },
-    // beforeRouteUpdate() {
-    //     this.selected = this.$route.name;
-    // },
+
     // get navigation and search suggestions data
     created() {
         this.getNavigationItems();
+        //Set selected on creation
+        this.selected = this.$route.name;
+
     },
 }
 </script>
 
 <style lang="scss">
-    @import "../../assets/styles/_variables";
-    @import "../../assets/styles/_visibility";
-
+    @import '@/assets/styles';
+    //TODO: close should have same slide animation
+    //TODO: BEM this?
     nav {
         position: fixed;
         left: 0;
         top: 48px;
-        height: 95%;
+        height: 100%;
         width: $nav-width;
         background: $secondary;
         z-index: $domiant-index;

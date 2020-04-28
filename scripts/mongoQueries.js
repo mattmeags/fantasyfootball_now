@@ -2,7 +2,7 @@ const globals = require('../models/global');
 
 module.exports = {
     getFullTeam: async (team, year, db) => {
-        const rushRecData = await db.collection(team).find({}).toArray();
+        const rushRecData = await db.collection(team).find({year: year}).toArray();
         return rushRecData;
     },
     getAllFullTeam: (db, year) => {
@@ -22,5 +22,13 @@ module.exports = {
     getAllDefense: async (db) => {
         const allDefensePromises = await db.collection('allDefense').find({}).toArray();
         return allDefensePromises;
+    },
+    getAvgRushAgainst: async (db, year) => {
+        const allData = await db.collection('allDefense').find({$and: [{'name': 'Avg Team'}, {'year': year}]}).toArray();
+        return allData[0].rushingYardsAgainst;
+    },
+    getAvgPassAgainst: async (db, year) => {
+        const allData = await db.collection('allDefense').find({$and: [{'name': 'Avg Team'}, {'year': year}]}).toArray();
+        return allData[0].passingYardsAgainst;
     }
 }

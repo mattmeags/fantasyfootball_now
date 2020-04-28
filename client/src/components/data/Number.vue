@@ -1,7 +1,7 @@
 <template>
     <article class="number-viz-wrapper">
-        <h3 class="type--body type--color-tietary">{{title}}</h3>
-        <div class="type--h4 type--color-secondary">{{formattedDescriptor}}</div>
+        <h2 class="type--body type--color-tietary type--h2">{{title}}</h2>
+        <h3 class="type--h3 type--color-secondary">{{formattedDescriptor}}</h3>
         <div class="type--h1 type--color-light-pink number">{{number}}</div>
     </article>
 </template>

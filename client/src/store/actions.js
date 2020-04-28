@@ -27,6 +27,7 @@ export default {
         });
     },
     filterCharts(context, payload) {
+        console.log(payload);
         const path = paths.createUrl(payload.api);
         axios.post(path, {
             team: payload.teamMascot,
@@ -47,4 +48,22 @@ export default {
             context.commit('setGlobalTitle', result.data.teamName);
         });
     },
+    updateYear(context, payload) {
+        if (this.state.selectedYear != payload.year) {
+            axios.post(paths.updateYear, {
+                year: payload.year,
+            }).then(result => {
+                if (result.data.success) {
+                    context.commit('setSelectedYear', payload.year);
+                    //location.reload();
+                    if (payload.route === 'team') {
+                        context.dispatch('getTeamData', payload.params.team);
+                    } else if  (payload.route === 'position') {
+                        context.dispatch('getPositionData', payload.params.position);
+                    }
+                }
+                
+            });
+        }
+    }
 };

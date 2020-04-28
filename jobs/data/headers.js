@@ -185,6 +185,8 @@ module.exports = {
         'rank',
         'name',
         'games',
+        'completionsAgainst',
+        'attemptsAgainst',
         'completionPercentageAgainst',
         'yardsAgainst',
         'tdsAgainst',

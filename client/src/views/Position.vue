@@ -1,23 +1,28 @@
 <template>
     <div v-if="positionDataLoaded">
-        <div class="container">
-            <div class="row">
-                <div class="tile w-4" v-for="(leaderData) in topRow" :key="leaderData.title">
-                    <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
-                </div>
-            </div>
-            <div class="row tall">
-                <div class="tile-stack-container w-2">
-                    <div class="tile" v-for="(leaderData) in adjacentCol" :key="leaderData.title">
-                         <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
-                    </div>
-                </div>
-                <div class="tile w-10">
-                    <TableVis v-bind:header="positionDataHeader" v-bind:tableData="positionData"></TableVis>
-                </div>
-            </div>
-        </div>
-        <div></div>
+        <Dashboard>
+            <Row>
+                <Tile tileClass="w-4" v-for="(leaderData) in topRow" :key="leaderData.title">
+                    <template v-slot:data>
+                        <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
+                    </template>
+                </Tile>
+            </Row>
+            <Row rowClass="tall">
+                <StackedCharts stackedClass="w-2">
+                    <Tile v-for="(leaderData) in adjacentCol" :key="leaderData.title">
+                        <template v-slot:data>
+                            <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
+                        </template>
+                    </Tile>
+                </StackedCharts>
+                <Tile tileClass="w-10">
+                    <template v-slot:data>
+                        <TableVis v-bind:header="positionDataHeader" v-bind:tableData="positionData"></TableVis>
+                    </template>
+                </Tile>
+            </Row>
+        </Dashboard>
     </div>
     <div v-else>
         <Loading></Loading>

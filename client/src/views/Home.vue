@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-    {{ messages.message }}
+    {{ messages.message }}afsafasd
   </div>
 </template>
 
@@ -12,22 +12,30 @@
 import HelloWorld from '@/components/HelloWorld.vue';
 
 import { paths } from '../assets/scripts/utilities'
+import { mapMutations } from 'vuex';
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld,
-  },
-  data: () => ({
-    messages: {},
-  }),
-  mounted() {
-    fetch(paths.loadAllTeamsUrl)
+	name: 'home',
+	components: {
+		HelloWorld,
+	},
+	data: () => ({
+		messages: {},
+	}),
+	methods: {
+		...mapMutations({
+			setGlobalTitle: 'setGlobalTitle'
+		})
+	},
+	mounted() {
+		fetch(paths.loadAllTeamsUrl)
 		.then(response => response.json())
 		.then((result) => {
 			this.messages = result;
 		});
-  },
+
+		this.setGlobalTitle('Fantasy Football Now');
+	},
 };
 
 

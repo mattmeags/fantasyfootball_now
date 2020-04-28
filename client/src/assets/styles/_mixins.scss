@@ -31,7 +31,7 @@
 @mixin fontSize($mobile, $desktop) {
     font-size: calcRem($mobile);
 
-    @include respondUp($desktopViewport) {
+    @include respondUp($tabletViewport) {
         font-size: calcRem($desktop);
     }
 }

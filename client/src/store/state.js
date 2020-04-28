@@ -16,5 +16,7 @@ export default {
     positionData: [],
     positionDataHeader: [],
     positionLeaderData: [],
-    globalHeader: 'Fantasy Football Now'
+    globalHeader: 'Fantasy Football Now',
+    years: ['2019', '2018'],
+    selectedYear: ''
 }

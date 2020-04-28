@@ -54,6 +54,8 @@ export let paths = {
     loadSingleTeamUrl: `${baseUrl}loadTeam`,
     loadPositinsUrl: `${baseUrl}getPositions`,
     loadPositionsPageUrl: `${baseUrl}loadPositions`,
+    getYears: `${baseUrl}getYears`,
+    updateYear: `${baseUrl}updateYear`,
     createUrl: (endPoint) => baseUrl + endPoint,
 }
   

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {trimName} from '../assets/scripts/utilities';
+import { json } from 'body-parser';
 
 export default {
     setTeams(state, payload) {
@@ -39,14 +40,24 @@ export default {
         state.positionDataLoaded = true;
     },
     setGlobalTitle(state, payload) {
-    if (payload) {
-        state.globalHeader = payload;
-    }
+        if (payload) {
+            state.globalHeader = payload;
+        }
     },
     resetTeamLoaded(state, payload) {
         state.teamDataLoaded = payload;
     },
     resetPositionLoaded(state, payload) {
         state.positionDataLoaded = payload;
+    },
+    // setYears(state, payload) {
+    //     console.log('setyears');
+    //     //console.log(payload.reverse());
+    //     state.years = payload.reverse();
+    //     state.selectedYear = payload[0];
+    // },
+    setSelectedYear(state, payload) {
+        console.log(payload);
+        state.selectedYear = payload;
     }
 }

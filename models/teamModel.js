@@ -1,11 +1,11 @@
 //TODO: make this a class??
 
-const averages = require('./averages');
 const utilites = require('../scripts/utilities');
 const getGroupedColumnData = require('./data/groupColData');
 const getStackedColumnData = require('./data/stackedColData');
 const mongoQueries = require('../scripts/mongoQueries');
 const getColumnPlayerData = require('./data/getColumnPlayerData');
+
 
 function TeamModel (team, teamData, avgs, color) {
     this.teamName = team;
@@ -82,8 +82,8 @@ function BarData(labels, data, horizontal) {
     this.isHorizontal = horizontal;
 }
 
-async function init(team, db) {
-    const year = "2019";
+async function init(team, db, year) {
+    //const year = "2019";
     const fullTeamName = utilites.getFullTeamNameFromMascot(team);
     const leagueData = await mongoQueries.getLeague(db, year);
     await console.log(leagueData);
@@ -98,10 +98,11 @@ async function init(team, db) {
         rushOffense: await rushOffense[0]
     }
     const fullTeamData = await Object.assign(rushRecData[0], wholeTeamData);
+    const color = utilites.getColorFromMascot(team);
     console.log(fullTeamData.defense);
     const avgs = {
-        rushAgainst: await averages.getAvgRushAgainst(),
-        passAgainst: await averages.getAvgPassAgainst()
+        rushAgainst: await mongoQueries.getAvgRushAgainst(db, year),
+        passAgainst: await mongoQueries.getAvgPassAgainst(db, year)
     }
     return new TeamModel(fullTeamName, fullTeamData, avgs, color);
 }
