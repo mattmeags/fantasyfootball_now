@@ -31,7 +31,7 @@ export default {
         const path = paths.createUrl(payload.api);
         axios.post(path, {
             team: payload.teamMascot,
-            seriesValues: payload.seriesValues,
+            seriesName: payload.seriesName,
             filter: payload.filter,
             updateState: payload.updateState,
         }).then(result => {

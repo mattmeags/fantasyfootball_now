@@ -2,13 +2,14 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import EvaIcons from 'vue-eva-icons';
 import VueApexCharts from 'vue-apexcharts';
+import Chart from 'chart.js';
 import App from './App.vue';
 import router from './router';
 import store from './store/index';
-import Row from '@/components/global/layout/Row';
+// import Row from '@/components/global/layout/Row';
 import Tile from '@/components/global/layout/Tile';
 import Dashboard from '@/components/global/layout/Dashboard';
-import StackedCharts from '@/components/global/layout/StackedCharts';
+// import StackedCharts from '@/components/global/layout/StackedCharts';
 // import { library } from '@fortawesome/fontawesome-svg-core'
 // import { faBars, faSearch, faUsers, faFootballHelmet, faTachometerFast } 
 // from '@fortawesome/free-solid-svg-icons'
@@ -31,9 +32,8 @@ Vue.config.productionTip = false;
 
 Vue.component('apexchart', VueApexCharts);
 Vue.component('Tile', Tile);
-Vue.component('Row', Row);
 Vue.component('Dashboard', Dashboard);
-Vue.component('StackedCharts', StackedCharts);
+
 
 new Vue({
   data: { loading: false },

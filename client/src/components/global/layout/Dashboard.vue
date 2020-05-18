@@ -1,7 +1,7 @@
 <template>
-    <div class="dashboard">
+    <section class="dashboard">
         <slot></slot>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -17,14 +17,18 @@ export default {
 .dashboard {
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    //flex-direction: column;
+    //flex-wrap: wrap;
+    flex-direction: column;
     box-sizing: border-box;
     padding: $gutter;
     overflow: hidden;
 
-    // @include respondUp($tabletViewport) {
-    //     padding: 25px;
-    // }
+    @include respondUp($tabletViewport) {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-auto-rows: auto;
+        grid-row-gap: $gutter;
+        grid-column-gap: $gutter;
+    }
 }
 </style>

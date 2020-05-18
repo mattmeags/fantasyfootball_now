@@ -1,8 +1,10 @@
 <template>
-    <header>
-        <h1 class="type--h1">{{globalHeader}}</h1>
-		<ChartFilter v-bind:defaultOption="selectedYear" v-bind:filterValues="years" v-on:filterChange="initUpdateYear"></ChartFilter>
-        <!--<Search v-bind:teams='headerData.conferences'></Search>-->
+    <header class="header">
+        <h1 class="type--h1 header__heading">{{globalHeader}}</h1>
+		<div class="header__filter">
+			<ChartFilter v-bind:defaultOption="selectedYear" v-bind:filterValues="years" v-on:filterChange="initUpdateYear"></ChartFilter>
+        </div>
+		<!--<Search v-bind:teams='headerData.conferences'></Search>-->
     </header>
 </template>
 
@@ -66,9 +68,9 @@ export default {
 <style  lang="scss">
     @import '@/assets/styles';
 
-    header {
+    .header {
         background: $white;
-        padding: 10px 0 10px 65px;
+        padding: 10px 15px 10px 65px;
         position: fixed;
 		top: 0;
         width: 100%;
@@ -76,6 +78,7 @@ export default {
         z-index: $domiant-index;
         box-sizing: border-box;
         display: flex;
+		justify-content: space-between;
         align-items: center;
     }
     

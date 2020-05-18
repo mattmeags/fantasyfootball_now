@@ -80,7 +80,7 @@ async function addCollections() {
             }
         }
         //await console.log(allCollection);
-        console.log(Object.keys(allData));
+        //console.log(Object.keys(allData));
         for (let key in allData) {
             //await console.log(key);
             await allCollectionPromises.push(
@@ -100,7 +100,6 @@ async function addCollections() {
                                 console.log('this key is gving me shit: ', key);
                                 throw (err);
                             }
-                            console.log('bet its failing here');
                             resolve(res);
                         });
                     });
@@ -113,11 +112,11 @@ async function addCollections() {
         const teamCollectionPromises = await Object.keys(teamData).map((key) => {
             return new Promise(function (resolve, reject) {
                 new Promise(async function (resolve, reject) {
-                    //await db.collection(key).drop();
+                    await db.collection(key).drop();
                     await resolve();
                 }).then(() => {
                     //console.log(teamData);
-                    console.log('key: ', key);
+                   // console.log('key: ', key);
                     db.collection(key).insertMany(teamData[key], function (err, res) {
                         if (err) {
                             console.log('error here');
@@ -135,7 +134,7 @@ async function addCollections() {
             console.log('done');
             mongoClient.closeConnection();
         });
-        console.log(teamData);
+        //console.log(teamData);
     } catch (e) {
         console.log(e);
     }

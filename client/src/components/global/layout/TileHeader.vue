@@ -1,7 +1,7 @@
 <template>
-    <div class="tile-header">
+    <div>
         <h3 class="type--h4 type--color-secondary h-no-margin">{{title}}</h3>
-        <div v-if="descriptor" class="type--h4 type--color-secondary descriptor">{{descriptor}}</div>
+        <span v-if="descriptor" class="type--h4 type--color-secondary descriptor">{{descriptor}}</span>
     </div>
 </template>
 
@@ -15,12 +15,7 @@ export default {
 <style lang="scss" scoped>
     @import '@/assets/styles';
 
-    .tile-header {
-        padding: 15px;
-        border-bottom: $border;
-    }
     h3 {
-        
         text-align: left;
     }
     .descriptor {

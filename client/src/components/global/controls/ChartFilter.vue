@@ -15,7 +15,7 @@
 
 <script>
 export default {
-	name: 'Filter',
+	name: 'ChartFilter',
 	props: {
 		'filterValues': Array,
 		'defaultOption': String

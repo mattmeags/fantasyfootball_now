@@ -4,13 +4,11 @@
             <thead>
                 <tr>
                     <th v-for="head in header" v-bind:key="header.id" v-on:click="sort(head)">
-                        <div class="d-flex">
-                            {{head}}
-                            <span v-if="head in currentSort">
-                                <eva-icon v-show="!currentSort[head]" name="arrow-ios-downward-outline" fill="#29CB97"></eva-icon>
-                                <eva-icon v-show="currentSort[head]" name="arrow-ios-upward-outline" fill="#29CB97"></eva-icon>
-                            </span>
-                        </div>
+                        {{head}}
+                        <span v-if="head in currentSort" class="table__sort-icon">
+                            <eva-icon v-show="!currentSort[head]" name="arrow-ios-downward-outline" fill="#29CB97"></eva-icon>
+                            <eva-icon v-show="currentSort[head]" name="arrow-ios-upward-outline" fill="#29CB97"></eva-icon>
+                        </span>
                     </th>
                 </tr>
             </thead>
@@ -92,14 +90,19 @@
     @import '@/assets/styles';
     /**TODO: BEM this */
     table {
-    border-collapse: collapse;
-
+        border-collapse: collapse;
+        width: 100%;
     td {
         border-top: $border;
         border-bottom: $border;
     }
     th {
         border-bottom: $border2;
+        position: relative;
+        i {
+            height: 0;
+            width: 0;
+        }
     }
     td,
     th {
@@ -118,6 +121,12 @@
     tr:hover {
         background: rgba($tietary, 0.2);
     }
+}
+
+.table__sort-icon {
+    position: absolute;
+    right: 28px;
+    bottom: 2px;
 }
 
 .tile {

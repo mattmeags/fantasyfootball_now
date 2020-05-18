@@ -77,33 +77,28 @@
             <!-- <div class="container"> -->
                 <Row>
                     <Tile tileClass="w-3">
-                        <template v-slot:data>
-                            <Number title="Touchdowns by Andrew" descriptor="Andrew Luck" number="39"></Number>
-                        </template>
+                        <Number title="Touchdowns by Andrew" descriptor="Andrew Luck" number="39"></Number>
                     </Tile>
                     <Tile tileClass="w-3">
                         <template v-slot:header>
                             <TileHeader title="Donut Chart"></TileHeader>
                         </template>
-                        <template v-slot:data>
-                            <DonutSplit :labels="['Player 1', 'Player 2', 'Player 3']" :values="['22', '54', '13']"></DonutSplit>
-                        </template>
+                        <DonutSplit :labels="['Player 1', 'Player 2', 'Player 3']" :values="['22', '54', '13']" :colors="chartColors"></DonutSplit>
+                       
                     </Tile>
+
                     <Tile tileClass="w-3">
                         <template v-slot:header>
                             <TileHeader title="Bar Chart"></TileHeader>
                         </template>
-                        <template v-slot:data>
-                            <Bar :labels="['Player 1', 'Player 2', 'Player 3']" :values="[{data: ['22', '54', '13']}]"></Bar>
-                        </template>
+                        <Bar :labels="['Player 1', 'Player 2', 'Player 3']" :values="['22', '54', '13']" :colors="chartColors"></Bar>
+                        
                     </Tile>
                     <Tile tileClass="w-3">
                         <template v-slot:header>
                             <TileHeader title="Horizontal Bar Chart"></TileHeader>
                         </template>
-                        <template v-slot:data>
-                            <Bar :labels="['Player 1', 'Player 2', 'Player 3']" :values="[{data: ['22', '54', '13']}]" :isHorizontal="true"></Bar>
-                        </template>
+                       <Bar :labels="['Player 1', 'Player 2', 'Player 3']" :values="['22', '54', '13']" :isHorizontal="true" :colors="chartColors"></Bar>
                     </Tile>
                 </Row>
                 <Row>
@@ -111,17 +106,16 @@
                         <template v-slot:header>
                             <TileHeader title="Stacked Bar Chart"></TileHeader>
                         </template>
-                        <template v-slot:data>
-                            <StackedBar :labels="['Player 1', 'Player 2', 'Player 3', 'Player 4']" :values="[{data:['2', '4','1', '7'], name:'Value 1'}, {data:['6', '11', '8', '2'], name: 'Value 2',}] "></StackedBar>
-                        </template>
+
+                        <StackedBar :labels="['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5']" :values="[{data:['2', '4','1', '7', '5'], label:'Value 1'}, {data:['6', '11', '8', '2', '4'], label: 'Value 2'}]" :colors="chartColors"></StackedBar>
+                        
                     </Tile>
                     <Tile tileClass="w-6">
                         <template v-slot:header>
                             <TileHeader title="Compare Bar Chart"></TileHeader>
                         </template>
-                        <template v-slot:data>
-                            <CompareBar :labels="['Player 1', 'Player 2', 'Player 3', 'Player 4']" :values="[{data:['2', '4','1', '7']}, {data:['6', '11', '8', '2'],}]"></CompareBar>
-                        </template>>
+
+                        <CompareBar :labels="['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5']" :values="[{data:['2', '4', '1', '7', '4'], label:'Value 1'}, {data:['6', '11', '8', '2', '5'], label: 'Value 2'}]" :colors="chartColors"></CompareBar>
                     </Tile>
                 </Row>
             <!-- </div> -->
@@ -137,53 +131,43 @@
             <h2 class="type--h2">Grid</h2>
             <Dashboard>
                 <!--TODO: h-2 class do anything?-->
-                <Row>
-                    <Tile tileClass="w-12 h-2"> w-12</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-11 h-1">w-11</Tile>
-                    <Tile tileClass="w-1 h-1">w-1</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-10 h-2">w-10</Tile>
-                    <Tile tileClass="w-2 h-2">w-2</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-9 h-1">w-9</Tile>
-                    <Tile tileClass="w-3 h-1">w-3</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-8 h-1">w-8</Tile>
-                    <Tile tileClass="w-4 h-1">w-4</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-7 h-1">w-7</Tile>
-                    <Tile tileClass="w-5 h-1">w-5</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-6 h-1">w-6</Tile>
-                    <Tile tileClass="w-6 h-1">w-6</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-4 h-1">w-4</Tile>
-                    <Tile tileClass="w-4 h-1">w-4</Tile>
-                    <Tile tileClass="w-4 h-1">w-4</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-3 h-1">w-3</Tile>
-                    <Tile tileClass="w-3 h-1">w-3</Tile>
-                    <Tile tileClass="w-3 h-1">w-3</Tile>
-                    <Tile tileClass="w-3 h-1">w-3</Tile>
-                </Row>
-                <Row>
-                    <Tile tileClass="w-2 h-1">w-2</Tile>
-                    <Tile tileClass="w-2 h-1">w-2</Tile>
-                    <Tile tileClass="w-2 h-1">w-2</Tile>
-                    <Tile tileClass="w-2 h-1">w-2</Tile>
-                    <Tile tileClass="w-2 h-1">w-2</Tile>
-                    <Tile tileClass="w-2 h-1">w-2</Tile>
-                </Row>
-                <Row rowClass="tall">
+                    <Tile tileClass="w-12"> w-12</Tile>
+
+                    <Tile tileClass="w-11-1">w-11-1</Tile>
+                    <Tile tileClass="w-1-12">w-1-12</Tile>
+
+                    <Tile tileClass="w-10-1">w-10-1</Tile>
+                    <Tile tileClass="w-2-11">w-2-11</Tile>
+
+                    <Tile tileClass="w-9-1">w-9-1</Tile>
+                    <Tile tileClass="w-3-10">w-3-10</Tile>
+
+                    <Tile tileClass="w-8-1">w-8-1</Tile>
+                    <Tile tileClass="w-4-9">w-4-9</Tile>
+
+                    <Tile tileClass="w-7-1">w-7-1</Tile>
+                    <Tile tileClass="w-5-8">w-5-8</Tile>
+ 
+                    <Tile tileClass="w-6-1">w-6-1</Tile>
+                    <Tile tileClass="w-6-7">w-6-7</Tile>
+
+                    <Tile tileClass="w-4-1">w-4-1</Tile>
+                    <Tile tileClass="w-4-5">w-4-5</Tile>
+                    <Tile tileClass="w-4-9">w-4-9</Tile>
+
+                    <Tile tileClass="w-3-1">w-3-1</Tile>
+                    <Tile tileClass="w-3-4">w-3-4</Tile>
+                    <Tile tileClass="w-3-7">w-3-7</Tile>
+                    <Tile tileClass="w-3-10">w-3-10</Tile>
+
+                    <Tile tileClass="w-2-1">w-2-1</Tile>
+                    <Tile tileClass="w-2-3">w-2-3</Tile>
+                    <Tile tileClass="w-2-5">w-2-5</Tile>
+                    <Tile tileClass="w-2-7">w-2-7</Tile>
+                    <Tile tileClass="w-2-9">w-2-9</Tile>
+                    <Tile tileClass="w-2-11">w-2-11</Tile>
+
+                <!-- <Row rowClass="tall">
                     <StackedCharts stackedClass="w-3">
                         <Tile>
                             <template v-slot:data>
@@ -197,7 +181,7 @@
                         </Tile>
                     </StackedCharts>
                     <Tile tileClass="w-9 h-1"></Tile> 
-                </Row>
+                </Row> -->
             </Dashboard>
         </section>
     </div>
@@ -229,11 +213,12 @@
             CompareBar,
             Bar,
             StackedBar,
-            TileHeader
+            TileHeader,
         }, 
         data: () => ({
             teams: ['cardinals','falcons' ,'ravens' ,'bills' ,'panthers' ,'bears' ,'bengals' ,'browns' ,'cowboys' ,'broncos' ,'lions' ,'packers' ,'texans' ,'colts','chiefs' ,'chargers' ,'rams' ,'dolphins' ,'vikings' ,'patriots' ,'saints' ,'giants', 'raiders' ,'eagles', 'steelers', 'niners', 'seahawks', 'buccaneers', 'titans', 'redskins'],
             mainColors: ['primary', "secondary", "tietary", "accent", "accent2", "accent3", "accent4", "black", "white"], 
+            chartColors: ['rgb(0, 143, 251)', 'rgb(0, 227, 150)', 'rgb(254, 176, 25)']
         })
 
     }

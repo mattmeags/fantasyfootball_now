@@ -1,27 +1,25 @@
 <template>
     <div v-if="positionDataLoaded">
         <Dashboard>
-            <Row>
-                <Tile tileClass="w-4" v-for="(leaderData) in topRow" :key="leaderData.title">
-                    <template v-slot:data>
-                        <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
-                    </template>
-                </Tile>
-            </Row>
-            <Row rowClass="tall">
-                <StackedCharts stackedClass="w-2">
-                    <Tile v-for="(leaderData) in adjacentCol" :key="leaderData.title">
-                        <template v-slot:data>
-                            <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
-                        </template>
-                    </Tile>
-                </StackedCharts>
-                <Tile tileClass="w-10">
-                    <template v-slot:data>
-                        <TableVis v-bind:header="positionDataHeader" v-bind:tableData="positionData"></TableVis>
-                    </template>
-                </Tile>
-            </Row>
+
+            <Tile v-for="(leaderData) in topRow" :tileClass="`w-4-${leaderData.start}`"  :key="leaderData.title">
+                <template v-slot:header>
+                    {{leaderData.title}}
+                </template>
+                <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
+            </Tile>
+
+            <Tile tileClass="w-2-1" v-for="(leaderData) in adjacentCol" :key="leaderData.title">
+                <template v-slot:header>
+                    {{leaderData.title}}
+                </template>
+              
+                <Number :descriptor="leaderData.name" :number="leaderData.value"></Number>
+               
+             </Tile>
+            <Tile tileClass="w-10-3 tall-2">
+                <TableVis v-bind:header="positionDataHeader" v-bind:tableData="positionData"></TableVis>
+            </Tile>
         </Dashboard>
     </div>
     <div v-else>
@@ -50,7 +48,12 @@
                 positionLeaderData: 'positionLeaderData'
             }),
             topRow: function() {
-                return this.positionLeaderData.slice(0, 3);
+                const topRow = this.positionLeaderData.slice(0, 3);
+                topRow[0].start = 1;
+                topRow[1].start = 5;
+                topRow[2].start = 9;
+                console.log(topRow);
+                return topRow;
             },
             adjacentCol: function() {
                 return this.positionLeaderData.slice(3, this.positionLeaderData.length + 1);

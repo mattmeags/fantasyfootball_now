@@ -1,8 +1,9 @@
 function getColumnPlayerData(seriesKey, playerData, filter) {
     let chartData = {
         labels: [],
-        series: [{ name: seriesKey, data: [] }]
+        series: []
     };
+    console.log(seriesKey);
     playerData.forEach(player => {
         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
@@ -10,7 +11,7 @@ function getColumnPlayerData(seriesKey, playerData, filter) {
             }
             if (player[seriesKey] > 0) {
                 chartData.labels.push(player.playerName);
-                chartData.series[0].data.push(player[seriesKey]);
+                chartData.series.push(player[seriesKey]);
             }
         }
     });
