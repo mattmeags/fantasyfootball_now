@@ -1,7 +1,6 @@
 <template>
     <div class="chart">
 		 <canvas data-donut-chart></canvas>
-      <!-- <apexchart type="donut" width: v-bind:options="chartOptions" v-bind:series="series"></apexchart> -->
     </div>
 </template>
 

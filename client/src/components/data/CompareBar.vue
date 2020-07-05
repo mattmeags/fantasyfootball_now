@@ -1,6 +1,5 @@
 <template>
     <div class="chart">
-        <!-- <apexchart type="bar" height=266 :series="series" :options="chartOptions"></apexchart> -->
 		<canvas data-compare-bar-chart></canvas>
 	</div>
 </template>

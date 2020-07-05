@@ -1,7 +1,6 @@
 <template>
     <div class="chart">
         <canvas data-bar-chart></canvas>
-        <!-- <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart> -->
     </div>
 </template>
 
