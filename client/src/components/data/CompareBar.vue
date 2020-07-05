@@ -8,13 +8,13 @@
 <script>
 import {trimNames, addColorToDataSet, sortGroupedBar} from '@/assets/scripts/utilities';
 import labelStyleMixin from '@/mixins/labelStyleMixin';
-import createChartMixin from '@/mixins/createChartMixin';
+import chartMixin from '@/mixins/chartMixin';
 import legendStyleMixin from '@/mixins/legendStyleMixin';
 
 export default {
 	name: 'CompareBar',
 	props: ['labels', 'values', 'colors'],
-	mixins: [labelStyleMixin, createChartMixin, legendStyleMixin],
+	mixins: [labelStyleMixin, chartMixin, legendStyleMixin],
 	data: () => ({
 		chartSelector: '[data-compare-bar-chart]',
 		type: 'bar',

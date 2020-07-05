@@ -8,7 +8,7 @@
 <script>
 import {convertStringsToInts, trimNames} from '@/assets/scripts/utilities';
 
-import createChartMixin from '@/mixins/createChartMixin';
+import chartMixin from '@/mixins/chartMixin';
 import legendStyleMixin from '@/mixins/legendStyleMixin';
 
 export default {
@@ -18,7 +18,7 @@ export default {
 		values: Array,
 		colors: Array
 	},
-    mixins: [createChartMixin, legendStyleMixin],
+    mixins: [chartMixin, legendStyleMixin],
 	data: () => ({
         chartSelector: '[data-donut-chart]',
         type: 'doughnut',

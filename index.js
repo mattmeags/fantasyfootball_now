@@ -66,7 +66,6 @@ app.get('/loadPlayer', (req, res) => {
 
 //TODO: can we make these one call? repeating alot of stuff
 app.post('/filterGroupedColumnData', async (req, res) => {
-    console.log('yo: ',req.body.seriesName);
     const getGroupedColumnData = require('./models/data/groupColData'),
         teamData = await teamModel(req.body.team, db, year),
         filteredGroupedColumnData = await getGroupedColumnData(teamData[req.body.seriesName], teamData.rushRec, req.body.filter);

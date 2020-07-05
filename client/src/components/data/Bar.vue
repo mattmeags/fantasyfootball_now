@@ -9,7 +9,7 @@
 import {trimNames, sortBar} from '../../assets/scripts/utilities';
 //TODO: do we need datastyle?
 import labelStyleMixin from '../../mixins/labelStyleMixin';
-import createChartMixin from '@/mixins/createChartMixin';
+import chartMixin from '@/mixins/chartMixin';
 export default {
     name: 'Bar',
     props: {
@@ -26,7 +26,7 @@ export default {
         // Sory from higest to lowests
         sort: Boolean
     }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
-    mixins: [labelStyleMixin, createChartMixin],
+    mixins: [labelStyleMixin, chartMixin],
     data: function() {
         return {
             chartSelector: '[data-bar-chart]',

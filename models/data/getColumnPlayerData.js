@@ -3,7 +3,7 @@ function getColumnPlayerData(seriesKey, playerData, filter) {
         labels: [],
         series: []
     };
-    console.log(seriesKey);
+ 
     playerData.forEach(player => {
         if (filter === 'all' || filter === player.position.toLowerCase().slice(0, 2)) {
             if (player.playerName === 'Team Total' || player.playerName == 'Opp Total') {
