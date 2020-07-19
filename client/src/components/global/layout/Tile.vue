@@ -1,18 +1,108 @@
 
-// .w-12,
-// .w-11,
-// .w-10,
-// .w-9,
-// .w-8,
-// .w-7,
-// .w-6,
-// .w-5,
-// .w-4,
-// .w-3,
-// .w-2,
-// .w-1 {
-//     flex-basis: 100%;
-//     max-width: 100%;
+<template>
+    <div class="tile" :class="tileClass">
+        <div v-if="hasHeaderSlot" class="tile__header">
+
+            <slot name="header">
+            
+            </slot>
+            <div class="tile__filter">
+                <slot name="filter">
+            
+                </slot>
+            </div>
+            
+        </div>
+
+        <slot>
+            
+        </slot>
+        
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'Tile',
+    props: {
+        tileClass: {
+            type: String,
+            default: 'w-12',
+        }
+    },
+    computed: {
+        hasHeaderSlot() {
+            return !!this.$slots.header;
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '@/assets/styles';
+
+.tile {
+    background: $white;
+    border-radius: $border-radius;
+    box-shadow: 2px 4px 10px -6px $tietary;
+    position: relative;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $gutter;;
+
+    .chart {
+        padding: 15px 0;
+        display: flex;
+        justify-content: center;
+        //display: flex;
+        height: 100%;
+        // width:
+        // > div {
+        //     height: 100%;
+        // }
+
+        // * {
+        //     overflow: visible;
+        // }
+    }
+
+    &:last-of-type {
+        margin-right: 0;
+    }
+
+    @include respondUp($tabletViewport) {
+        margin-bottom: 0;
+        //margin-right: $gutter;
+    }
+
+    // &:hover {
+    //     cursor: pointer;
+    //     transform: scale(1.01);
+    //     box-shadow: 4px 6px 10px -6px $tietary;
+    //     transition: all .03s linear;
+    // }
+}
+
+// .filter {
+//     position: absolute;
+//     right: 15px;
+//     top: 15px;
+// }
+
+.tile__header {
+    padding: 15px;
+    border-bottom: $border;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tile__filter {
+
+}
+
+// .tile-chart-wrapper {
+//     position: relative;
 // }
 @include respondUp($tabletViewport) {
     .w- {
@@ -305,3 +395,5 @@
     }    
 
 }
+
+</style>

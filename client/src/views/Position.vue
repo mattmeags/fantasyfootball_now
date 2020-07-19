@@ -1,23 +1,26 @@
 <template>
     <div v-if="positionDataLoaded">
-        <div class="container">
-            <div class="row">
-                <div class="tile w-4" v-for="(leaderData) in topRow" :key="leaderData.title">
-                    <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
-                </div>
-            </div>
-            <div class="row tall">
-                <div class="tile-stack-container w-2">
-                    <div class="tile" v-for="(leaderData) in adjacentCol" :key="leaderData.title">
-                         <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
-                    </div>
-                </div>
-                <div class="tile w-10">
-                    <TableVis v-bind:header="positionDataHeader" v-bind:tableData="positionData"></TableVis>
-                </div>
-            </div>
-        </div>
-        <div></div>
+        <Dashboard>
+
+            <Tile v-for="(leaderData) in topRow" :tileClass="`w-4-${leaderData.start}`"  :key="leaderData.title">
+                <template v-slot:header>
+                    {{leaderData.title}}
+                </template>
+                <Number :descriptor="leaderData.name" :title="leaderData.title" :number="leaderData.value"></Number>
+            </Tile>
+
+            <Tile tileClass="w-2-1" v-for="(leaderData) in adjacentCol" :key="leaderData.title">
+                <template v-slot:header>
+                    {{leaderData.title}}
+                </template>
+              
+                <Number :descriptor="leaderData.name" :number="leaderData.value"></Number>
+               
+             </Tile>
+            <Tile tileClass="w-10-3 tall-2">
+                <TableVis v-bind:header="positionDataHeader" v-bind:tableData="positionData"></TableVis>
+            </Tile>
+        </Dashboard>
     </div>
     <div v-else>
         <Loading></Loading>
@@ -45,7 +48,12 @@
                 positionLeaderData: 'positionLeaderData'
             }),
             topRow: function() {
-                return this.positionLeaderData.slice(0, 3);
+                const topRow = this.positionLeaderData.slice(0, 3);
+                topRow[0].start = 1;
+                topRow[1].start = 5;
+                topRow[2].start = 9;
+                console.log(topRow);
+                return topRow;
             },
             adjacentCol: function() {
                 return this.positionLeaderData.slice(3, this.positionLeaderData.length + 1);

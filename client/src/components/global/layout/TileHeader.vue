@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h3 class="type--body type--color-secondary h-no-margin">{{title}}</h3>
-        <div v-if="descriptor" class="type--h4 type--color-secondary descriptor">{{descriptor}}</div>
+        <h3 class="type--h4 type--color-secondary h-no-margin">{{title}}</h3>
+        <span v-if="descriptor" class="type--h4 type--color-secondary descriptor">{{descriptor}}</span>
     </div>
 </template>
 
@@ -13,8 +13,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    @import '@/assets/styles';
+
     h3 {
-        padding: 15px 0 0 15px;
         text-align: left;
     }
     .descriptor {

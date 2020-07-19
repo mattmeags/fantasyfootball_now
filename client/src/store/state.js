@@ -1,7 +1,9 @@
 export default {
+    // nav listings state
     teams: [],
     positions: [],
     test: 'hello world',
+    //Team data state
     rushingSplitData: {},
     receivingTargetsData: {},
     tdData: {},
@@ -10,11 +12,16 @@ export default {
     totalRushYardsAgainstData: {},
     totalPassYardsAgainstData: {},
     offensePlaySplit: {},
+    //Loaded state
     teamDataLoaded: false,
     positionDataLoaded: false,
-    teamName: '',
+    //Position data state
     positionData: [],
     positionDataHeader: [],
     positionLeaderData: [],
-    globalHeader: 'Fantasy Football Now'
+    //GlobalState
+    teamName: '',
+    globalHeader: 'Fantasy Football Now',
+    years: ['2019', '2018'],
+    selectedYear: ''
 }

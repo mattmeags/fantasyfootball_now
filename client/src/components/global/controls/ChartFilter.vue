@@ -1,13 +1,14 @@
 <template>
     <div class="filter">
 		<select v-model="selected" v-on:change="updateFilter">
-			<option value="all" selected="selected">all</option>
-			<option v-for="position in filterValues" 
-				v-bind:key="position" 
-				:value="position">{{position}}
+			<option :value="defaultOption" selected="selected">{{defaultOption}}</option>
+			<option v-for="filterValue in filterValues" v-if="filterValue != defaultOption"
+				v-bind:key="filterValue" 
+				:value="filterValue"
+				>{{filterValue}}
 			</option>
 		</select>
-		<eva-icon name="arrow-ios-downward-outline" fill="#4D85FF"></eva-icon>
+		<eva-icon name="arrow-ios-downward-outline" fill="#838587"></eva-icon>
     </div>
 
 </template>
@@ -15,10 +16,15 @@
 <script>
 export default {
 	name: 'ChartFilter',
-	props: {'filterValues': Array},
-	data: () => ({
-		selected: 'all',
-	}),
+	props: {
+		'filterValues': Array,
+		'defaultOption': String
+	},
+	data() {
+		return {
+			selected: this.defaultOption
+		}
+	},
 	methods: {
 		updateFilter() {
 			//this.$store.commit('updateReceivingFilter', this.selected);
@@ -30,8 +36,7 @@ export default {
 </script>
 
 <style lang="scss">
-	@import "../../assets/styles/_variables";
-	@import "../../assets/styles/_mixins";
+	@import '@/assets/styles';
 
 	.filter {
 		position: relative;
@@ -44,18 +49,20 @@ export default {
 			pointer-events: none;
 
 			svg {
-				height: 20px;
-				width: 20px;
+				height: 18px;
+				width: 18px;
 			}
 		}
 	}
 	select {
+		width: 100%;
 		-webkit-appearance: none;
 		appearance: none;
-		border: $border;
-		border-radius: $border-radius;
+		border: none;
+		// border-radius: $border-radius;
 		padding: 5px 30px 5px 5px;
-
+		background: none;
+		color: $secondary;
 		@include fontSize(14px, 16px);
   	}
 </style>

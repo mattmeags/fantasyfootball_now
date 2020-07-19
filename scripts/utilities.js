@@ -9,9 +9,11 @@ function getFullTeamNameFromMascot (mascot) {
 function getCodeFromName(name) {
     return GLOBALS.teamCodes[GLOBALS.teams.indexOf(name)];
 }
+
 function getNameFromCode(code) {
     return GLOBALS.teams[GLOBALS.teamCodes.indexOf(code)];
 }
+
 function getFullTeams() {
     let fullTeamsArr = [];
     GLOBALS.teams.forEach((team, index) => {
@@ -19,6 +21,7 @@ function getFullTeams() {
     });
     return fullTeamsArr;
 }
+
 function arrayUnique(array) {
     if (array.length) {
         var a = array.concat();
@@ -33,10 +36,16 @@ function arrayUnique(array) {
         return array;
     }
 }
+
+function getColorFromMascot(mascot) {
+    return GLOBALS.colors[GLOBALS.teams.indexOf(mascot)];
+}
+
 module.exports = {
     getFullTeamNameFromMascot,
     getCodeFromName,
     getNameFromCode,
     getFullTeams,
-    arrayUnique
+    arrayUnique,
+    getColorFromMascot
 }

@@ -1,12 +1,14 @@
 <template>
     <div class="chart">
-        <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart>
+        <canvas data-bar-chart></canvas>
     </div>
 </template>
 
 <script>
-import {trimNames} from '../../assets/scripts/utilities';
-import dataStyleMixin from '../../mixins/dataStyleMixin';
+import {trimNames, sortBar} from '../../assets/scripts/utilities';
+//TODO: do we need datastyle?
+import labelStyleMixin from '../../mixins/labelStyleMixin';
+import chartMixin from '@/mixins/chartMixin';
 export default {
     name: 'Bar',
     props: {
@@ -16,63 +18,64 @@ export default {
         values: Array,
         // boolean if horizontal
         isHorizontal: Boolean,
-        // TODO: find out whaat for
+        // Some charts don't need name trim
         trimLabels: Boolean,
         // Array of team colors
-        colors: Array
+        colors: Array,
+        // Sory from higest to lowests
+        sort: Boolean
     }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
-    mixins: [dataStyleMixin],
-    computed: {
-        series() {
-            return this.values;
-        },
-        chartOptions() {
-            return {
-                chart: {
-                    height: '100%',
-                    type: 'bar',
-                    toolbar: {
-                        show: false
-                    },
-                    // events: {
-                    //   click: function (chart, w, e) {
-                    //     console.log(chart, w, e)
-                    //   }
-                    // },
-                },
-                colors: this.colors,
-                plotOptions: {
-                    bar: {
-                        columnWidth: '35%',
-                        columnHeight: '10px',
-                        distributed: true,
-                        horizontal: this.isHorizontal,
-                        dataLabels: {
-                            position: 'bottom'
-                        }
-                    }
-                },
-                dataLabels: {
-                    enabled: this.isHorizontal,
-                    textAnchor: 'start',
-                    formatter: function (val, opt) {
-                        return opt.w.globals.labels[opt.dataPointIndex]
-                    }
-                },
+    mixins: [labelStyleMixin, chartMixin],
+    data: function() {
+        return {
+            chartSelector: '[data-bar-chart]',
+            type: this.isHorizontal ? 'horizontalBar' : 'bar',
+            options: {
                 legend: {
-                    position: 'top'
-                },
-                xaxis: {
-                    categories: this.trimLabels ? trimNames(this.labels) : this.labels,
-                },
-                yaxis: {
-                    show: !this.isHorizontal,
-                    labels: {
-                        show: !this.isHorizontal,
-                    }
+                    display: false
                 }
             }
         }
-    }
+    },
+    computed: {
+        chartSeries() {
+            let series = {}
+            if (this.sort) {
+			    series = sortBar(this.values, this.labels);
+            } else {
+                series = {
+                    data: this.values,
+                    labels: this.labels
+                }
+            }
+            return series
+		},
+        chartData() {
+            console.log('labels :', this.colors)
+            console.log('bar chartseries: ', this.chartSeries );
+            return {
+                type: this.type,
+                data: {
+                    datasets: [{
+                        data: this.chartSeries.data,
+                        backgroundColor: this.colors,
+                    }],
+                    labels: this.trimLabels ? trimNames(this.chartSeries.labels) : this.chartSeries.labels
+                },
+                options: this.options
+            }
+        },
+        // series() {
+        
+    },
+    // mounted() {
+    //     console.log('this: ', this);
+    //     console.log(this.values);
+    //     if (this.sort) {
+    //         const sortedData = sortBar(this.values, this.labels);
+    //         this.values = sortedData.data;
+    //         this.labels = sortedData.labels;
+    //     }
+    // }
 }
 </script>

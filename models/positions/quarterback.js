@@ -1,7 +1,7 @@
 const mongoQueries = require('../../scripts/mongoQueries');
 
-module.exports = async function init(db) {
-    const qbRequests = await mongoQueries.getAllFullTeam(db, '2018');
+module.exports = async function init(db, year) {
+    const qbRequests = await mongoQueries.getAllFullTeam(db, year);
     console.log(qbRequests.length);
     const passingData = await Promise.all(qbRequests).then((res) => {
         let passingData = [],

@@ -1,7 +1,8 @@
 function getGroupedColumnData(seriesValues, playerData, filter) {
+    //console.log(seriesValues);
     let chartData = {
         labels: [],
-        series: [{data: []}, {data: []}]
+        series: [{ data: [], label: seriesValues.seriesName1}, { data: [], label: seriesValues.seriesName2}]
     };
 
     playerData.forEach((player) => {

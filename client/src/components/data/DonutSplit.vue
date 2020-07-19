@@ -1,61 +1,58 @@
 <template>
     <div class="chart">
-      <apexchart type="donut" height=266 v-bind:options="chartOptions" v-bind:series="series"></apexchart>
+		 <canvas data-donut-chart></canvas>
     </div>
 </template>
 
 <script>
-import {convertStringToInt, trimNames} from '../../assets/scripts/utilities';
-import dataStyleMixin from '../../mixins/dataStyleMixin';
+import {convertStringsToInts, trimNames} from '@/assets/scripts/utilities';
+
+import chartMixin from '@/mixins/chartMixin';
+import legendStyleMixin from '@/mixins/legendStyleMixin';
 
 export default {
   name: 'DonutSplit',
-  props: ['labels', 'values', 'colors'],
-  mixins: [dataStyleMixin],
-  computed: {
-      series() {
-        return convertStringToInt(this.values)
-      },
-
-      chartOptions() {
-        return {
-          	chart: {
-				type: 'donut',
-				// width: '100%',
-				// height: '100%'
-				//height:,
-				// events: {
-				//   dataPointSelection: (event, chartContext, config) => {
-				//     this.chartDive(this.labels[config.dataPointIndex]);
-				//   },
-				//},
-          	},
-          	labels: trimNames(this.labels),
-          	legend: {
-				fontSize: '16px',
-				horizontalAlign: 'left',
-				position: 'right',
-				offsetY: 50,
-				itemMargin: {
-					horizontal: 5
-				}
-          },
-          colors: this.colors
+  props: {
+		labels: Array,
+		values: Array,
+		colors: Array
+	},
+    mixins: [chartMixin, legendStyleMixin],
+	data: () => ({
+        chartSelector: '[data-donut-chart]',
+        type: 'doughnut',
+        options: {
+            maintainAspectRatio: false,
         }
-      },
-  },
-  methods: {
-    chartDive(value) {
-      this.$emit('playerSelect', value);
+    }),
+  	computed: {
+      	chartData() {
+        	return {
+				type: this.type,
+                data: {
+                    datasets: [{
+                        data: this.values,
+                        backgroundColor: this.colors
+                    }],
+                    labels: trimNames(this.labels),
+                },
+                options: this.options
+        	}
+      	},
     },
-  },
+    mounted() {
+        console.log('donut');
+        this.Chart.height = 400;
+        console.log(this.Chart);
+        
+    }
 };
 </script>
 
 <style lang="scss" scoped>
-  .chart {
-    height: 100%;
-    width: 100%;
-    text-align: left;
-  }
+//   .chart {
+//     height: 100%;
+//     width: 100%;
+//     text-align: left;
+//   }
 </style>

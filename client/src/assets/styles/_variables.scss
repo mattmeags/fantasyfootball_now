@@ -122,14 +122,17 @@ $h1-desktop-size: 48px;
 $h2-mobile-size: 24px;
 $h2-desktop-size: 40px;
 
-$h3-mobile-size: 18px;
-$h3-desktop-size: 32px;
+$h1-mobile-size: 18px;
+$h1-desktop-size: 32px;
 
-$h4-mobile-size: 16px;
-$h4-desktop-size: 24px;
+$h2-mobile-size: 16px;
+$h2-desktop-size: 24px;
 
-$font-size-mobile: 14px;
-$font-size-desktop: 16px;
+$h3-mobile-size: 14px;
+$h3-desktop-size: 16px;
+
+$font-size-mobile: 12px;
+$font-size-desktop: 14px;
 
 
 /* VIEWPORTS */
@@ -139,7 +142,7 @@ $desktopViewport: 1024px;
 $largeViewport: 1280px;
 
 /* COMPONENTS */
-$border-radius: 4px;
+$border-radius: 8px;
 $border: 1px solid $tietary;
 $border2: 2px solid $accent2;
 $border3: 3px solid $accent;
@@ -150,3 +153,4 @@ $nav-width: 40px;
 
 /* Grid */
 $header-height: 48px;
+$gutter: 30px;

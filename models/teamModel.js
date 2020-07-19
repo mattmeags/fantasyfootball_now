@@ -1,11 +1,11 @@
 //TODO: make this a class??
 
-const averages = require('./averages');
 const utilites = require('../scripts/utilities');
 const getGroupedColumnData = require('./data/groupColData');
 const getStackedColumnData = require('./data/stackedColData');
 const mongoQueries = require('../scripts/mongoQueries');
 const getColumnPlayerData = require('./data/getColumnPlayerData');
+
 
 function TeamModel (team, teamData, avgs, color) {
     this.teamName = team;
@@ -26,27 +26,31 @@ function TeamModel (team, teamData, avgs, color) {
     //         this.offense.passAttempts, this.offense.rushAttempts
     //     ]
     // };
-    const receivingCompareSeries = {
+    // this.recevingCompareLabels = ['Targets', 'Receptions'];
+    this.receivingCompareSeries = {
         seriesValue1: 'recTargets',
-        seriesValue2: 'receptions'
-    }
-    const tdStackedSeries = [
+        seriesValue2: 'receptions',
+        seriesName1: 'Targets',
+        seriesName2: 'Receptions'
+    };
+    this.tdStackedSeries = [
         {
             seriesName: 'rushTD',
-            seriesObject: {name: 'Rushing Touchdown', data: []}
+            seriesObject: {label: 'Rushing Touchdown', data: []}
         },
         {
             seriesName: 'recTD',
-            seriesObject: {name: 'Receiving Touchdown', data: []}
+            seriesObject: {label: 'Receiving Touchdown', data: []}
         }
     ]
     this.rushingSplitData = getRushSplit(this.rushRec);
-    this.receivingTargetsData = getGroupedColumnData(receivingCompareSeries, this.rushRec, 'all');
-    this.tdData = getStackedColumnData(tdStackedSeries, this.rushRec, 'all');
+    this.receivingTargetsData = getGroupedColumnData(this.receivingCompareSeries, this.rushRec, 'all');
+    console.log('here: ', this.receivingTargetsData);
+    this.tdData = getStackedColumnData(this.tdStackedSeries, this.rushRec, 'all');
     this.recYardsData = getColumnPlayerData('recYards', this.rushRec, 'all');
     this.rushYardsData = getColumnPlayerData('rushYards', this.rushRec, 'all');
-    this.totalRushYardsAgainstData = new BarData(['Rushing Yards Against', 'League Total Average Rushing Yards Against'], [parseInt(this.teamDefense.rushingYardsAgainst, 10), avgs.rushAgainst], true);
-    this.totalPassYardsAgainstData = new BarData(['Passing Yards Against', 'League Total Average Passing Yards Against'], [parseInt(this.teamDefense.passingYardsAgainst, 10), avgs.passAgainst], true);
+    this.totalRushYardsAgainstData = new BarData(['Rushing Yards Against', 'League Average'], [parseInt(this.teamDefense.rushingYardsAgainst, 10), avgs.rushAgainst], true);
+    this.totalPassYardsAgainstData = new BarData(['Passing Yards Against', 'League Average'], [parseInt(this.teamDefense.passingYardsAgainst, 10), avgs.passAgainst], true);
     this.offensePlaySplit = new BarData(['Passing Plays', 'Rushing Plays'], [parseInt(this.teamPassOffense.attempts, 10), parseInt(this.teamRushOffense.attempts, 10)], true);
     this.color = color;
 }
@@ -59,17 +63,21 @@ function TeamModel (team, teamData, avgs, color) {
 * TODO so far this works pie, see if it works for anything else;
 */
 function getRushSplit(playerData) {
-    console.log('getdonutsplit');
     let chartData = {
         labels: [],
         series: []
     };
-    console.log(this.team);
+
     playerData.forEach((player) => {
-        if (player.position.toLowerCase() == 'rb') {
-            chartData.labels.push(player.playerName);
-            chartData.series.push(player['rushingAttempts']);
+        const playerPosition = player.position.toLowerCase();
+
+        if (player.playerName !== 'Team Total' && player.playerName !== 'Opp Total') {
+            if ((playerPosition === 'rb' || playerPosition === 'fb') || (playerPosition === '' && player.rushingAttempts > 0)) {
+                chartData.labels.push(player.playerName);
+                chartData.series.push(player['rushingAttempts']);
+            }
         }
+        
     });
     console.log(chartData);
     return chartData;
@@ -78,12 +86,12 @@ function getRushSplit(playerData) {
 
 function BarData(labels, data, horizontal) {
     this.labels = labels;
-    this.series = [{data: data}];
+    this.series = data;
     this.isHorizontal = horizontal;
 }
 
-async function init(team, db) {
-    const year = "2019";
+async function init(team, db, year) {
+    //const year = "2019";
     const fullTeamName = utilites.getFullTeamNameFromMascot(team);
     const leagueData = await mongoQueries.getLeague(db, year);
     await console.log(leagueData);
@@ -98,10 +106,11 @@ async function init(team, db) {
         rushOffense: await rushOffense[0]
     }
     const fullTeamData = await Object.assign(rushRecData[0], wholeTeamData);
+    const color = utilites.getColorFromMascot(team);
     console.log(fullTeamData.defense);
     const avgs = {
-        rushAgainst: await averages.getAvgRushAgainst(),
-        passAgainst: await averages.getAvgPassAgainst()
+        rushAgainst: await mongoQueries.getAvgRushAgainst(db, year),
+        passAgainst: await mongoQueries.getAvgPassAgainst(db, year)
     }
     return new TeamModel(fullTeamName, fullTeamData, avgs, color);
 }

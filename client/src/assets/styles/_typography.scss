@@ -14,17 +14,16 @@
     @include fontSize($h3-mobile-size, $h3-desktop-size);
 }
 
-.type--h4 {
-    @include fontSize($h4-mobile-size, $h4-desktop-size);
-}
-
 .type--body {
     @include fontSize($font-size-mobile, $font-size-desktop);
 }
 
-
-.h-no-margin {
+h1, h2, h3 {
     margin: 0;
+}
+
+body {
+    color: $secondary;
 }
 
 .type--color-primary {
