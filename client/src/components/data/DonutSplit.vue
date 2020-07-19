@@ -1,14 +1,13 @@
 <template>
     <div class="chart">
 		 <canvas data-donut-chart></canvas>
-      <!-- <apexchart type="donut" width: v-bind:options="chartOptions" v-bind:series="series"></apexchart> -->
     </div>
 </template>
 
 <script>
 import {convertStringsToInts, trimNames} from '@/assets/scripts/utilities';
 
-import createChartMixin from '@/mixins/createChartMixin';
+import chartMixin from '@/mixins/chartMixin';
 import legendStyleMixin from '@/mixins/legendStyleMixin';
 
 export default {
@@ -18,7 +17,7 @@ export default {
 		values: Array,
 		colors: Array
 	},
-    mixins: [createChartMixin, legendStyleMixin],
+    mixins: [chartMixin, legendStyleMixin],
 	data: () => ({
         chartSelector: '[data-donut-chart]',
         type: 'doughnut',

@@ -1,14 +1,13 @@
 <template>
     <div class="chart">
         <canvas data-bar-chart></canvas>
-        <!-- <apexchart type=bar height=266 :options="chartOptions" :series="series" ></apexchart> -->
     </div>
 </template>
 
 <script>
 import {trimNames, sortBar} from '../../assets/scripts/utilities';
 import labelStyleMixin from '../../mixins/labelStyleMixin';
-import createChartMixin from '@/mixins/createChartMixin';
+import chartMixin from '@/mixins/chartMixin';
 export default {
     name: 'Bar',
     props: {
@@ -25,7 +24,7 @@ export default {
         // Sory from higest to lowests
         sort: Boolean
     }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
-    mixins: [labelStyleMixin, createChartMixin],
+    mixins: [labelStyleMixin, chartMixin],
     data: function() {
         return {
             chartSelector: '[data-bar-chart]',

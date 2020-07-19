@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import EvaIcons from 'vue-eva-icons';
-import VueApexCharts from 'vue-apexcharts';
 import Chart from 'chart.js';
 import App from './App.vue';
 import router from './router';
@@ -20,7 +19,6 @@ Vue.config.productionTip = false;
 // use plugins
 Vue.use(Vuex);
 Vue.use(EvaIcons);
-Vue.use(VueApexCharts);
 
 // library.add(faBars);
 // library.add(faSearch);
@@ -30,7 +28,6 @@ Vue.use(VueApexCharts);
 // Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false;
 
-Vue.component('apexchart', VueApexCharts);
 Vue.component('Tile', Tile);
 Vue.component('Dashboard', Dashboard);
 

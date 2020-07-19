@@ -7,13 +7,13 @@
 <script>
 import {trimNames, addColorToDataSet, sortStackedBar} from '@/assets/scripts/utilities';
 import labelStyleMixin from '@/mixins/labelStyleMixin';
-import createChartMixin from '@/mixins/createChartMixin';
+import chartMixin from '@/mixins/chartMixin';
 import legendStyleMixin from '@/mixins/legendStyleMixin';
 
 export default {
 	name: 'StackedBar',
 	props: ['labels', 'values', 'colors'],
-	mixins: [labelStyleMixin, createChartMixin, legendStyleMixin],
+	mixins: [labelStyleMixin, chartMixin, legendStyleMixin],
 	data: () => ({
 		chartSelector: '[data-stacked-bar-chart]',
 		type: 'bar',

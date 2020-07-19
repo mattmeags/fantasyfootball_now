@@ -94,10 +94,8 @@ async function addCollections() {
                     }).then(() => {
                         console.log('+++++++++++++++');
                         console.log(key)
-                        //console.log(allData[key]);
                         db.collection(key).insertMany(allData[key], function (err, res) {
                             if (err) {
-                                console.log('this key is gving me shit: ', key);
                                 throw (err);
                             }
                             resolve(res);
