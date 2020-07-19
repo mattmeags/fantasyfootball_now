@@ -53,12 +53,6 @@ export default {
 			}
 		}	
 	},
-	// methods: {
-	// 	chartDive(value) {
-	//  TODO: phase 2
-	// 	this.$emit('playerSelect', value);
-	// 	},
-	// },
 };
 </script>
 
