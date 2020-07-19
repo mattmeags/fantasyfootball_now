@@ -21,12 +21,6 @@
             <span>Typography: Roboto </span>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         </section>
-        <section class="links">
-            <h2 class="type--h2">Links</h2>
-            TODO: add navigation link here
-            <!--<a href="#">Primary Link</a>
-            <footer><a href="#">Footer Link</a></footer>-->
-        </section>
         <section class="buttons">
             <h2 class="type--h2">Buttons</h2>
             <Btn>Primary Button</Btn>
@@ -130,42 +124,41 @@
         <section class="grid">
             <h2 class="type--h2">Grid</h2>
             <Dashboard>
-                <!--TODO: h-2 class do anything?-->
-                    <Tile tileClass="w-12"> w-12</Tile>
+                <Tile tileClass="w-12"> w-12</Tile>
 
-                    <Tile tileClass="w-11-1">w-11-1</Tile>
-                    <Tile tileClass="w-1-12">w-1-12</Tile>
+                <Tile tileClass="w-11-1">w-11-1</Tile>
+                <Tile tileClass="w-1-12">w-1-12</Tile>
 
-                    <Tile tileClass="w-10-1">w-10-1</Tile>
-                    <Tile tileClass="w-2-11">w-2-11</Tile>
+                <Tile tileClass="w-10-1">w-10-1</Tile>
+                <Tile tileClass="w-2-11">w-2-11</Tile>
 
-                    <Tile tileClass="w-9-1">w-9-1</Tile>
-                    <Tile tileClass="w-3-10">w-3-10</Tile>
+                <Tile tileClass="w-9-1">w-9-1</Tile>
+                <Tile tileClass="w-3-10">w-3-10</Tile>
 
-                    <Tile tileClass="w-8-1">w-8-1</Tile>
-                    <Tile tileClass="w-4-9">w-4-9</Tile>
+                <Tile tileClass="w-8-1">w-8-1</Tile>
+                <Tile tileClass="w-4-9">w-4-9</Tile>
 
-                    <Tile tileClass="w-7-1">w-7-1</Tile>
-                    <Tile tileClass="w-5-8">w-5-8</Tile>
- 
-                    <Tile tileClass="w-6-1">w-6-1</Tile>
-                    <Tile tileClass="w-6-7">w-6-7</Tile>
+                <Tile tileClass="w-7-1">w-7-1</Tile>
+                <Tile tileClass="w-5-8">w-5-8</Tile>
 
-                    <Tile tileClass="w-4-1">w-4-1</Tile>
-                    <Tile tileClass="w-4-5">w-4-5</Tile>
-                    <Tile tileClass="w-4-9">w-4-9</Tile>
+                <Tile tileClass="w-6-1">w-6-1</Tile>
+                <Tile tileClass="w-6-7">w-6-7</Tile>
 
-                    <Tile tileClass="w-3-1">w-3-1</Tile>
-                    <Tile tileClass="w-3-4">w-3-4</Tile>
-                    <Tile tileClass="w-3-7">w-3-7</Tile>
-                    <Tile tileClass="w-3-10">w-3-10</Tile>
+                <Tile tileClass="w-4-1">w-4-1</Tile>
+                <Tile tileClass="w-4-5">w-4-5</Tile>
+                <Tile tileClass="w-4-9">w-4-9</Tile>
 
-                    <Tile tileClass="w-2-1">w-2-1</Tile>
-                    <Tile tileClass="w-2-3">w-2-3</Tile>
-                    <Tile tileClass="w-2-5">w-2-5</Tile>
-                    <Tile tileClass="w-2-7">w-2-7</Tile>
-                    <Tile tileClass="w-2-9">w-2-9</Tile>
-                    <Tile tileClass="w-2-11">w-2-11</Tile>
+                <Tile tileClass="w-3-1">w-3-1</Tile>
+                <Tile tileClass="w-3-4">w-3-4</Tile>
+                <Tile tileClass="w-3-7">w-3-7</Tile>
+                <Tile tileClass="w-3-10">w-3-10</Tile>
+
+                <Tile tileClass="w-2-1">w-2-1</Tile>
+                <Tile tileClass="w-2-3">w-2-3</Tile>
+                <Tile tileClass="w-2-5">w-2-5</Tile>
+                <Tile tileClass="w-2-7">w-2-7</Tile>
+                <Tile tileClass="w-2-9">w-2-9</Tile>
+                <Tile tileClass="w-2-11">w-2-11</Tile>
 
                 <!-- <Row rowClass="tall">
                     <StackedCharts stackedClass="w-3">

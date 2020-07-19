@@ -6,7 +6,6 @@
 
 <script>
 import {trimNames, sortBar} from '../../assets/scripts/utilities';
-//TODO: do we need datastyle?
 import labelStyleMixin from '../../mixins/labelStyleMixin';
 import chartMixin from '@/mixins/chartMixin';
 export default {
@@ -33,7 +32,17 @@ export default {
             options: {
                 legend: {
                     display: false
-                }
+                },
+                // TODO: handle horizontal labels here
+                // scales: {
+                //     yAxes: [{
+                //         ticks: {
+                //             mirror: this.isHorizontal ? true : false,
+                            
+                //             colors: '#fff'
+                //         }
+                //     }]
+                // }
             }
         }
     },

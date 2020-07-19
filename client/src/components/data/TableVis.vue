@@ -1,9 +1,9 @@
 <template>
     <div class="table-wrapper">
-        <table>
+        <table class="table">
             <thead>
-                <tr>
-                    <th v-for="head in header" v-bind:key="header.id" v-on:click="sort(head)">
+                <tr class="table__row">
+                    <th v-for="head in header" v-bind:key="header.id" v-on:click="sort(head)" class="table__head">
                         {{head}}
                         <span v-if="head in currentSort" class="table__sort-icon">
                             <eva-icon v-show="!currentSort[head]" name="arrow-ios-downward-outline" fill="#29CB97"></eva-icon>
@@ -13,8 +13,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="row in tableData" v-bind:key="row.id">
-                    <td v-for="item in row" v-bind:key="item.id">{{item}}</td>
+                <tr v-for="row in tableData" v-bind:key="row.id" class="table__row">
+                    <td class="table__cell" v-for="item in row" v-bind:key="item.id">{{item}}</td>
                 </tr>
             </tbody>
         </table>
@@ -88,24 +88,16 @@
 
 <style lang="scss" scoped>
     @import '@/assets/styles';
-    /**TODO: BEM this */
-    table {
+    .table {
         border-collapse: collapse;
         width: 100%;
-    td {
+    }
+    .table__cell {
         border-top: $border;
         border-bottom: $border;
     }
-    th {
-        border-bottom: $border2;
-        position: relative;
-        i {
-            height: 0;
-            width: 0;
-        }
-    }
-    td,
-    th {
+    .table__cell,
+    .table__head {
         padding: 5px 10px 5px 0;
         text-align: left;
 
@@ -113,25 +105,38 @@
             padding: 10px 20px 10px 0;
         }
     }
-    th + tr {
-        td {
-            border-top: none;
+    .table__head {
+        border-bottom: $border2;
+        position: relative;
+        white-space: nowrap;
+        padding-right: 40px;
+
+        i {
+            height: 0;
+            width: 0;
+        }
+
+        @include respondUp($tabletViewport) {
+            padding-right: 20px;
         }
     }
     tr:hover {
         background: rgba($tietary, 0.2);
     }
-}
 
-.table__sort-icon {
-    position: absolute;
-    right: 28px;
-    bottom: 2px;
-}
+    .table__sort-icon {
+        position: absolute;
+        right: 28px;
+        bottom: -3px;
 
-.tile {
-    .table-wrapper {
-        padding: 15px;
+        @include respondUp($tabletViewport) {
+            bottom: 2px;
+        }   
     }
-}
+
+    .tile {
+        .table-wrapper {
+            padding: 15px;
+        }
+    }
 </style>
