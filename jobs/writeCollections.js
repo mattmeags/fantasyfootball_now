@@ -23,7 +23,7 @@ async function addCollections() {
 
         //Create structure of league wide data
         for (let year of globals.years) {
-            const defense = await require(`../${globals.jsonPath}all/${year}/defense`),
+            const defense = require(`../${globals.jsonPath}all/${year}/defense`),
                 offense = require(`../${globals.jsonPath}all/${year}/offense`),
                 passDefense = require(`../${globals.jsonPath}all/${year}/passDefense`),
                 rushDefense = require(`../${globals.jsonPath}all/${year}/rushDefense`),

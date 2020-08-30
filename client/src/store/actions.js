@@ -65,5 +65,15 @@ export default {
                 
             });
         }
+    },
+    getLeagueData(context) {
+        fetch(paths.home)
+		.then(response => response.json())
+		.then((result) => {
+            context.commit('setLeagueData', result);
+            console.log(result.yards);
+            context.commit('setPresentationData', {stateKey: 'activePassData', data: result.passYards});
+            context.commit('setPresentationData', {stateKey: 'activeRushData', data: result.rushYards});
+        });
     }
 };

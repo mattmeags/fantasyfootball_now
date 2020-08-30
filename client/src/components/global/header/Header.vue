@@ -45,9 +45,6 @@ export default {
 			setSelectedYear: 'setSelectedYear'
 		}),
 		initUpdateYear(selected) {
-			;
-			console.log('selected');
-			console.log(this.$route);
 			this.updateYear({
 				year: selected,
 				route: this.$route.name,

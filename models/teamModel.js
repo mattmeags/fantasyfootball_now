@@ -5,6 +5,7 @@ const getGroupedColumnData = require('./data/groupColData');
 const getStackedColumnData = require('./data/stackedColData');
 const mongoQueries = require('../scripts/mongoQueries');
 const getColumnPlayerData = require('./data/getColumnPlayerData');
+const BarData = require('./data/barData');
 
 
 function TeamModel (team, teamData, avgs, color) {
@@ -45,7 +46,6 @@ function TeamModel (team, teamData, avgs, color) {
     ]
     this.rushingSplitData = getRushSplit(this.rushRec);
     this.receivingTargetsData = getGroupedColumnData(this.receivingCompareSeries, this.rushRec, 'all');
-    console.log('here: ', this.receivingTargetsData);
     this.tdData = getStackedColumnData(this.tdStackedSeries, this.rushRec, 'all');
     this.recYardsData = getColumnPlayerData('recYards', this.rushRec, 'all');
     this.rushYardsData = getColumnPlayerData('rushYards', this.rushRec, 'all');
@@ -84,17 +84,9 @@ function getRushSplit(playerData) {
 
 }
 
-function BarData(labels, data, horizontal) {
-    this.labels = labels;
-    this.series = data;
-    this.isHorizontal = horizontal;
-}
-
 async function init(team, db, year) {
     //const year = "2019";
     const fullTeamName = utilites.getFullTeamNameFromMascot(team);
-    const leagueData = await mongoQueries.getLeague(db, year);
-    await console.log(leagueData);
     const rushRecData = await mongoQueries.getFullTeam(team, year, db);
     const defense = await db.collection('allDefense').find({$and: [{'name' : fullTeamName}, {'year': year}]}).toArray();
     const passOffense = await db.collection('allPassOffense').find({ $and: [{ 'name': fullTeamName }, { 'year': year }] }).toArray();
@@ -107,7 +99,6 @@ async function init(team, db, year) {
     }
     const fullTeamData = await Object.assign(rushRecData[0], wholeTeamData);
     const color = utilites.getColorFromMascot(team);
-    console.log(fullTeamData.defense);
     const avgs = {
         rushAgainst: await mongoQueries.getAvgRushAgainst(db, year),
         passAgainst: await mongoQueries.getAvgPassAgainst(db, year)

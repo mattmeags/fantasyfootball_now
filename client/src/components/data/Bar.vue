@@ -29,12 +29,15 @@ export default {
         return {
             chartSelector: '[data-bar-chart]',
             type: this.isHorizontal ? 'horizontalBar' : 'bar',
+            finalColors: this.colors,
             options: {
                 legend: {
                     display: false
                 },
+                responsive: true,
+                maintainAspectRatio: false,
                 // TODO: handle horizontal labels here
-                // scales: {
+                scales: {
                 //     yAxes: [{
                 //         ticks: {
                 //             mirror: this.isHorizontal ? true : false,
@@ -42,7 +45,10 @@ export default {
                 //             colors: '#fff'
                 //         }
                 //     }]
-                // }
+                    xAxes: [{
+                        barPercentage: 0.4
+                    }]
+                }
             }
         }
     },
@@ -50,7 +56,12 @@ export default {
         chartSeries() {
             let series = {}
             if (this.sort) {
-			    series = sortBar(this.values, this.labels);
+                series = sortBar(this.values, this.labels);
+                if ('sortedIndexes' in series && series.sortedIndexes) {
+                    this.finalColors = series.sortedIndexes.map(index => {
+                        return this.colors[index]
+                    });
+                }
             } else {
                 series = {
                     data: this.values,
@@ -60,14 +71,12 @@ export default {
             return series
 		},
         chartData() {
-            console.log('labels :', this.colors)
-            console.log('bar chartseries: ', this.chartSeries );
             return {
                 type: this.type,
                 data: {
                     datasets: [{
                         data: this.chartSeries.data,
-                        backgroundColor: this.colors,
+                        backgroundColor: this.finalColors,
                     }],
                     labels: this.trimLabels ? trimNames(this.chartSeries.labels) : this.chartSeries.labels
                 },

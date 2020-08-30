@@ -3,6 +3,8 @@ import {trimName} from '../assets/scripts/utilities';
 import { json } from 'body-parser';
 
 export default {
+
+    //TODO: set teams setpostions set presentationdata are all the dame
     setTeams(state, payload) {
         Vue.set(state, 'teams', payload);
     },
@@ -57,7 +59,75 @@ export default {
     //     state.selectedYear = payload[0];
     // },
     setSelectedYear(state, payload) {
-        console.log(payload);
         state.selectedYear = payload;
+    },
+    setLeagueData(state, payload) {
+
+        for (let pay in payload) {
+            if (pay in payload && payload[pay]) {
+                Vue.set(state, pay, payload[pay]);
+            }
+        }
+    },
+    setColorOrder(state, payload) {
+        if (payload) {
+            payload.forEach(item => {
+                const newOrder = item.teams.map(team => {
+                    const index = state.fullTeamsNames.indexOf(team);
+                    if (index >= 0) {
+                        console.log(state.fullLeagueColors[index]);
+                        return state.fullLeagueColors[index];
+                    }
+                });
+
+                Vue.set(state, item.stateKey, newOrder);
+            });
+        }
+    },
+    // updateLabels(state, payload) {
+    //     if (payload) {
+    //         //payload.labels
+    //         //payload.compareLabels
+    //         //payload.newLabels
+
+    //         payload.labels.forEach(label => {
+    //             payload
+    //         })
+    //         payload.compareLabels;
+    //     }
+       
+    // },
+    /**
+     * 
+     * @param {vue.state} state 
+     * @param {object} payload {baseArray: array, compareArray: array, newValuesArray: array, stateKey: string}
+     */
+//     reorderArray(state, payload) {
+//         // almost mimic the last 2
+//         // reorder an array and use first array to populate new array or use a third array
+//         //The 2 compare arrays must be the same expected order
+//         console.log('PAYLOAD: ', payload);
+//         const reorderedArray = payload.baseArray.map(item => {
+//             const index = payload.compareArray.indexOf(item);
+//             let pushValue;
+//             if (index >= 0) {
+//                 if (payload.newValuesArray) {
+//                     pushValue = payload.newValuesArray[index];
+//                 } else {
+//                     pushValue = payload.compareArray[index];
+//                 }
+//             }
+//             return pushValue;
+//         });
+//         console.log('fuck??')
+//         console.log('reorders', reorderedArray);
+//         console.log(payload.stateKey);
+//         Vue.set(state, state.passAttempts.labels, reorderedArray)
+//     }
+    setPresentationData(state, payload) {
+        console.log(payload);
+        if (payload) {
+            Vue.set(state, payload.stateKey, payload.data);
+        }
     }
 }

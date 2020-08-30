@@ -41,11 +41,31 @@ function getColorFromMascot(mascot) {
     return GLOBALS.colors[GLOBALS.teams.indexOf(mascot)];
 }
 
+function reorderArray(baseArray, compareArray, newValuesArray = null) {
+    // reorder an array and use first array to populate new array or use a third array
+    //The 2 compare arrays must be the same expected order
+    const reorderedArray = baseArray.map(item => {
+        const index = compareArray.indexOf(item);
+        let pushValue;
+        if (index >= 0) {
+            if (newValuesArray) {
+                pushValue = newValuesArray[index];
+            } else {
+                pushValue = compareArray[index];
+            }
+        }
+        return pushValue;
+    });
+
+    return reorderedArray;
+}
+
 module.exports = {
     getFullTeamNameFromMascot,
     getCodeFromName,
     getNameFromCode,
     getFullTeams,
     arrayUnique,
-    getColorFromMascot
+    getColorFromMascot,
+    reorderArray
 }

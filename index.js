@@ -1,9 +1,9 @@
 const express = require('express'),
       cors = require('cors'),
       morgan = require('morgan'),
-      bodyParser = require('body-parser');
-const mongodbClient = require('./mongoClient');
-const globals = require('./models/global');
+      bodyParser = require('body-parser'),
+      mongodbClient = require('./mongoClient'),
+      globals = require('./models/global');
 const mongoQueries = require('./scripts/mongoQueries');
 const teamModel = require('./models/teamModel');
 let year = globals.years.reverse()[0];
@@ -25,11 +25,11 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    console.log('here?');
-    res.json({
-        message: 'Hello World'
-    });
+app.get('/home', async (req, res) => {
+    const leagueModel = require('./models/league'),
+        LeagueModel = await leagueModel(db, year);
+
+    res.json(LeagueModel);
 });
 
 /**
@@ -37,7 +37,6 @@ app.get('/', (req, res) => {
  * @description - express route returns list of teams and their divisions
  */
 app.get('/getTeams', (req, res) => {
-    
     const teams = require('./models/global.js').teams;
     res.json(teams);
 });

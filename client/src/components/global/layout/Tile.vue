@@ -49,7 +49,8 @@ export default {
     overflow: scroll;
     display: flex;
     flex-direction: column;
-    margin-bottom: $gutter;;
+    margin-bottom: $gutter;
+    max-height: 33vh;
 
     .chart {
         padding: 15px 0;

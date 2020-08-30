@@ -23,5 +23,21 @@ export default {
     teamName: '',
     globalHeader: 'Fantasy Football Now',
     years: ['2019', '2018'],
-    selectedYear: ''
+    selectedYear: '',
+    passAttempts: {
+        labels: [],
+        series: []
+    },
+    passYards: {},
+    passYardsAgainst: {},
+    rushAttempts: {},
+    rushYards: {},
+    rushYardsAgainst: {},
+    yards: {},
+    fullLeagueColors: [],
+    offenseColorsOrdered: [],
+    defenseColorsOrdered:[],
+    fullTeamsNames: [],
+    activePassData: {},
+    activeRushData: {}
 }

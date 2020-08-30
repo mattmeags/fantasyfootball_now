@@ -9,8 +9,6 @@ export default {
         //   this.$emit('playerSelect', value);
         // },
         createChart() {
-            console.log('where are you breaking');
-            console.log(this.chartData);
             const selector = this.chartSelector,
                 chartData = this.chartData,
                 // this.$el (this is the vue instance) ($el is the outermost parent element)
@@ -20,15 +18,12 @@ export default {
                     data: chartData.data,
                     options: chartData.options,
                 });
-            console.log(this);
-            console.log('myChart: ', myChart);
             //myChart.destroy()
             this.Chart = {};
             this.Chart = myChart;
         },
 
         destroyChart() {
-            console.log(this.Chart);
             this.Chart.destroy();
 
         },
@@ -41,7 +36,6 @@ export default {
     },
     watch: {
         chartData() {
-            console.log('watch');
             this.updateChart();
         }
     },
