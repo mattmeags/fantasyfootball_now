@@ -5,26 +5,25 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 let _db, _client;
 
 module.exports = {
-  createConnection: function(callback) {
-    client.connect((err, db) => {
-    
-      if (err) {
-        throw err;
-      }
+	createConnection: function(callback) {
+		client.connect((err, db) => {
+			if (err) {
+				throw err;
+			}
 
-      _client = db;
-      _db = db.db("ffNow");
-      if (callback) {
-        return callback();
-      } else {
-        return;
-      }
-    });  
-  },
-  getDb: function() {
-    return _db;
-  },
-  closeConnection: function() {
-    _client.close();   
-  }
+			_client = db;
+			_db = db.db("ffNow");
+			if (callback) {
+				return callback();
+			} else {
+				return;
+			}
+    	});  
+  	},
+	getDb: function() {
+		return _db;
+	},
+	closeConnection: function() {
+		_client.close();   
+	}
 }
