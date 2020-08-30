@@ -14,15 +14,16 @@ module.exports = {
         });
         return allTeamPromises;
     },
-    getLeague: async (db, year) => {
+    getLeagueOffense: async (db, year) => {
         //TODO all should be a constant
-        const leagueData = await db.collection('all').find({year: year}).toArray();
-        return leagueData[0];
+        const leagueData = await db.collection('allOffense').find({year: year}).toArray();
+        return leagueData;
     },
-    getAllDefense: async (db) => {
-        const allDefensePromises = await db.collection('allDefense').find({}).toArray();
+    getAllDefense: async (db, year) => {
+        const allDefensePromises = await db.collection('allDefense').find({year: year}).toArray();
         return allDefensePromises;
     },
+    //TODO: this cna be done sooooo much better
     getAvgRushAgainst: async (db, year) => {
         const allData = await db.collection('allDefense').find({$and: [{'name': 'Avg Team'}, {'year': year}]}).toArray();
         return allData[0].rushingYardsAgainst;
