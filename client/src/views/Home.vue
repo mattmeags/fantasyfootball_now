@@ -1,42 +1,36 @@
 <template>
-
-  <Dashboard>
-	    <!-- <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    {{ leagueData }}
-  </div> -->
-	<Tile tileCLass="w-12">
-		<template v-slot:header>
-			<TileHeader title="Passing"/>
-		</template>
-		<Bar :labels="activePassData.labels" :values="activePassData.series" :isHorizontal="activePassData.isHorizontal" :colors="offenseColorsOrdered" :sort="true"/>
-		<template v-slot:filter>
-			<ChartFilter :filterValues="filterValues" :defaultOption="filterValues[0]" @filterChange="updatePassChartWithFilter"/>
-		</template>
-	</Tile>
-	<Tile tileCLass="w-12">
-		<template v-slot:header>
-			<TileHeader title="Rushing"/>
-		</template>
-		<Bar :labels="activeRushData.labels" :values="activeRushData.series" :isHorizontal="activeRushData.isHorizontal" :colors="offenseColorsOrdered" :sort="true"/>
-		<template v-slot:filter>
-			<ChartFilter :filterValues="filterValues" :defaultOption="filterValues[0]" @filterChange="updateRushChartWithFilter"/>
-		</template>
-	</Tile>
-	<Tile tileCLass="w-12">
-		<template v-slot:header>
-			<TileHeader title="Passing Yards Against"/>
-		</template>
-		<Bar :labels="passYardsAgainst.labels" :values="passYardsAgainst.series" :isHorizontal="passYardsAgainst.isHorizontal" :colors="defenseColorsOrdered" :sort="true"/>
-	</Tile>
-	<Tile tileCLass="w-12">
-		<template v-slot:header>
-			<TileHeader title="Rushing Yards Against"/>
-		</template>
-		<Bar :labels="rushYardsAgainst.labels" :values="rushYardsAgainst.series" :isHorizontal="rushYardsAgainst.isHorizontal" :colors="defenseColorsOrdered" :sort="true"/>
-	</Tile>
-  </Dashboard>
+	<Dashboard>
+		<Tile tileCLass="w-12">
+			<template v-slot:header>
+				<TileHeader title="Passing"/>
+			</template>
+			<Bar :labels="activePassData.labels" :values="activePassData.series" :isHorizontal="activePassData.isHorizontal" :colors="offenseColorsOrdered" :sort="true"/>
+			<template v-slot:filter>
+				<ChartFilter :filterValues="filterValues" :defaultOption="filterValues[0]" @filterChange="updatePassChartWithFilter"/>
+			</template>
+		</Tile>
+		<Tile tileCLass="w-12">
+			<template v-slot:header>
+				<TileHeader title="Rushing"/>
+			</template>
+			<Bar :labels="activeRushData.labels" :values="activeRushData.series" :isHorizontal="activeRushData.isHorizontal" :colors="offenseColorsOrdered" :sort="true"/>
+			<template v-slot:filter>
+				<ChartFilter :filterValues="filterValues" :defaultOption="filterValues[0]" @filterChange="updateRushChartWithFilter"/>
+			</template>
+		</Tile>
+		<Tile tileCLass="w-12">
+			<template v-slot:header>
+				<TileHeader title="Passing Yards Against"/>
+			</template>
+			<Bar :labels="passYardsAgainst.labels" :values="passYardsAgainst.series" :isHorizontal="passYardsAgainst.isHorizontal" :colors="defenseColorsOrdered" :sort="true"/>
+		</Tile>
+		<Tile tileCLass="w-12">
+			<template v-slot:header>
+				<TileHeader title="Rushing Yards Against"/>
+			</template>
+			<Bar :labels="rushYardsAgainst.labels" :values="rushYardsAgainst.series" :isHorizontal="rushYardsAgainst.isHorizontal" :colors="defenseColorsOrdered" :sort="true"/>
+		</Tile>
+	</Dashboard>
 </template>
 
 <script>

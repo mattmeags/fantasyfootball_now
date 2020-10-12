@@ -1,3 +1,4 @@
+//TODO: Need lots of comments
 /**
  * @param {array} strings
  * @description converts array of strings into array of integers
@@ -42,6 +43,7 @@ export function getColors(teamColor) {
     }
     return dataColors;
 }
+//TODO: add to constants
 const baseUrl = 'http://localhost:4000/';
 export const paths = {
     loadAllTeamsUrl: `${baseUrl}getTeams`,
@@ -136,7 +138,7 @@ function sumArrays(array1, array2) {
 }
 
 export function sortStackedBar(data, labels) {
-    //[{data:['2', '4','1', '7', '5'], label:'Value 1'}, {data:['6', '11', '8', '2', '4'], label: 'Value 2'}]7
+    // [{data:['2', '4','1', '7', '5'], label:'Value 1'}, {data:['6', '11', '8', '2', '4'], label: 'Value 2'}]
 
     const totalsArray = sumArrays(data[0].data, data[1].data),
         sortedChart = sortBar(totalsArray, labels),
@@ -165,25 +167,25 @@ export function sortStackedBar(data, labels) {
 }
 
 export function sortGroupedBar(data, labels) {
-    //[{data:['2', '4', '1', '7', '4'], label:'Value 1'}, {data:['6', '11', '8', '2', '5'], label: 'Value 2'}]
-    const firstSort = sortBar(data[0].data, labels);
-    let finalSortedData = [
-        {
-            // sort by first data series so can add her
-            data: firstSort.data,
-            label: data[0].label
-        },
-        {
-            data: [],
-            label: data[1].label 
-        }
-    ],
-    secondSort = [],
-    finalSeries = {};
+    // [{data:['2', '4', '1', '7', '4'], label:'Value 1'}, {data:['6', '11', '8', '2', '5'], label: 'Value 2'}]
+    const firstSort = sortBar(data[0].data, labels),
+        finalSortedData = [
+            {
+                // sort by first data series so can add her
+                data: firstSort.data,
+                label: data[0].label,
+            },
+            {
+                data: [],
+                label: data[1].label,
+            },
+        ],
+        secondSort = [],
+        finalSeries = {};
 
     // check the index of the sorted and sort the other data series with it
     firstSort.sortedIndexes.forEach(element => {
-        secondSort.push(data[1].data[element])
+        secondSort.push(data[1].data[element]);
     });
 
     finalSortedData[1].data = secondSort;
