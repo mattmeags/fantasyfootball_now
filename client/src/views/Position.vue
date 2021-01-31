@@ -64,13 +64,13 @@
                 getPositionData: 'getPositionData'
             }),
             ...mapMutations({
-                setGlobalTitle: 'setGlobalTitle'
+                setPresentationState: 'setPresentationState'
             }),
             refreshComponent(position) {
                 console.log('refereshComponent');
                 console.log(position);
                 this.getPositionData(position);
-                this.setGlobalTitle(position);
+                this.setPresentationState({stateKey: 'globalHeader', data: position});
             }
         },
          beforeRouteUpdate(to, from, next) {

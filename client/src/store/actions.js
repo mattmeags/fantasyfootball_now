@@ -6,26 +6,27 @@ export default {
         fetch(paths.loadAllTeamsUrl)
         .then(response => response.json())
         .then((result) => {
-            context.commit('setTeams', result);
+            context.commit('setPresentationState', {stateKey: 'teams',data: result});
         });
         fetch(paths.loadPositinsUrl)
         .then(response => response.json())
         .then(result => {
-            context.commit('setPositions', result);
+            context.commit('setPresentationState', {stateKey: 'positions',data: result});
+            // context.commit('setPositions', result);
         });
     },
     getTeamData(context, teamMascot) {
-        context.commit('resetTeamLoaded', false);
+        context.commit('setPresentationState', {stateKey: 'teamDataLoaded', data: false});
         axios.post(paths.loadSingleTeamUrl, {
             teamId: teamMascot,
         }).then(result => {
             context.commit('setTeamData', result.data);
-            context.commit('setGlobalTitle', result.data.teamName);
+            context.commit('setPresentationState', {stateKey: 'globalHeader', data: result.data.teamName});
         });
     },
     filterCharts(context, payload) {
         const path = paths.createUrl(payload.api);
-        axios.post(path, {
+        axios.post(path, { 
             team: payload.teamMascot,
             seriesName: payload.seriesName,
             filter: payload.filter,
@@ -40,7 +41,9 @@ export default {
             position: payload,
         }).then(result => {
             context.commit('setPositionData', result.data);
-            context.commit('setGlobalTitle', result.data.teamName);
+            console.log('result: ', result);
+            //context.commit('setGlobalTitle', result.data.teamName);
+            //context.commit('setPresentationState', {stateKey: 'globalHeader', data: result.data.teamName});
         });
     },
     updateYear(context, payload) {
@@ -64,8 +67,8 @@ export default {
         .then(response => response.json())
         .then((result) => {
             context.commit('setLeagueData', result);
-            context.commit('setPresentationData', { stateKey: 'activePassData', data: result.passYards });
-            context.commit('setPresentationData', { stateKey: 'activeRushData', data: result.rushYards });
+            context.commit('setPresentationState', { stateKey: 'activePassData', data: result.passYards });
+            context.commit('setPresentationState', { stateKey: 'activeRushData', data: result.rushYards });
         });
     },
 };

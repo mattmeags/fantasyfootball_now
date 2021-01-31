@@ -56,8 +56,7 @@ export default {
 	}),
 	methods: {
 		...mapMutations({
-			setGlobalTitle: 'setGlobalTitle',
-			setPresentationData: 'setPresentationData'
+			setPresentationState: 'setPresentationState'
 		}),
 		...mapActions({
 			getLeagueData: 'getLeagueData'
@@ -65,11 +64,11 @@ export default {
 		updatePassChartWithFilter: function(selected) {
 			//console.log(selected);
 			let data = `pass${selected}`;
-			this.setPresentationData({stateKey: 'activePassData', data: this[data]});
+			this.setPresentationState({stateKey: 'activePassData', data: this[data]});
 		},
 		updateRushChartWithFilter: function(selected) {
 			let data = `rush${selected}`;
-			this.setPresentationData({stateKey: 'activeRushData', data: this[data]});
+			this.setPresentationState({stateKey: 'activeRushData', data: this[data]});
 		}
 	},
 	computed: {
@@ -89,9 +88,9 @@ export default {
 		})
 	},
 	mounted() {
-		this.getLeagueData()
+		this.getLeagueData();
 
-		this.setGlobalTitle('Fantasy Football Now');
+		this.setPresentationState({stateKey: 'globalHeader', data:'Fantasy Football Now'});
 	},
 };
 

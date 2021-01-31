@@ -5,15 +5,16 @@
 </template>
 
 <script>
-import {trimNames, addColorToDataSet, sortStackedBar} from '@/assets/scripts/utilities';
+import { trimNames, addColorToDataSet, sumArrays } from '@/assets/scripts/utilities';
 import labelStyleMixin from '@/mixins/labelStyleMixin';
 import chartMixin from '@/mixins/chartMixin';
 import legendStyleMixin from '@/mixins/legendStyleMixin';
+import sortBarMixin from '@/mixins/sortBar.js';
 
 export default {
 	name: 'StackedBar',
 	props: ['labels', 'values', 'colors'],
-	mixins: [labelStyleMixin, chartMixin, legendStyleMixin],
+	mixins: [labelStyleMixin, chartMixin, legendStyleMixin, sortBarMixin],
 	data: () => ({
 		chartSelector: '[data-stacked-bar-chart]',
 		type: 'bar',
@@ -34,7 +35,7 @@ export default {
 	}),
 	computed: {
 		chartSeries() {
-			const sortedSeries = sortStackedBar(this.values, this.labels);
+			const sortedSeries = this.sortStackedBar(this.values, this.labels);
 			return {
 				data: sortedSeries.data,
 				labels: sortedSeries.labels,
@@ -53,6 +54,36 @@ export default {
 			}
 		}	
 	},
+	methods: {
+		sortStackedBar: function(data, labels) {
+			// [{data:['2', '4','1', '7', '5'], label:'Value 1'}, {data:['6', '11', '8', '2', '4'], label: 'Value 2'}]
+
+			const totalsArray = sumArrays(data[0].data, data[1].data),
+				sortedChart = this.sortBar(totalsArray, labels),
+				sortedOrderArr = sortedChart.sortedIndexes;
+			
+			let sortedSeries = [
+				{
+					data: [],
+					label: data[0].label
+				},
+				{
+					data: [],
+					label: data[1].label
+				}
+				],
+				finalSorted = {};
+			
+			sortedOrderArr.forEach((element, index) => {
+				sortedSeries[0].data.push(data[0].data[element]);
+				sortedSeries[1].data.push(data[1].data[element]);
+			});
+
+			finalSorted.data = sortedSeries;
+			finalSorted.labels = sortedChart.labels
+			return finalSorted;
+		}
+	}
 };
 </script>
 

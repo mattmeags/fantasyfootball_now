@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import {trimNames, sortBar} from '../../assets/scripts/utilities';
+import { trimNames } from '../../assets/scripts/utilities';
 import labelStyleMixin from '../../mixins/labelStyleMixin';
+import sortBarMixin from '@/mixins/sortBar.js';
 import chartMixin from '@/mixins/chartMixin';
 export default {
     name: 'Bar',
@@ -24,7 +25,7 @@ export default {
         // Sory from higest to lowests
         sort: Boolean
     }, //['labels', 'values', 'isHorizontal', 'trimLabels', 'colors'],
-    mixins: [labelStyleMixin, chartMixin],
+    mixins: [labelStyleMixin, chartMixin, sortBarMixin],
     data: function() {
         return {
             chartSelector: '[data-bar-chart]',
@@ -56,7 +57,7 @@ export default {
         chartSeries() {
             let series = {}
             if (this.sort) {
-                series = sortBar(this.values, this.labels);
+                series = this.sortBar(this.values, this.labels);
                 if ('sortedIndexes' in series && series.sortedIndexes) {
                     this.finalColors = series.sortedIndexes.map(index => {
                         return this.colors[index]
