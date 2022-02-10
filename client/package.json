@@ -11,7 +11,7 @@
     "axios": "^0.18.0",
     "chart.js": "^2.9.3",
     "color": "^3.1.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8.0.0",
     "vue": "^2.5.17",
     "vue-eva-icons": "^1.1.0",
