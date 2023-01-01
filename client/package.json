@@ -12,15 +12,15 @@
     "chart.js": "^2.9.3",
     "color": "^3.1.2",
     "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.0",
+    "sass-loader": "^13.2.0",
     "vue": "^2.5.17",
     "vue-eva-icons": "^1.1.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-eslint": "^3.2.0",
-    "@vue/cli-service": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
